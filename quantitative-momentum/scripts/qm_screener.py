@@ -14,11 +14,14 @@ Output: JSON to stdout + CSV files in the output directory.
 import json
 import sys
 import os
+import time
 import warnings
 from datetime import datetime, timedelta
+from io import StringIO
 
 import numpy as np
 import pandas as pd
+import requests
 import yfinance as yf
 from scipy import stats
 
@@ -26,13 +29,128 @@ warnings.filterwarnings("ignore")
 
 
 # ============================================================================
+# POLYGON.IO HELPERS (primary price source)
+# ============================================================================
+
+POLYGON_BASE = "https://api.polygon.io"
+WIKI_UA = "QM-Screener/1.0 (educational; pandas)"
+
+
+def get_polygon_api_key():
+    """Fetch Polygon API key from keyring (preferred) or env var fallback."""
+    try:
+        import keyring
+        key = keyring.get_password("polygon-api", "default")
+        if key:
+            return key
+    except Exception:
+        pass
+    return os.environ.get("POLYGON_API_KEY")
+
+
+def _fetch_polygon_grouped_day(date_str, api_key, session):
+    """Fetch one trading day of grouped daily bars (~12k US tickers) from Polygon.
+
+    Returns a DataFrame with Polygon's raw columns (T, c, o, h, l, v, ...) on
+    a trading day, or an empty DataFrame on a closed day. Returns None on HTTP error."""
+    url = f"{POLYGON_BASE}/v2/aggs/grouped/locale/us/market/stocks/{date_str}"
+    try:
+        r = session.get(url, params={"apiKey": api_key, "adjusted": "true"}, timeout=30)
+    except requests.RequestException as e:
+        print(f"  Polygon fetch error for {date_str}: {e}", file=sys.stderr)
+        return None
+    if r.status_code != 200:
+        if r.status_code == 429:
+            print(f"  Polygon 429 for {date_str} — sleeping 60s", file=sys.stderr)
+            time.sleep(60)
+        else:
+            print(f"  Polygon HTTP {r.status_code} for {date_str}", file=sys.stderr)
+        return None
+    j = r.json()
+    if j.get("status") != "OK" or not j.get("results"):
+        return pd.DataFrame()  # closed day or empty
+    return pd.DataFrame(j["results"])
+
+
+def download_prices_polygon(tickers, months_needed=8, cache_dir=None):
+    """Build a price DataFrame (date × ticker, adjusted close) via Polygon Grouped Daily Bars.
+
+    One API call per trading day fetches the entire US stock universe; we filter
+    to the requested tickers and pivot to a wide DataFrame. Per-day responses are
+    cached as parquet so subsequent runs only fetch the new days.
+    """
+    api_key = get_polygon_api_key()
+    if not api_key:
+        raise RuntimeError("No Polygon API key in keyring (polygon-api/default) or POLYGON_API_KEY env var")
+
+    if cache_dir is None:
+        cache_dir = os.path.join(os.path.expanduser("~"), ".qm-cache", "polygon_daily")
+    os.makedirs(cache_dir, exist_ok=True)
+
+    end = datetime.now()
+    start = end - timedelta(days=months_needed * 31 + 30)
+    bdates = pd.bdate_range(start, end)
+    ticker_set = set(tickers)
+
+    session = requests.Session()
+    rows = []
+    cached, fetched, skipped = 0, 0, 0
+    print(f"Polygon: requesting {len(bdates)} business days "
+          f"({start.date()} to {end.date()})...", file=sys.stderr)
+
+    for d in bdates:
+        date_str = d.strftime("%Y-%m-%d")
+        cache_path = os.path.join(cache_dir, f"{date_str}.parquet")
+        if os.path.exists(cache_path):
+            df_day = pd.read_parquet(cache_path)
+            cached += 1
+        else:
+            df_day = _fetch_polygon_grouped_day(date_str, api_key, session)
+            if df_day is None:
+                skipped += 1
+                continue
+            if not df_day.empty:
+                df_day.to_parquet(cache_path)
+            fetched += 1
+
+        if df_day.empty:
+            continue
+
+        sub = df_day[df_day["T"].isin(ticker_set)][["T", "c"]]
+        for t, c in zip(sub["T"].values, sub["c"].values):
+            rows.append((date_str, t, c))
+
+    print(f"  Polygon summary: {cached} cached, {fetched} fetched, {skipped} errors",
+          file=sys.stderr)
+
+    if not rows:
+        return pd.DataFrame()
+
+    long = pd.DataFrame(rows, columns=["date", "ticker", "close"])
+    long["date"] = pd.to_datetime(long["date"])
+    prices = long.pivot(index="date", columns="ticker", values="close").sort_index()
+    print(f"Polygon: {prices.shape[0]} days x {prices.shape[1]} tickers", file=sys.stderr)
+    return prices
+
+
+# ============================================================================
 # S&P 500 UNIVERSE
 # ============================================================================
 
 def get_sp500_tickers():
-    """Fetch current S&P 500 constituents from Wikipedia, with full fallback list."""
+    """Fetch current S&P 500 constituents from Wikipedia, with full fallback list.
+
+    Wikipedia blocks the default urllib User-Agent (HTTP 403), so we fetch with
+    requests using a real UA, then hand the HTML to pandas.
+    """
     try:
-        tables = pd.read_html("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
+        r = requests.get(
+            "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+            headers={"User-Agent": WIKI_UA},
+            timeout=20,
+        )
+        r.raise_for_status()
+        tables = pd.read_html(StringIO(r.text))
         df = tables[0]
         tickers = df["Symbol"].str.replace(".", "-", regex=False).tolist()
         sectors = dict(zip(
@@ -92,29 +210,22 @@ def get_sp500_tickers():
             "BAX","HSIC","BXP","ARE","SWKS","TECH","FDS","CRL","MOS","EPAM","TAP",
             "POOL","CAG","MTCH","MOH","PAYC","CPB","LW","PCG","NWS","HBAN",
         ]
-        # When using fallback list, fetch names/sectors from yfinance
-        sectors = {}
-        names = {}
-        print("Fetching company names and sectors from Yahoo Finance...", file=sys.stderr)
-        for t in fallback:
-            try:
-                info = yf.Ticker(t).info
-                names[t] = info.get("shortName") or info.get("longName") or ""
-                sectors[t] = info.get("sector") or "Unknown"
-            except Exception:
-                names[t] = ""
-                sectors[t] = "Unknown"
-        filled = sum(1 for v in names.values() if v)
-        print(f"  Fetched {filled}/{len(fallback)} company names", file=sys.stderr)
+        # Fallback list: don't fetch per-ticker info from yfinance — it triggers
+        # rate-limit bans that cascade into the price download. Display fields
+        # default to ticker / "Unknown"; users can re-run later for live names.
+        sectors = {t: "Unknown" for t in fallback}
+        names = {t: t for t in fallback}
+        print("  Using ticker symbols as company names (skipping per-ticker info to avoid rate limits)",
+              file=sys.stderr)
         return fallback, sectors, names
 
 
-def download_prices(tickers, months_needed=8):
-    """Download adjusted close prices for all tickers."""
+def download_prices_yahoo(tickers, months_needed=8):
+    """Download adjusted close prices for all tickers via yfinance (fallback path)."""
     end = datetime.now()
     start = end - timedelta(days=months_needed * 31 + 30)
 
-    print(f"Downloading price data for {len(tickers)} tickers...", file=sys.stderr)
+    print(f"Yahoo: downloading price data for {len(tickers)} tickers...", file=sys.stderr)
     data = yf.download(
         tickers, start=start.strftime("%Y-%m-%d"),
         end=end.strftime("%Y-%m-%d"), auto_adjust=True,
@@ -129,8 +240,30 @@ def download_prices(tickers, months_needed=8):
     else:
         prices = data
 
-    print(f"Got price data: {prices.shape[0]} days x {prices.shape[1]} tickers", file=sys.stderr)
+    print(f"Yahoo: {prices.shape[0]} days x {prices.shape[1]} tickers", file=sys.stderr)
     return prices
+
+
+def download_prices(tickers, months_needed=8):
+    """Get adjusted close prices for all tickers.
+
+    Tries Polygon Grouped Daily Bars first (paid plan, no rate-limit issues,
+    cached per-day so subsequent runs are fast). Falls back to yfinance if
+    Polygon is unavailable or returns insufficient data.
+    """
+    if get_polygon_api_key():
+        try:
+            prices = download_prices_polygon(tickers, months_needed=months_needed)
+            if not prices.empty and prices.shape[0] >= months_needed * 18:
+                return prices
+            print(f"Polygon returned only {prices.shape[0]} days "
+                  f"(need ~{months_needed * 21}) — falling back to Yahoo", file=sys.stderr)
+        except Exception as e:
+            print(f"Polygon path failed ({e}) — falling back to Yahoo", file=sys.stderr)
+    else:
+        print("No Polygon API key found — using Yahoo only", file=sys.stderr)
+
+    return download_prices_yahoo(tickers, months_needed=months_needed)
 
 
 # ============================================================================
@@ -268,7 +401,7 @@ def calculate_momentum(prices, lookback_months=6, skip_months=1, vol_adjust=True
 # COMPOSITE QM RANKING
 # ============================================================================
 
-def build_qm_ranking(momentum, fip_data, ret_1m, ret_3m, sectors, names):
+def build_qm_ranking(momentum, fip_data, ret_1m, ret_3m, sectors, names, last_close=None):
     """
     Build the full Quantitative Momentum ranking table.
 
@@ -322,11 +455,20 @@ def build_qm_ranking(momentum, fip_data, ret_1m, ret_3m, sectors, names):
     rows = []
     for ticker in composite_rank.sort_values().index:
         fip_info = fip_data.get(ticker, {})
+        price_val = None
+        if last_close is not None:
+            try:
+                p = last_close.get(ticker)
+                if p is not None and not (isinstance(p, float) and np.isnan(p)):
+                    price_val = round(float(p), 2)
+            except Exception:
+                price_val = None
         rows.append({
             "Rank": composite_rank[ticker],
             "Ticker": ticker,
             "Company": names.get(ticker, ""),
             "Sector": sectors.get(ticker, "Unknown"),
+            "Price": price_val,
             "6-1M VolAdj": round(mom_clean[ticker], 2),
             "3M Ret%": round(ret_3m.get(ticker, 0), 2),
             "1M Ret%": round(ret_1m.get(ticker, 0), 2),
@@ -373,7 +515,8 @@ def run_screener(output_dir="."):
 
     # Step 5: Build composite ranking
     print("Building composite QM ranking...", file=sys.stderr)
-    df = build_qm_ranking(momentum, fip_data, ret_1m, ret_3m, sectors, names)
+    last_close = prices.ffill().iloc[-1] if not prices.empty else None
+    df = build_qm_ranking(momentum, fip_data, ret_1m, ret_3m, sectors, names, last_close=last_close)
 
     # Step 6: Save outputs
     csv_full = os.path.join(output_dir, "qm_full_ranking.csv")

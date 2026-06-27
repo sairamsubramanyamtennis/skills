@@ -1,0 +1,12 @@
+# Pinned dependencies for compute_chart.py — Python 3.11.
+# Installed into the skill-local venv at jyotish-reader/.venv (see SETUP.md).
+#
+#   py -3.11 -m venv .venv
+#   .venv/Scripts/python -m pip install -r scripts/requirements.txt
+#
+# pyswisseph: Swiss Ephemeris bindings. Ships prebuilt Windows wheels for
+#   CPython 3.11, so no C compiler is needed (3.12/3.14 lack wheels here).
+# tzdata: IANA timezone database. Required on Windows, which has no system tz
+#   database — without it ZoneInfo("Asia/Kolkata") raises ZoneInfoNotFoundError.
+pyswisseph==2.10.3.2
+tzdata==2026.2

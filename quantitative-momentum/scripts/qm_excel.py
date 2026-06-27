@@ -34,6 +34,16 @@ warnings.filterwarnings("ignore")
 # STYLE CONSTANTS
 # ============================================================================
 
+DEFAULT_OUTPUT_DIR = r"C:\Users\ssair\OneDrive\Documents\MomentumTrackerResults"
+
+
+def _default_output_path():
+    """Construct the default output file path with today's date."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    os.makedirs(DEFAULT_OUTPUT_DIR, exist_ok=True)
+    return os.path.join(DEFAULT_OUTPUT_DIR, f"QM_Screener_{today}.xlsx")
+
+
 HEADER_FILL = PatternFill(start_color="1F4E79", end_color="1F4E79", fill_type="solid")
 HEADER_FONT = Font(name="Arial", size=11, bold=True, color="FFFFFF")
 ALT_ROW_FILL = PatternFill(start_color="F2F7FB", end_color="F2F7FB", fill_type="solid")
@@ -69,12 +79,12 @@ def add_screener_sheet(wb, screener_csv_path):
     ws.title = "QM Screener"
 
     # Title rows
-    ws.merge_cells("A1:O1")
+    ws.merge_cells("A1:P1")
     ws["A1"].value = f"Quantitative Momentum Screener — S&P 500"
     ws["A1"].font = TITLE_FONT
     ws["A1"].alignment = Alignment(horizontal="left", vertical="center")
 
-    ws.merge_cells("A2:O2")
+    ws.merge_cells("A2:P2")
     ws["A2"].value = (
         f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} | "
         f"Methodology: Wes Gray / Alpha Architect (6-1 Momentum + FIP Quality)"
@@ -91,6 +101,7 @@ def add_screener_sheet(wb, screener_csv_path):
         ("Ticker", 10),
         ("Company", 26),
         ("Sector", 22),
+        ("Price", 12),
         ("6-1M VolAdj", 14),
         ("3M Ret%", 12),
         ("1M Ret%", 12),
@@ -129,7 +140,11 @@ def add_screener_sheet(wb, screener_csv_path):
                 cell.fill = ALT_ROW_FILL
 
             # Number formatting
-            if col_name in ("6-1M VolAdj", "3M Ret%", "1M Ret%"):
+            if col_name == "Price":
+                cell.number_format = '"$"#,##0.00'
+                cell.alignment = Alignment(horizontal="right", vertical="center")
+                cell.font = BOLD_DATA_FONT
+            elif col_name in ("6-1M VolAdj", "3M Ret%", "1M Ret%"):
                 cell.number_format = "0.00"
                 cell.alignment = Alignment(horizontal="right", vertical="center")
                 # Color: green positive, red negative
@@ -301,8 +316,10 @@ if __name__ == "__main__":
                         help="Path to qm_full_ranking.csv")
     parser.add_argument("--backtest-data", type=str, default=None,
                         help="Path to qm_backtest_results.json")
-    parser.add_argument("--output", type=str, default="qm_report.xlsx",
-                        help="Output Excel file path")
+    parser.add_argument("--output", type=str, default=None,
+                        help=f"Output Excel file path "
+                             f"(default: {DEFAULT_OUTPUT_DIR}\\QM_Screener_<YYYY-MM-DD>.xlsx)")
     args = parser.parse_args()
 
-    generate_report(args.screener_data, args.backtest_data, args.output)
+    output_path = args.output or _default_output_path()
+    generate_report(args.screener_data, args.backtest_data, output_path)

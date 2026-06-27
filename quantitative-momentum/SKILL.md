@@ -63,7 +63,7 @@ summary statistics.
 ### Step 1: Install dependencies (if needed)
 
 ```bash
-pip install yfinance pandas numpy openpyxl lxml scipy --break-system-packages -q
+pip install yfinance pandas numpy openpyxl lxml scipy requests keyring pyarrow --break-system-packages -q
 ```
 
 ### Step 2: Determine what the user wants
@@ -280,13 +280,48 @@ To revert to Gray's original defaults, pass `--params-json '{"fip_weight": 0.5, 
 - Manages 401K (self + spouse) and a brokerage account
 - Already uses a basic momentum-ranker skill (6-1 raw momentum) — this skill adds the quality dimension
 
+## Data sources
+
+The screener and backtester use a layered data-source strategy:
+
+- **Polygon.io (primary for prices)**: The screener (and short-window backtests ≤ 2 years) pull
+  prices via Polygon's Grouped Daily Bars endpoint — one API call per trading day returns the
+  full US universe. Per-day responses are cached as parquet under `~/.qm-cache/polygon_daily/`,
+  so subsequent runs only fetch new days.
+- **Yahoo Finance (fallback for prices)**: Used automatically if Polygon is unavailable or
+  returns insufficient data. Also primary for backtests whose start date predates Polygon's
+  history window (~2 years on Starter tier).
+- **Yahoo Finance (only source for analyst data)**: `qm_market_news.py` always uses Yahoo for
+  analyst price targets / consensus / number of analysts — Polygon doesn't offer that data on
+  any plan.
+- **Wikipedia (S&P 500 universe + sectors)**: Fetched with a real User-Agent header to avoid
+  the 403 Wikipedia returns for default urllib UAs.
+
+### Polygon API key setup (one-time)
+
+The Polygon API key is read from the Windows Credential Manager / system keyring under
+service `polygon-api`, username `default`. To set it up:
+
+```bash
+python -c "import keyring; keyring.set_password('polygon-api', 'default', 'YOUR_POLYGON_KEY')"
+```
+
+Fallback: set environment variable `POLYGON_API_KEY`. If no key is found anywhere, both
+scripts skip Polygon and use Yahoo directly.
+
 ## Handling errors
 
-- **Rate limiting / download failures**: yfinance occasionally fails on a few tickers. The scripts
-  handle this gracefully — note how many were successfully analyzed.
-- **Stale Wikipedia data**: If the S&P 500 list fetch fails, the script falls back to a hardcoded list.
+- **Rate limiting / download failures**: Polygon (paid) avoids the Yahoo rate-limit issues
+  that historically plagued the screener. If Polygon does fail (HTTP 429 / outage), the
+  scripts automatically retry via Yahoo. Note how many tickers were successfully analyzed
+  in the output.
+- **Stale Wikipedia data**: If the S&P 500 list fetch fails, the script falls back to a
+  hardcoded list. The hardcoded path no longer makes per-ticker `yf.Ticker().info` calls
+  (that was the trigger for the historical Yahoo rate-limit cascade).
 - **Market closed / weekend**: Data reflects the last trading day's close. Note this to the user.
 - **Insufficient history for backtest**: If start year is too early for available data, the script
   will report fewer months than expected. Check `n_months` in results.
+- **Polygon history limits**: Polygon Starter (~2 yr) and Developer (~10 yr) caps mean long
+  backtests automatically route through Yahoo. The backtester logs which source it picked.
 - **Yahoo Finance rate limits for analyst data**: The qm_market_news.py script handles individual
   ticker failures gracefully and reports them. A few missing tickers won't break the report.

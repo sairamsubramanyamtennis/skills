@@ -13,15 +13,110 @@ import argparse
 import json
 import sys
 import os
+import time
 import warnings
 from datetime import datetime, timedelta
+from io import StringIO
 
 import numpy as np
 import pandas as pd
+import requests
 import yfinance as yf
 from scipy import stats
 
 warnings.filterwarnings("ignore")
+
+
+# ============================================================================
+# POLYGON.IO HELPERS (primary price source)
+# ============================================================================
+
+POLYGON_BASE = "https://api.polygon.io"
+WIKI_UA = "QM-Screener/1.0 (educational; pandas)"
+
+
+def get_polygon_api_key():
+    """Fetch Polygon API key from keyring (preferred) or env var fallback."""
+    try:
+        import keyring
+        key = keyring.get_password("polygon-api", "default")
+        if key:
+            return key
+    except Exception:
+        pass
+    return os.environ.get("POLYGON_API_KEY")
+
+
+def _fetch_polygon_grouped_day(date_str, api_key, session):
+    """Fetch one trading day of grouped daily bars from Polygon."""
+    url = f"{POLYGON_BASE}/v2/aggs/grouped/locale/us/market/stocks/{date_str}"
+    try:
+        r = session.get(url, params={"apiKey": api_key, "adjusted": "true"}, timeout=30)
+    except requests.RequestException as e:
+        print(f"  Polygon fetch error for {date_str}: {e}", file=sys.stderr)
+        return None
+    if r.status_code != 200:
+        if r.status_code == 429:
+            print(f"  Polygon 429 for {date_str} — sleeping 60s", file=sys.stderr)
+            time.sleep(60)
+        return None
+    j = r.json()
+    if j.get("status") != "OK" or not j.get("results"):
+        return pd.DataFrame()
+    return pd.DataFrame(j["results"])
+
+
+def download_prices_polygon(tickers, start_date, end_date, cache_dir=None):
+    """Build a price DataFrame via Polygon Grouped Daily Bars, with on-disk cache."""
+    api_key = get_polygon_api_key()
+    if not api_key:
+        raise RuntimeError("No Polygon API key")
+
+    if cache_dir is None:
+        cache_dir = os.path.join(os.path.expanduser("~"), ".qm-cache", "polygon_daily")
+    os.makedirs(cache_dir, exist_ok=True)
+
+    bdates = pd.bdate_range(start_date, end_date)
+    ticker_set = set(tickers)
+    session = requests.Session()
+    rows = []
+    cached, fetched, skipped = 0, 0, 0
+
+    print(f"Polygon: requesting {len(bdates)} business days "
+          f"({start_date} to {end_date})...", file=sys.stderr)
+
+    for d in bdates:
+        date_str = d.strftime("%Y-%m-%d")
+        cache_path = os.path.join(cache_dir, f"{date_str}.parquet")
+        if os.path.exists(cache_path):
+            df_day = pd.read_parquet(cache_path)
+            cached += 1
+        else:
+            df_day = _fetch_polygon_grouped_day(date_str, api_key, session)
+            if df_day is None:
+                skipped += 1
+                continue
+            if not df_day.empty:
+                df_day.to_parquet(cache_path)
+            fetched += 1
+
+        if df_day.empty:
+            continue
+        sub = df_day[df_day["T"].isin(ticker_set)][["T", "c"]]
+        for t, c in zip(sub["T"].values, sub["c"].values):
+            rows.append((date_str, t, c))
+
+    print(f"  Polygon summary: {cached} cached, {fetched} fetched, {skipped} errors",
+          file=sys.stderr)
+
+    if not rows:
+        return pd.DataFrame()
+
+    long = pd.DataFrame(rows, columns=["date", "ticker", "close"])
+    long["date"] = pd.to_datetime(long["date"])
+    prices = long.pivot(index="date", columns="ticker", values="close").sort_index()
+    print(f"Polygon: {prices.shape[0]} days x {prices.shape[1]} tickers", file=sys.stderr)
+    return prices
 
 
 # ============================================================================
@@ -47,9 +142,15 @@ DEFAULT_PARAMS = {
 # ============================================================================
 
 def get_sp500_tickers():
-    """Fetch current S&P 500 constituents from Wikipedia."""
+    """Fetch current S&P 500 constituents from Wikipedia (with User-Agent to avoid 403)."""
     try:
-        tables = pd.read_html("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
+        r = requests.get(
+            "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+            headers={"User-Agent": WIKI_UA},
+            timeout=20,
+        )
+        r.raise_for_status()
+        tables = pd.read_html(StringIO(r.text))
         df = tables[0]
         tickers = df["Symbol"].str.replace(".", "-", regex=False).tolist()
         sectors = dict(zip(
@@ -73,9 +174,9 @@ def get_sp500_tickers():
         return fallback, {}, {}
 
 
-def download_prices(tickers, start_date, end_date):
-    """Download adjusted close prices for all tickers."""
-    print(f"Downloading prices from {start_date} to {end_date}...", file=sys.stderr)
+def download_prices_yahoo(tickers, start_date, end_date):
+    """Download adjusted close prices for all tickers via yfinance."""
+    print(f"Yahoo: downloading prices from {start_date} to {end_date}...", file=sys.stderr)
     data = yf.download(
         tickers, start=start_date, end=end_date,
         auto_adjust=True, progress=False, threads=True
@@ -89,8 +190,37 @@ def download_prices(tickers, start_date, end_date):
     else:
         prices = data
 
-    print(f"Got {prices.shape[0]} days x {prices.shape[1]} tickers", file=sys.stderr)
+    print(f"Yahoo: {prices.shape[0]} days x {prices.shape[1]} tickers", file=sys.stderr)
     return prices
+
+
+# Polygon Starter has ~2 years of history. Only use it for short backtests;
+# Yahoo remains primary for long backtests.
+POLYGON_HISTORY_DAYS = 730
+
+
+def download_prices(tickers, start_date, end_date):
+    """Route to Polygon for short backtests within Polygon's history window,
+    otherwise Yahoo. Yahoo remains the only viable source for long backtests."""
+    start = pd.Timestamp(start_date)
+    cutoff = pd.Timestamp.now() - pd.Timedelta(days=POLYGON_HISTORY_DAYS)
+
+    if get_polygon_api_key() and start >= cutoff:
+        try:
+            prices = download_prices_polygon(tickers, start_date, end_date)
+            if not prices.empty and prices.shape[0] > 20:
+                return prices
+            print("Polygon returned insufficient data — falling back to Yahoo", file=sys.stderr)
+        except Exception as e:
+            print(f"Polygon path failed ({e}) — falling back to Yahoo", file=sys.stderr)
+    else:
+        if not get_polygon_api_key():
+            print("No Polygon API key — using Yahoo", file=sys.stderr)
+        else:
+            print(f"Backtest start {start.date()} predates Polygon Starter's "
+                  f"~2yr history (cutoff {cutoff.date()}) — using Yahoo", file=sys.stderr)
+
+    return download_prices_yahoo(tickers, start_date, end_date)
 
 
 # ============================================================================
