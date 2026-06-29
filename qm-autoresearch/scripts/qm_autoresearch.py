@@ -28,6 +28,13 @@ import hashlib
 from datetime import datetime
 from copy import deepcopy
 
+# Windows consoles default to cp1252 and choke on this harness's Unicode output.
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 import numpy as np
 
 

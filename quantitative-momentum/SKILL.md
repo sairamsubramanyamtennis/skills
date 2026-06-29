@@ -41,10 +41,13 @@ This skill calculates the following signals for every S&P 500 stock:
      line (measures how linear the price path was)
    - The two are equally weighted into a single composite score
 
-Stocks are ranked using a **75/25 FIP-to-momentum weighted composite** (FIP weight = 0.75).
-Autoresearch found that FIP weight has a monotonically positive effect on the composite metric —
-higher FIP weight means quality/smoothness contributes more to the final rank. FIP acts primarily
-as a risk filter (filtering out volatile spikes) rather than a return enhancer.
+Stocks are ranked using a **pure-quality composite** (FIP weight = 1.0, set 2026-06-27).
+FIP weight has a monotonically positive effect on the composite metric across every sample
+tested — including the survivorship-reduced 20.5yr point-in-time backtest — so the rank is now
+driven by FIP quality, with 6-1 momentum kept as a contextual column. FIP acts primarily
+as a **risk/drawdown filter** (quality premium ~neutral) rather than a return enhancer: at
+weight 1.0 it delivered the best Sharpe (1.28) and shallowest drawdown (-41.6%) vs the 0.5
+baseline (0.91 / -48.6%). (Prior default was 0.75; 0.5 is Gray's original.)
 
 The 3M Ret% and 1M Ret% columns are included as auxiliary context columns (not used in ranking)
 to help the investor assess recent price trajectory.
@@ -267,6 +270,17 @@ agent modifications over a 20-year backtest (2006–2026). Three changes were ap
 
 Robustness check: All top configs performed *better* on the 2015–2026 subperiod than the full
 20-year period, reducing overfitting concern (though the recent decade was a strong bull market).
+
+### Update 2026-06-27 — FIP weight 0.75 → 1.0 (survivorship-reduced re-run)
+Re-ran the autoresearch on a **point-in-time, survivorship-reduced** universe: a local daily
+adjusted-close panel (1970–2026, 836 tickers) + fja05680 historical S&P 500 membership, with a
+per-rebalance constituent filter (data in `C:\Users\ssair\s&p Historic Data\`). Across this honest
+20.5yr backtest AND the earlier samples, **FIP weight is monotonically positive on the composite**,
+and **1.0 was best** (Sharpe 1.28, max DD −41.6%, +11.5%/yr excess vs SPY) — so the production
+default is now **fip_weight = 1.0**. On the unbiased data the FIP **quality premium is ~neutral**
+(1/20 experiments positive), confirming FIP works as a **risk/drawdown filter, not a return
+predictor**. Caveats: in-sample (no walk-forward); delisted-price coverage ~70% (368 of 1,202
+names unavailable from free sources); 1.0 makes the rank pure-quality (momentum demoted to context).
 
 To revert to Gray's original defaults, pass `--params-json '{"fip_weight": 0.5, "rebalance_freq":
 "quarterly", "vol_adjust_momentum": false}'` to the backtester.

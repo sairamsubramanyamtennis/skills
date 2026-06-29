@@ -428,10 +428,15 @@ def build_qm_ranking(momentum, fip_data, ret_1m, ret_3m, sectors, names, last_cl
     mom_rank = mom_clean.rank(ascending=False).astype(int)
     fip_rank = fip_series.rank(ascending=False).astype(int)
 
-    # Composite QM rank = weighted combination (FIP weight 0.75 based on autoresearch)
-    # Higher FIP weight means quality/smoothness matters more than raw momentum magnitude.
-    # Autoresearch showed FIP weight monotonically improves composite metric (Sharpe + quality).
-    fip_weight = 0.75
+    # Composite QM rank = weighted combination. FIP weight = 1.0 (pure-quality ranking),
+    # set 2026-06-27 from the survivorship-reduced 20.5yr point-in-time autoresearch (local
+    # daily panel + fja05680 PIT membership). FIP weight is monotonically positive on the
+    # composite across all samples; at 1.0 it gave the best Sharpe (1.28) and shallowest
+    # drawdown (-41.6%) vs baseline (0.91 / -48.6%). FIP acts as a RISK/drawdown filter
+    # (quality premium ~neutral), not a return predictor.
+    # NOTE: at 1.0 the composite rank is effectively the FIP rank; the 6-1 momentum column
+    # becomes contextual (it no longer drives magnitude in the rank). Was 0.75.
+    fip_weight = 1.0
     composite_rank = ((1 - fip_weight) * mom_rank + fip_weight * fip_rank).rank(method="min").astype(int)
 
     # Percentile (100 = best)
