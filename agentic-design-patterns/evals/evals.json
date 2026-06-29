@@ -1,0 +1,29 @@
+{
+  "skill_name": "agentic-design-patterns",
+  "evals": [
+    {
+      "id": 0,
+      "name": "full-landscape-survey",
+      "prompt": "What are all the design patterns used to build agentic AI systems? Give me the full picture.",
+      "expected_output": "Presents the complete map: all eight families (reasoning, planning, workflow orchestration, multi-agent, tool/action, RAG, memory, control/safety) with every pattern named and a one-line essence each. Comprehensive coverage over depth. Offers to drill into any family/pattern/framework.",
+      "assertions": [],
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "compare-two-patterns",
+      "prompt": "Can you explain the difference between ReAct, Plan-and-Execute, and ReWOO? When would I use each?",
+      "expected_output": "Explains each conceptually (ReAct = interleaved think/act per step; Plan-and-Execute = plan all steps then execute with re-planning; ReWOO = plan all tool calls up front then reason once). Compares on adaptivity vs. token cost, and gives when-to-use guidance. Situates them in the planning/reasoning families and notes where they live in the ecosystem (e.g. LangGraph tutorials).",
+      "assertions": [],
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "framework-pattern-coverage",
+      "prompt": "Which agentic design patterns does LangGraph support, and how does that compare to CrewAI and the OpenAI Agents SDK?",
+      "expected_output": "Maps each framework to the patterns it supports and its vocabulary: LangGraph (graph/explicit, nearly all control-flow patterns, best HITL/persistence), CrewAI (role/declarative teams, supervisor/hierarchical), OpenAI Agents SDK (handoff/swarm multi-agent, guardrails). Frames the graph-vs-role spectrum. Stays conceptual (understanding coverage), not a build tutorial.",
+      "assertions": [],
+      "files": []
+    }
+  ]
+}
