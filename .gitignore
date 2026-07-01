@@ -15,3 +15,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 *.swp
+
+# skill-creator eval/benchmark output (not skills)
+*-workspace/
