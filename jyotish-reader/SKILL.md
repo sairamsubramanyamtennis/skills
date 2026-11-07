@@ -1,11 +1,29 @@
 ---
 name: jyotish-reader
-description: "South Indian Vedic Astrology (Jyotish) chart reader with two modes. Full Reading mode (triggers: 'run jyotish-reader', 'do a jyotish reading') — complete life reading with Lagna, divisional charts, dashas, Sade Sati, transits, health, remedies; grounded in references/instructions.md and references/lessons/Lessons_Learned_SaRaViDr_v6_Merged.md (optional PDFs in references/texts/). Ashtakavarga mode (triggers: 'Ashtakavarga analysis', 'run Ashtakavarga', 'SAV analysis', 'Bhinnashtakavarga', 'bindu analysis') — focused Ashtakavarga-only analysis: SAV, Prastarashtakavarga, Bhinnashtakavarga, Trikona/Ekadhipatya Shodhana, Shodhya Pinda, transit predictions via SAV — uses references/ashtakavarga/ PDFs when present, else standard classical rules. Also triggers for 'how strong is Saturn using bindus', 'which houses are strong by Ashtakavarga', 'predict transits using SAV'. Use ONLY when explicitly invoked."
+description: "South Indian Vedic Astrology (Jyotish) chart reader with two modes. Full Reading mode (triggers: 'run jyotish-reader', 'do a jyotish reading') — complete life reading with Lagna, divisional charts, dashas, Sade Sati, transits, health, remedies; grounded in references/instructions.md and references/lessons/lessons-learned-v8.md (optional PDFs in references/texts/). Ashtakavarga mode (triggers: 'Ashtakavarga analysis', 'run Ashtakavarga', 'SAV analysis', 'Bhinnashtakavarga', 'bindu analysis') — focused Ashtakavarga-only analysis: SAV, Prastarashtakavarga, Bhinnashtakavarga, Trikona/Ekadhipatya Shodhana, Shodhya Pinda, transit predictions via SAV — uses references/ashtakavarga/ PDFs when present, else standard classical rules. Also triggers for 'how strong is Saturn using bindus', 'which houses are strong by Ashtakavarga', 'predict transits using SAV'. Use ONLY when explicitly invoked."
 ---
 
 # Jyotish Reader
 
 This skill operates in **two distinct modes**. Detect which mode the user wants based on their trigger phrase, then follow only that mode's workflow. If ambiguous, ask the user which mode they want.
+
+---
+
+## ⛔ SCOPE BOUNDARY — APPLIES TO BOTH MODES, NO EXCEPTIONS
+
+**This skill delivers astrological analysis, timing and prediction. It does NOT deliver worldly strategy.**
+
+Do not produce career tactics, job-search or negotiation strategy, financial moves, medical or legal instruction, relationship tactics, or ranked to-do lists — in either mode, in chat or in a saved file, whether or not the native asks.
+
+**Two tests, run both before sending:**
+1. **Stranger test** — would a career coach, financial adviser or therapist who had *never seen this chart* give the same sentence? → **delete it.**
+2. **Proper-noun test** — does the sentence name a real person, company, recruiter, employer or institution as something to *act on*? → **delete it.** Real names appear in a reading only as **evidence being classified**, never as a recommendation.
+
+**Say what the chart shows and what the period's character is; stop before saying what to do about it.** Classical upayas (mantra, gemstone, dana, deity worship, fasting, day-of-week observance) are the sole permitted prescription, and **each must name the graha it propitiates.**
+
+**When in doubt, ask.** Missing data is a question to put to the native, never a gap to fill with generic advice — a reading drifting into practical tips is usually a reading missing a chart fact. Label uncalibrated windows as uncalibrated.
+
+→ Full rules, worked examples and the "what should I do?" protocol: **`references/instructions.md` §7A and §7B** (mandatory reading for Mode 1; the boundary binds Mode 2 equally).
 
 ---
 
@@ -26,7 +44,7 @@ ONLY when the user explicitly asks for it ("run jyotish-reader", "do a jyotish r
 | Path | Status | Role |
 |------|--------|------|
 | `references/instructions.md` | **Present** | Canonical persona, workflow, sections [1]–[11], Sade Sati methodology, file-output specs. **Read this file first every time Mode 1 is invoked.** SKILL.md is the routing layer; `instructions.md` is the source of truth for analysis substance. |
-| `references/lessons/Lessons_Learned_SaRaViDr_v6_Merged.md` | **Present** | User's personal lessons & mandatory reading checklist — coequal with other sources, not subordinate. Cross-reference in Phase 3 section [10]. |
+| `references/lessons/lessons-learned-v8.md` | **Present** | User's personal lessons & mandatory reading checklist — coequal with other sources, not subordinate. Cross-reference in Phase 3 section [10]. |
 | `references/texts/` | **Present** | Classical/modern Jyotish PDFs. Read any PDFs found here on demand (no fixed filename list in this skill). |
 | `references/ashtakavarga/` | **Not present** (Mode 2 only) | User may add Ashtakavarga reference PDFs for Mode 2. See Mode 2 section below. |
 
@@ -67,7 +85,7 @@ Produce a concise implementation plan in chat covering:
 - Charts to be constructed (D1, D9, D7, D10, D12, D16 optional)
 - Dasha systems (Vimshottari primary, Yogini secondary)
 - Sade Sati cycles to be enumerated across full lifespan
-- `references/lessons/Lessons_Learned_SaRaViDr_v6_Merged.md` (or note if absent)
+- `references/lessons/lessons-learned-v8.md` (or note if absent)
 - Any rectification or assumptions
 - Open questions / data gaps
 
@@ -86,26 +104,31 @@ Execute the **complete section-by-section analysis** exactly as specified in `re
 7. Health (with explicit cancer / thyroid / diabetes / gynecological / heart / mental health / bone-joint risk assessment)
 8. **Sade Sati — complete lifecycle** with full occurrence table for every cycle in the native's lifespan, phase-by-phase narrative, modifying factors (Ashtakavarga bindus, Dasha overlap, Saturn's natal strength), comparative analysis across cycles
 9. Transit Analysis — current Saturn / Jupiter / Rahu-Ketu, 12-month and 3-year outlook
-10. Cross-reference `references/lessons/Lessons_Learned_SaRaViDr_v6_Merged.md` for pattern recognition (if absent, state the limitation per `instructions.md`)
+10. Cross-reference `references/lessons/lessons-learned-v8.md` for pattern recognition (if absent, state the limitation per `instructions.md`)
 11. Summary, Master Dasha + Sade Sati calendar, Remedial Measures (Upayas)
 
 **Apply both Parashari and Nadi methods throughout.** For every prediction, briefly cite the planetary combination supporting it (e.g., "7th lord Venus in 12th with Saturn → delayed marriage").
 
 ### Mandatory file outputs
 
-After the reading, save **both** files to the outputs directory and present them via `present_files`:
+After the reading, save **all three** files to the outputs directory and present them via `present_files`:
 
-1. **`[NativeName]_Jyotish_Implementation_Plan.md`** — methodology record (structure per `instructions.md` File 1 spec)
-2. **`[NativeName]_Jyotish_Full_Reading.md`** — the complete reading with all 11 sections, tables, and remedies (structure per `instructions.md` File 2 spec)
+1. **`[NativeName]_chart_data.md`** — the **reusable raw profile** (structure per `instructions.md` File 1 spec). This is the durable, machine-and-human-readable data layer: confirmed birth data, every computed chart (D1 + divisionals), house-lord map, key yogas/doshas, the full Vimshottari dasha tree, the lifetime Sade Sati table, current transits, a remedy quick-reference, and a running table of confirmed life events with their validating dashas. **Write this FIRST**, before the prose reading — both later files draw from it. It begins with a "**Load this file first**" banner so future questions about the same native can be answered from it without recomputation.
+2. **`[NativeName]_Jyotish_Implementation_Plan.md`** — methodology record (structure per `instructions.md` File 2 spec)
+3. **`[NativeName]_Jyotish_Full_Reading.md`** — the complete reading with all 11 sections, tables, and remedies (structure per `instructions.md` File 3 spec)
 
-Confirm both filenames at the end of the chat response with a one-line summary of each.
+**Reusing the profile:** at the start of ANY follow-up request about a native who already has a `[NativeName]_chart_data.md` on disk, read that file first and build on it (append new confirmed events, focused sub-readings, or corrections) instead of recomputing the chart from scratch.
+
+Confirm all three filenames at the end of the chat response with a one-line summary of each.
 
 ### Tone & guardrails
 
+- **⛔ Astrology only — see the Scope Boundary at the top of this file and `instructions.md` §7A.** No career tactics, job-search strategy, financial/medical/legal instruction, or action plans. State the finding, then stop.
+- **Ask when in doubt (`instructions.md` §7B).** Missing data that would change the analysis is a question for the native, not a gap to fill. Carry open questions into File 1, priority-ordered.
 - Compassionate, grounded, constructive. Never fatalistic.
 - Sade Sati is framed as a teacher, not a punishment.
 - Recommend Blue Sapphire (Neelam) **only** if Saturn is Yogakaraka for the Lagna. Otherwise warn against it.
-- Free will and dharmic action always remain in the native's hands — close every reading with this reminder.
+- Free will and dharmic action always remain in the native's hands — close every reading with this reminder. **Handing the native a strategy quietly takes that back.**
 - When sources conflict, surface the disagreement honestly.
 - "Don't know" from the user is always acceptable — work with what's given.
 
@@ -140,7 +163,7 @@ When the user explicitly asks for Ashtakavarga analysis using phrases like:
 If the directory is missing or empty at invocation, inform the user and offer to proceed with standard Ashtakavarga computation rules, or wait for uploads:
 > "There are no Ashtakavarga reference PDFs in `references/ashtakavarga/` yet. You can add books you trust (e.g., BV Raman's *Ashtakavarga System of Prediction*, BPHS Ashtakavarga chapters). I can proceed now using standard classical bindu tables and Shodhana procedures — or pause until your PDFs are in place."
 
-**Optional cross-reference:** `references/lessons/Lessons_Learned_SaRaViDr_v6_Merged.md` — pattern recognition only; Ashtakavarga PDFs (when present) take precedence for methodology.
+**Optional cross-reference:** `references/lessons/lessons-learned-v8.md` — pattern recognition only; Ashtakavarga PDFs (when present) take precedence for methodology.
 
 ### Inputs expected from the user
 
@@ -230,7 +253,8 @@ For each of the 7 planets (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn) and
 - Summarize the strongest and weakest houses/planets
 - Highlight any notable patterns (e.g., a cluster of high SAV in 10th/11th suggesting strong career/income potential)
 - If the user asked a specific question, answer it directly using the Ashtakavarga data
-- Provide actionable insights: which transits to leverage, which to be cautious about
+- Characterize the transit calendar: which windows the bindus show as supported, which as thin, and roughly how strongly. **⛔ Describe the quality of each window — do not prescribe what to do in it** (see the Scope Boundary at the top of this file). "Saturn crosses a 2-bindu sign Mar–Nov 2027, the weakest transit zone in the chart" is the finding; "so postpone the move / push the negotiation then" is not.
+- Name any bindu figure you could not compute confidently, and any question whose answer would sharpen the analysis
 
 ### Mandatory file outputs
 
@@ -241,6 +265,8 @@ Save to the outputs directory and present via `present_files`:
 
 ### Tone & guardrails (same spirit as Mode 1)
 
+- **⛔ The Scope Boundary at the top of this file binds Mode 2 equally.** Bindus describe *terrain strength*, never a course of action. Report what the numbers show; do not convert them into plans, tactics, or advice about jobs, money, health or relationships.
+- **Ask when in doubt.** If a chart element is ambiguous, a bindu table is uncertain, or a Shodhana step is under-determined, ask the user rather than guessing silently — and say which answer would change which conclusion.
 - Quantitative and precise, but compassionate in interpretation.
 - High bindus = natural support, not guaranteed success. Low bindus = need for extra effort, not doom.
 - Transit predictions are tendencies, not certainties — always frame with free will.
@@ -248,3 +274,27 @@ Save to the outputs directory and present via `present_files`:
 - When uploaded PDFs describe multiple approaches or disagree with standard tables, present both and let the user know.
 - If a computation is uncertain (e.g., no PDFs and a Shodhana step is ambiguous), flag it transparently rather than guessing silently.
 - Close every reading with a reminder that Ashtakavarga provides a quantitative lens — it complements but does not replace holistic chart wisdom, and free will always prevails.
+
+---
+
+## Telemetry (standing requirement — all skills)
+
+Log this run **once, at the very end**, whether it went well or not (Bash tool; forward slashes):
+
+```bash
+python C:/Users/ssair/.claude/telemetry/telemetry.py log --skill jyotish-reader \
+  --outcome delivered|partial|blocked|corrected|routed \
+  --asked    "what he actually wanted, one line" \
+  --produced "what he got, one line" \
+  [--friction "what slowed it down or went wrong"] [--routed-to <skill>] [--tags a,b]
+```
+
+* `corrected` = Sai had to push back before it was right. **Log it.** A telemetry file that is all
+  `delivered` is worthless for skill health — the corrections and blocks are the whole point.
+* One record per run, not per step. Silent side effect: never announce it, never ask permission for
+  it, never let it delay or clutter the answer.
+* Paraphrase in `--asked`; never log credentials, birth data, account numbers or verbatim personal
+  detail. If the call fails, drop it and move on.
+
+Full contract: `C:/Users/ssair/.claude/telemetry/TELEMETRY.md` · read it back in the Recap app's
+Telemetry page or via `telemetry.py stats --days 30`.

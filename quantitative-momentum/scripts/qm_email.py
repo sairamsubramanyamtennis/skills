@@ -49,6 +49,19 @@ def get_password(sender):
 
 
 def read_top_stocks(csv_path, n=10):
+    """Top-N rows for the email body, from a DataFrame or a CSV path."""
+    if hasattr(csv_path, "to_dict"):            # a DataFrame from Postgres
+        out = []
+        for i, row in enumerate(csv_path.head(n).to_dict(orient="records")):
+            out.append({
+                "rank": row.get("Rank", i + 1),
+                "ticker": row.get("Ticker", ""),
+                "company": row.get("Company", ""),
+                "sector": row.get("Sector", ""),
+                "signal": row.get("Signal", ""),
+                "percentile": row.get("Percentile", ""),
+            })
+        return out
     if not csv_path or not Path(csv_path).exists():
         return []
     stocks = []
@@ -67,7 +80,7 @@ def read_top_stocks(csv_path, n=10):
     return stocks
 
 
-def build_html_body(stocks, excel_filename, analysis_date):
+def build_html_body(stocks, excel_filename, analysis_date, as_of=None):
     top_rows = ""
     for s in stocks:
         vol_adj = s["vol_adj"]
@@ -101,9 +114,21 @@ def build_html_body(stocks, excel_filename, analysis_date):
             <tbody>{top_rows}</tbody>
         </table>"""
 
+    if as_of:
+        lede = (f"<p>Here are the Quantitative Momentum screener results "
+                f"<strong>reconstructed as of {analysis_date}</strong>.</p>"
+                f'<p style="padding:8px;background:#FFF4E5;border-left:3px solid #E69138">'
+                f"Historical reconstruction, not a live screen: point-in-time S&amp;P 500 "
+                f"membership, prices stop at {as_of}, and no analyst/market-news data "
+                f"(that would be present-day information the screen could not have had).</p>")
+        date_label = "As of"
+    else:
+        lede = "<p>Here are today's Quantitative Momentum screener results.</p>"
+        date_label = "Date"
+
     return f"""<html><body style="font-family:Arial,sans-serif;color:#333;line-height:1.5">
-    <p>Here are today's Quantitative Momentum screener results.</p>
-    <p><strong>Date:</strong> {analysis_date}<br>
+    {lede}
+    <p><strong>{date_label}:</strong> {analysis_date}<br>
     <strong>File:</strong> {excel_filename}</p>
     {table_html}
     <p style="margin-top:16px;color:#666;font-size:12px">
@@ -138,7 +163,15 @@ def main():
     parser = argparse.ArgumentParser(description="Email QM Screener results via Gmail SMTP")
     parser.add_argument("excel_file", help="Path to the Excel workbook to attach")
     parser.add_argument("--screener-csv", help="Path to screener CSV for top-10 summary in email body")
+    parser.add_argument("--from-pg", action="store_true",
+                        help="take the top-10 summary from Postgres instead of a CSV")
+    parser.add_argument("--screen-date", default=None,
+                        help="--from-pg: which published screen (default newest)")
     parser.add_argument("--to", default=DEFAULT_RECIPIENT, help="Recipient email address")
+    parser.add_argument("--as-of", dest="as_of", default=None,
+                        help="mark the email as a historical reconstruction as of this "
+                             "date (YYYY-MM-DD); subject and body are relabelled so a "
+                             "backfilled run is never mistaken for a live screen")
     args = parser.parse_args()
 
     excel_path = Path(args.excel_file)
@@ -147,10 +180,19 @@ def main():
         sys.exit(1)
 
     password = get_password(SENDER)
-    stocks = read_top_stocks(args.screener_csv)
-    analysis_date = datetime.now().strftime("%B %d, %Y")
-    subject = f"QM Screener Results — {analysis_date}"
-    html_body = build_html_body(stocks, excel_path.name, analysis_date)
+    if args.from_pg:
+        import qm_screen_source
+        stocks = read_top_stocks(qm_screen_source.fetch_screen(args.screen_date))
+    else:
+        stocks = read_top_stocks(args.screener_csv)
+    if args.as_of:
+        analysis_date = datetime.strptime(args.as_of, "%Y-%m-%d").strftime("%B %d, %Y")
+        subject = f"QM Screener — HISTORICAL as of {analysis_date}"
+    else:
+        analysis_date = datetime.now().strftime("%B %d, %Y")
+        subject = f"QM Screener Results — {analysis_date}"
+    html_body = build_html_body(stocks, excel_path.name, analysis_date,
+                                as_of=args.as_of)
 
     send_email(args.to, subject, html_body, str(excel_path), SENDER, password)
 

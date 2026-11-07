@@ -35,6 +35,19 @@ warnings.filterwarnings("ignore")
 POLYGON_BASE = "https://api.polygon.io"
 WIKI_UA = "QM-Screener/1.0 (educational; pandas)"
 
+# First trading day Polygon's grouped-bar endpoint serves. Probed directly on
+# 2026-07-30: 2003-09-09 returns 0 tickers, 2003-09-10 returns 7,722. An earlier
+# comment here claimed the entitlement began 2021-07-15 — that was true of the old
+# Starter plan and is no longer, so as-of runs were being talked out of dates the
+# API will happily serve. Re-probe before trusting this if the plan changes again.
+POLYGON_HISTORY_START = "2003-09-10"
+
+# Point-in-time S&P 500 membership (fja05680), used only when --as-of is given.
+# Live runs keep scraping Wikipedia for today's list, exactly as before.
+SP500_HISTORY_CSV = os.environ.get(
+    "SP500_HISTORY_CSV",
+    r"C:\Users\ssair\s&p Historic Data\sp500_historical_components_changes.csv")
+
 
 def get_polygon_api_key():
     """Fetch Polygon API key from keyring (preferred) or env var fallback."""
@@ -72,12 +85,16 @@ def _fetch_polygon_grouped_day(date_str, api_key, session):
     return pd.DataFrame(j["results"])
 
 
-def download_prices_polygon(tickers, months_needed=8, cache_dir=None):
+def download_prices_polygon(tickers, months_needed=8, cache_dir=None, as_of=None):
     """Build a price DataFrame (date × ticker, adjusted close) via Polygon Grouped Daily Bars.
 
     One API call per trading day fetches the entire US stock universe; we filter
     to the requested tickers and pivot to a wide DataFrame. Per-day responses are
     cached as parquet so subsequent runs only fetch the new days.
+
+    as_of: cut the price window here instead of today. Grouped bars are naturally
+    point-in-time (they contain whatever traded that day, including names later
+    delisted), so an as-of run sees only what existed at the time.
     """
     api_key = get_polygon_api_key()
     if not api_key:
@@ -87,7 +104,7 @@ def download_prices_polygon(tickers, months_needed=8, cache_dir=None):
         cache_dir = os.path.join(os.path.expanduser("~"), ".qm-cache", "polygon_daily")
     os.makedirs(cache_dir, exist_ok=True)
 
-    end = datetime.now()
+    end = pd.Timestamp(as_of).to_pydatetime() if as_of else datetime.now()
     start = end - timedelta(days=months_needed * 31 + 30)
     bdates = pd.bdate_range(start, end)
     ticker_set = set(tickers)
@@ -137,6 +154,61 @@ def download_prices_polygon(tickers, months_needed=8, cache_dir=None):
 # S&P 500 UNIVERSE
 # ============================================================================
 
+def _wiki_meta():
+    """Best-effort {ticker: sector}, {ticker: name} from the current Wikipedia table."""
+    try:
+        r = requests.get(
+            "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+            headers={"User-Agent": WIKI_UA}, timeout=20)
+        r.raise_for_status()
+        df = pd.read_html(StringIO(r.text))[0]
+        sym = df["Symbol"].str.replace(".", "-", regex=False)
+        return dict(zip(sym, df["GICS Sector"])), dict(zip(sym, df["Security"]))
+    except Exception as e:
+        print(f"  Wikipedia metadata unavailable ({e})", file=sys.stderr)
+        return {}, {}
+
+
+def get_sp500_tickers_asof(as_of):
+    """Point-in-time S&P 500 membership for a historical date.
+
+    Reads the fja05680 change-dated membership file and forward-fills: members on
+    `as_of` = the most recent row with date <= as_of. This is what keeps a
+    backfilled screen honest — using today's list would silently drop every name
+    that has since been removed, which is survivorship bias.
+
+    Sector/company name come from today's Wikipedia table on a best-effort basis.
+    They are display metadata only and play no part in the ranking, so a name that
+    has since changed (or a delisted ticker with no entry) costs nothing but a label.
+    """
+    if not os.path.exists(SP500_HISTORY_CSV):
+        raise RuntimeError(
+            f"Point-in-time membership file not found: {SP500_HISTORY_CSV}. "
+            "Set SP500_HISTORY_CSV or run without --as-of.")
+    m = pd.read_csv(SP500_HISTORY_CSV)
+    m["date"] = pd.to_datetime(m["date"])
+    prior = m[m["date"] <= pd.Timestamp(as_of)]
+    if prior.empty:
+        raise RuntimeError(f"No S&P 500 membership snapshot on/before {as_of}")
+    row = prior.iloc[-1]
+    # Keep the CSV's native dot form (BRK.B, BF.B) — that is exactly what Polygon
+    # uses. Rewriting dots to dashes here silently drops those names from the
+    # grouped-daily join: 0/503 members go unmatched with dots, 2/503 with dashes.
+    # The Yahoo fallback converts to dashes itself.
+    tickers = [t.strip() for t in str(row["tickers"]).split(",") if t.strip()]
+
+    sectors_all, names_all = _wiki_meta()   # keyed in Wikipedia's dash form
+
+    def _meta(d, t, default):
+        return d.get(t, d.get(t.replace(".", "-"), default))
+
+    sectors = {t: _meta(sectors_all, t, "Unknown") for t in tickers}
+    names = {t: _meta(names_all, t, t) for t in tickers}
+    print(f"  Point-in-time universe as of {as_of}: {len(tickers)} members "
+          f"(snapshot dated {row['date'].date()})", file=sys.stderr)
+    return tickers, sectors, names
+
+
 def get_sp500_tickers():
     """Fetch current S&P 500 constituents from Wikipedia, with full fallback list.
 
@@ -152,20 +224,21 @@ def get_sp500_tickers():
         r.raise_for_status()
         tables = pd.read_html(StringIO(r.text))
         df = tables[0]
-        tickers = df["Symbol"].str.replace(".", "-", regex=False).tolist()
-        sectors = dict(zip(
-            df["Symbol"].str.replace(".", "-", regex=False),
-            df["GICS Sector"]
-        ))
-        names = dict(zip(
-            df["Symbol"].str.replace(".", "-", regex=False),
-            df["Security"]
-        ))
+        # Keep Wikipedia's native dot form (BRK.B, BF.B) — that is what Polygon's
+        # grouped bars use. Rewriting dots to dashes here silently dropped both
+        # names from every live screen (2026-07-30 run ranked 497, not 499),
+        # because Polygon has no BRK-B. The Yahoo fallback converts to its own
+        # dash dialect internally and restores the dot form on the way out, so
+        # both price paths are satisfied by leaving the symbol alone. This now
+        # matches get_sp500_tickers_asof(), which already kept dots.
+        tickers = df["Symbol"].tolist()
+        sectors = dict(zip(df["Symbol"], df["GICS Sector"]))
+        names = dict(zip(df["Symbol"], df["Security"]))
         return tickers, sectors, names
     except Exception as e:
         print(f"Warning: Wikipedia fetch failed ({e}), using fallback list", file=sys.stderr)
         fallback = [
-            "NVDA","GOOGL","AAPL","GOOG","MSFT","AMZN","META","AVGO","TSLA","BRK-B",
+            "NVDA","GOOGL","AAPL","GOOG","MSFT","AMZN","META","AVGO","TSLA","BRK.B",
             "WMT","LLY","JPM","XOM","V","JNJ","MU","MA","COST","ORCL","CVX","NFLX",
             "ABBV","PLTR","BAC","PG","AMD","KO","HD","CAT","CSCO","GE","LRCX","AMAT",
             "MRK","RTX","MS","PM","UNH","GS","WFC","TMUS","GEV","IBM","LIN","MCD",
@@ -205,7 +278,7 @@ def get_sp500_tickers():
             "TKO","NDSN","APTV","MKC","DECK","MAA","PNR","APA","REG","IEX","COO",
             "GPC","NWSA","BBY","CLX","HAS","HST","EG","GEN","ERIE","DPZ","AVY",
             "ALGN","SMCI","ALLE","BEN","HRL","MAS","JKHY","DOC","PNW","GNRC","TTD",
-            "GDDY","SOLV","IT","UHS","UDR","GL","SJM","AIZ","BF-B","SWK","WYNN",
+            "GDDY","SOLV","IT","UHS","UDR","GL","SJM","AIZ","BF.B","SWK","WYNN",
             "IVZ","CPT","AES","ZBRA","DVA","RVTY","MGM","BLDR","FRT","AOS","NCLH",
             "BAX","HSIC","BXP","ARE","SWKS","TECH","FDS","CRL","MOS","EPAM","TAP",
             "POOL","CAG","MTCH","MOH","PAYC","CPB","LW","PCG","NWS","HBAN",
@@ -220,14 +293,20 @@ def get_sp500_tickers():
         return fallback, sectors, names
 
 
-def download_prices_yahoo(tickers, months_needed=8):
+def download_prices_yahoo(tickers, months_needed=8, as_of=None):
     """Download adjusted close prices for all tickers via yfinance (fallback path)."""
-    end = datetime.now()
+    end = pd.Timestamp(as_of).to_pydatetime() if as_of else datetime.now()
     start = end - timedelta(days=months_needed * 31 + 30)
 
-    print(f"Yahoo: downloading price data for {len(tickers)} tickers...", file=sys.stderr)
+    # Yahoo wants BRK-B where Polygon (and the membership CSV) say BRK.B.
+    # Ask Yahoo in its own dialect, then restore the caller's spelling so the
+    # returned columns line up with the universe/sector/name dicts.
+    y2orig = {t.replace(".", "-"): t for t in tickers}
+    ylist = list(y2orig)
+
+    print(f"Yahoo: downloading price data for {len(ylist)} tickers...", file=sys.stderr)
     data = yf.download(
-        tickers, start=start.strftime("%Y-%m-%d"),
+        ylist, start=start.strftime("%Y-%m-%d"),
         end=end.strftime("%Y-%m-%d"), auto_adjust=True,
         progress=False, threads=True
     )
@@ -236,34 +315,59 @@ def download_prices_yahoo(tickers, months_needed=8):
         if "Close" in data.columns.get_level_values(0):
             prices = data["Close"]
         else:
-            prices = data.iloc[:, :len(tickers)]
+            prices = data.iloc[:, :len(ylist)]
     else:
         prices = data
 
+    prices = prices.rename(columns=y2orig)   # BRK-B -> BRK.B for the caller
     print(f"Yahoo: {prices.shape[0]} days x {prices.shape[1]} tickers", file=sys.stderr)
     return prices
 
 
-def download_prices(tickers, months_needed=8):
-    """Get adjusted close prices for all tickers.
+def download_prices(tickers, months_needed=8, as_of=None, strict=False):
+    """Get adjusted close prices for all tickers, ending at `as_of` (default today).
 
     Tries Polygon Grouped Daily Bars first (paid plan, no rate-limit issues,
     cached per-day so subsequent runs are fast). Falls back to yfinance if
     Polygon is unavailable or returns insufficient data.
+
+    strict=True forbids that fallback. Historical reconstructions rely on Polygon's
+    grouped bars being point-in-time (they include names later delisted); Yahoo
+    serves survivors only, and its closes are dividend-adjusted rather than
+    splits-only. Falling back mid-backfill would therefore swap in a biased,
+    non-comparable price series without anything in the output showing it. For an
+    as-of run it is far better to fail loudly than to produce a quietly wrong screen.
     """
     if get_polygon_api_key():
         try:
-            prices = download_prices_polygon(tickers, months_needed=months_needed)
+            prices = download_prices_polygon(tickers, months_needed=months_needed,
+                                             as_of=as_of)
             if not prices.empty and prices.shape[0] >= months_needed * 18:
                 return prices
-            print(f"Polygon returned only {prices.shape[0]} days "
-                  f"(need ~{months_needed * 21}) — falling back to Yahoo", file=sys.stderr)
+            msg = (f"Polygon returned only {prices.shape[0]} days "
+                   f"(need >= {months_needed * 18})")
+            if strict:
+                raise RuntimeError(
+                    f"{msg}. Refusing to fall back to Yahoo for an as-of run "
+                    f"({as_of}): Yahoo is survivor-only and dividend-adjusted, which "
+                    f"would silently bias this screen. Polygon's grouped-bar history "
+                    f"starts {POLYGON_HISTORY_START} (verified 2026-07-30), so the "
+                    f"earliest fully-supported as-of is ~2004-05-10.")
+            print(f"{msg} — falling back to Yahoo", file=sys.stderr)
+        except RuntimeError:
+            raise
         except Exception as e:
+            if strict:
+                raise RuntimeError(f"Polygon path failed for as-of {as_of}: {e}. "
+                                   "Refusing to fall back to Yahoo (see --as-of docs).")
             print(f"Polygon path failed ({e}) — falling back to Yahoo", file=sys.stderr)
     else:
+        if strict:
+            raise RuntimeError("No Polygon API key — an as-of run cannot use Yahoo "
+                               "(survivor-only prices would bias the screen).")
         print("No Polygon API key found — using Yahoo only", file=sys.stderr)
 
-    return download_prices_yahoo(tickers, months_needed=months_needed)
+    return download_prices_yahoo(tickers, months_needed=months_needed, as_of=as_of)
 
 
 # ============================================================================
@@ -496,19 +600,34 @@ def build_qm_ranking(momentum, fip_data, ret_1m, ret_3m, sectors, names, last_cl
 # MAIN
 # ============================================================================
 
-def run_screener(output_dir="."):
-    """Run the full QM screener and save results."""
+def run_screener(output_dir=".", as_of=None):
+    """Run the full QM screener and save results.
+
+    as_of=None is the live path and behaves exactly as before. Passing a date
+    reproduces the screen as it would have run that day: point-in-time membership
+    and a price window that stops at as_of. Everything downstream (momentum, FIP)
+    reads only the tail of the price panel, so cutting the panel is enough to
+    prevent lookahead.
+    """
     print("=" * 60, file=sys.stderr)
     print("  Quantitative Momentum Screener", file=sys.stderr)
     print("  Methodology: Wes Gray / Alpha Architect", file=sys.stderr)
+    if as_of:
+        print(f"  AS-OF: {as_of} (historical reconstruction)", file=sys.stderr)
     print("=" * 60, file=sys.stderr)
 
     # Step 1: Get universe
-    tickers, sectors, names = get_sp500_tickers()
+    if as_of:
+        tickers, sectors, names = get_sp500_tickers_asof(as_of)
+    else:
+        tickers, sectors, names = get_sp500_tickers()
     print(f"Universe: {len(tickers)} S&P 500 stocks", file=sys.stderr)
 
-    # Step 2: Download prices (need ~8 months for 6-1 momentum + FIP lookback)
-    prices = download_prices(tickers, months_needed=8)
+    # Step 2: Download prices (need ~8 months for 6-1 momentum + FIP lookback).
+    # An as-of run demands Polygon: see download_prices(strict=...) for why a
+    # silent Yahoo fallback would corrupt a historical screen.
+    prices = download_prices(tickers, months_needed=8, as_of=as_of,
+                             strict=bool(as_of))
 
     # Step 3: Calculate raw momentum
     print("Calculating 6-1 month momentum...", file=sys.stderr)
@@ -541,7 +660,8 @@ def run_screener(output_dir="."):
     n_sell = len(df[df["Signal"] == "Sell"])
 
     summary = {
-        "run_date": datetime.now().strftime("%Y-%m-%d"),
+        "run_date": (pd.Timestamp(as_of).strftime("%Y-%m-%d") if as_of
+                     else datetime.now().strftime("%Y-%m-%d")),
         "n_analyzed": n_analyzed,
         "signals": {
             "Strong Buy": n_strong_buy,
@@ -559,6 +679,16 @@ def run_screener(output_dir="."):
 
 
 if __name__ == "__main__":
-    output_dir = sys.argv[1] if len(sys.argv) > 1 else "."
-    os.makedirs(output_dir, exist_ok=True)
-    run_screener(output_dir)
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Quantitative Momentum screener")
+    # positional stays first and optional so `qm_screener.py <dir>` (how run_qm.py
+    # invokes it) keeps working unchanged
+    ap.add_argument("output_dir", nargs="?", default=".", help="output directory")
+    ap.add_argument("--as-of", dest="as_of", default=None,
+                    help="reconstruct the screen as of this date (YYYY-MM-DD) using "
+                         "point-in-time S&P 500 membership and prices up to that date. "
+                         "Omit for a normal live run.")
+    a = ap.parse_args()
+    os.makedirs(a.output_dir, exist_ok=True)
+    run_screener(a.output_dir, as_of=a.as_of)

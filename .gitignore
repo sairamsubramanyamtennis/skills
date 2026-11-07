@@ -18,3 +18,14 @@ Thumbs.db
 
 # skill-creator eval/benchmark output (not skills)
 *-workspace/
+
+# Claude Code harness sync bucket (managed by the client, not a skill)
+synced/
+
+# Derived data caches (rebuilt from Postgres / Polygon; too large for git)
+**/_pg_cache/
+earnings-drift/data/
+
+# Backup copies made before edits
+*.bak
+*.bak-*

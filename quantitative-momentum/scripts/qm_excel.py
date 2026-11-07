@@ -37,10 +37,18 @@ warnings.filterwarnings("ignore")
 DEFAULT_OUTPUT_DIR = r"C:\Users\ssair\OneDrive\Documents\MomentumTrackerResults"
 
 
-def _default_output_path():
-    """Construct the default output file path with today's date."""
-    today = datetime.now().strftime("%Y-%m-%d")
+def _default_output_path(as_of=None):
+    """Construct the default output file path, dated by the screen it represents.
+
+    An as-of run is named for the as-of date, not today: two backfills generated on
+    the same afternoon must not collide on one filename, and a historical workbook
+    sitting in the results folder should not read as that day's live screen.
+    """
     os.makedirs(DEFAULT_OUTPUT_DIR, exist_ok=True)
+    if as_of:
+        stamp = datetime.strptime(as_of, "%Y-%m-%d").strftime("%Y-%m-%d")
+        return os.path.join(DEFAULT_OUTPUT_DIR, f"QM_Screener_asof_{stamp}.xlsx")
+    today = datetime.now().strftime("%Y-%m-%d")
     return os.path.join(DEFAULT_OUTPUT_DIR, f"QM_Screener_{today}.xlsx")
 
 
@@ -72,23 +80,38 @@ SIGNAL_FONT = Font(name="Arial", size=10, bold=True, color="FFFFFF")
 # SCREENER SHEET
 # ============================================================================
 
-def add_screener_sheet(wb, screener_csv_path):
-    """Add the QM Screener ranking sheet to the workbook."""
-    df = pd.read_csv(screener_csv_path)
+def add_screener_sheet(wb, screener_csv_path, as_of=None):
+    """Add the QM Screener ranking sheet to the workbook.
+
+    as_of marks the sheet as a historical reconstruction. Without it a backfilled
+    workbook would be stamped with today's date and read as a live run — the file
+    must say on its face which it is.
+    """
+    df = (screener_csv_path if isinstance(screener_csv_path, pd.DataFrame)
+          else pd.read_csv(screener_csv_path))
     ws = wb.active
     ws.title = "QM Screener"
 
     # Title rows
     ws.merge_cells("A1:P1")
-    ws["A1"].value = f"Quantitative Momentum Screener — S&P 500"
+    ws["A1"].value = ("Quantitative Momentum Screener — S&P 500"
+                      + (f"  |  AS OF {as_of}" if as_of else ""))
     ws["A1"].font = TITLE_FONT
     ws["A1"].alignment = Alignment(horizontal="left", vertical="center")
 
     ws.merge_cells("A2:P2")
-    ws["A2"].value = (
-        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} | "
-        f"Methodology: Wes Gray / Alpha Architect (6-1 Momentum + FIP Quality)"
-    )
+    if as_of:
+        ws["A2"].value = (
+            f"RECONSTRUCTED as of {as_of} (point-in-time S&P 500 membership; prices "
+            f"stop at {as_of}; no market-news sheet) | built "
+            f"{datetime.now().strftime('%Y-%m-%d %H:%M')} | "
+            f"Methodology: Wes Gray / Alpha Architect (6-1 Momentum + FIP Quality)"
+        )
+    else:
+        ws["A2"].value = (
+            f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} | "
+            f"Methodology: Wes Gray / Alpha Architect (6-1 Momentum + FIP Quality)"
+        )
     ws["A2"].font = SUBTITLE_FONT
     ws["A2"].alignment = Alignment(horizontal="left", vertical="center")
 
@@ -288,12 +311,17 @@ def add_backtest_sheet(wb, backtest_json_path):
 # MAIN
 # ============================================================================
 
-def generate_report(screener_csv=None, backtest_json=None, output_path="qm_report.xlsx"):
+def generate_report(screener_csv=None, backtest_json=None, output_path="qm_report.xlsx",
+                    as_of=None):
     """Generate the Excel report."""
     wb = Workbook()
 
-    if screener_csv and os.path.exists(screener_csv):
-        add_screener_sheet(wb, screener_csv)
+    if isinstance(screener_csv, pd.DataFrame):
+        add_screener_sheet(wb, screener_csv, as_of=as_of)
+        print(f"Added QM Screener sheet ({len(screener_csv)} rows from Postgres)",
+              file=sys.stderr)
+    elif screener_csv and os.path.exists(screener_csv):
+        add_screener_sheet(wb, screener_csv, as_of=as_of)
         print(f"Added QM Screener sheet ({screener_csv})", file=sys.stderr)
     else:
         # Remove default sheet if no screener data
@@ -312,6 +340,11 @@ def generate_report(screener_csv=None, backtest_json=None, output_path="qm_repor
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="QM Excel Report Generator")
+    parser.add_argument("--from-pg", action="store_true",
+                        help="read the screen from Postgres res.screen_result "
+                             "instead of a CSV (what run_qm.py uses)")
+    parser.add_argument("--screen-date", default=None,
+                        help="--from-pg: which published screen (default newest)")
     parser.add_argument("--screener-data", type=str, default=None,
                         help="Path to qm_full_ranking.csv")
     parser.add_argument("--backtest-data", type=str, default=None,
@@ -319,7 +352,16 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=str, default=None,
                         help=f"Output Excel file path "
                              f"(default: {DEFAULT_OUTPUT_DIR}\\QM_Screener_<YYYY-MM-DD>.xlsx)")
+    parser.add_argument("--as-of", dest="as_of", type=str, default=None,
+                        help="label the workbook as a historical reconstruction "
+                             "as of this date (YYYY-MM-DD)")
     args = parser.parse_args()
 
-    output_path = args.output or _default_output_path()
-    generate_report(args.screener_data, args.backtest_data, output_path)
+    output_path = args.output or _default_output_path(args.as_of)
+    if args.from_pg:
+        import qm_screen_source
+        screen = qm_screen_source.fetch_screen(args.screen_date)
+        generate_report(screen, args.backtest_data, output_path, as_of=args.as_of)
+    else:
+        generate_report(args.screener_data, args.backtest_data, output_path,
+                        as_of=args.as_of)

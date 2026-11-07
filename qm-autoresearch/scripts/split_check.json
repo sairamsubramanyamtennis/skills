@@ -1,0 +1,116 @@
+[
+  {
+    "name": "weighting=momentum",
+    "kind": "full 2004-26",
+    "cagr": 12.15,
+    "ew": 8.78,
+    "ex": 3.38,
+    "t": 1.16,
+    "sharpe": 0.345,
+    "bsharpe": 0.3317,
+    "months": 266
+  },
+  {
+    "name": "weighting=momentum",
+    "kind": "in  2004-14",
+    "cagr": 4.89,
+    "ew": 8.64,
+    "ex": -3.76,
+    "t": -0.75,
+    "sharpe": 0.0438,
+    "bsharpe": 0.1274,
+    "months": 127
+  },
+  {
+    "name": "weighting=momentum",
+    "kind": "out 2015-26",
+    "cagr": 19.26,
+    "ew": 8.9,
+    "ex": 10.36,
+    "t": 1.78,
+    "sharpe": 0.5801,
+    "bsharpe": 0.5135,
+    "months": 139
+  },
+  {
+    "name": "weighting=momentum",
+    "kind": "effn",
+    "effn": 28.397808748946716
+  },
+  {
+    "name": "weighting=qm_composite",
+    "kind": "full 2004-26",
+    "cagr": 11.64,
+    "ew": 8.78,
+    "ex": 2.86,
+    "t": 0.97,
+    "sharpe": 0.3412,
+    "bsharpe": 0.3317,
+    "months": 266
+  },
+  {
+    "name": "weighting=qm_composite",
+    "kind": "in  2004-14",
+    "cagr": 6.95,
+    "ew": 8.64,
+    "ex": -1.69,
+    "t": -0.25,
+    "sharpe": 0.1512,
+    "bsharpe": 0.1274,
+    "months": 127
+  },
+  {
+    "name": "weighting=qm_composite",
+    "kind": "out 2015-26",
+    "cagr": 16.1,
+    "ew": 8.9,
+    "ex": 7.2,
+    "t": 1.38,
+    "sharpe": 0.4902,
+    "bsharpe": 0.5135,
+    "months": 139
+  },
+  {
+    "name": "weighting=qm_composite",
+    "kind": "effn",
+    "effn": 12.422480632491173
+  },
+  {
+    "name": "fip_lookback_days=63",
+    "kind": "full 2004-26",
+    "cagr": 9.68,
+    "ew": 8.78,
+    "ex": 0.91,
+    "t": 0.34,
+    "sharpe": 0.356,
+    "bsharpe": 0.3317,
+    "months": 266
+  },
+  {
+    "name": "fip_lookback_days=63",
+    "kind": "in  2004-14",
+    "cagr": 6.02,
+    "ew": 8.64,
+    "ex": -2.63,
+    "t": -0.94,
+    "sharpe": 0.1276,
+    "bsharpe": 0.1274,
+    "months": 127
+  },
+  {
+    "name": "fip_lookback_days=63",
+    "kind": "out 2015-26",
+    "cagr": 13.02,
+    "ew": 8.9,
+    "ex": 4.12,
+    "t": 1.24,
+    "sharpe": 0.5591,
+    "bsharpe": 0.5135,
+    "months": 139
+  },
+  {
+    "name": "fip_lookback_days=63",
+    "kind": "effn",
+    "effn": 49.99999999999999
+  }
+]

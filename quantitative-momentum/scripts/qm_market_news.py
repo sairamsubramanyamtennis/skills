@@ -189,6 +189,21 @@ if __name__ == "__main__":
     parser.add_argument("--source", type=str, default="auto",
                         choices=["auto", "google", "yahoo"],
                         help="auto=Google price + Yahoo targets; google=price only; yahoo=legacy")
+    parser.add_argument("--as-of", dest="as_of", default=None,
+                        help="declare that the screener CSV is a historical "
+                             "reconstruction; this step then refuses to run")
     args = parser.parse_args()
+
+    # Every field this script fetches — last price, analyst targets, consensus — is
+    # present-day. Bolting it onto a screen dated years ago would stamp information
+    # from the future onto a historical run, which is the exact shape of a
+    # look-ahead bug. Refuse rather than silently produce a contaminated workbook.
+    if args.as_of:
+        print(f"ERROR: market news / analyst data is not available as of {args.as_of}.\n"
+              f"       Yahoo serves only today's prices, targets and consensus, so "
+              f"attaching them to an as-of screen would inject look-ahead bias.\n"
+              f"       Skip this step for historical runs.", file=sys.stderr)
+        sys.exit(2)
+
     os.makedirs(args.output_dir, exist_ok=True)
     run(args.screener_csv, args.signal, args.output_dir, source=args.source)

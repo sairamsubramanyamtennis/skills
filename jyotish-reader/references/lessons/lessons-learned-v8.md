@@ -1,6 +1,6 @@
 # Jyotish Reading — Lessons Learned & Mandatory Checklist
 ## Purpose: Ensure no critical life area is glossed over in any D-1 reading
-## Last Updated: May 2026 (v5 — updated with lessons from 18-Mar-1981 male chart, Aries lagna; spouse breast cancer 2019-2025 was missed)
+## Last Updated: 06 September 2026 (**v9.4 — Lesson 42 added: MARITAL HARMONY IS NOT READ FROM THE 7TH LORD'S DIGNITY. Three named errors on the 01-May-1977 male chart (Venkat Narain, Aries lagna): (a) an EXALTED 7th lord was allowed to outvote FIVE separately-reported afflictions to the 7th — dignity answers only SPOUSE QUALITY and BOND DURABILITY and says NOTHING about compatibility; report those three as three findings and never blend them. (b) An EMPTY navamsa 7th was treated as a finished analysis — an empty D9 7th is a reason to TRACE ITS LORD, never a reason to stop; here D9 7th lord Saturn sat in the D9 6th, the cleanest discord indicator in the chart, one lookup away and never computed. Also compare the 7th lord's D1 dignity against its D9 dignity — Venus exalted in Pisces DROPPED to Scorpio in the D9, a promise that does not deliver inside the marriage. (c) KUJA DOSHA WAS GRADED AGAINST MARITAL SURVIVAL INSTEAD OF MARITAL HARMONY — "twenty years and two children, so it is mild" is the wrong outcome variable; the dosha produces DISCORD, NOT DISSOLUTION, and duration is near-uninformative. Guard against over-correction: an afflicted 7th with a dignified 7th lord means the marriage LASTS **AND** is unhappy — state both halves, and do not import Lesson 15's divorce default (Ketu was on the lagna, not in the 7th). This is Lesson 3's identify-and-immediately-qualify in a new costume, and it borrowed credibility from an otherwise rigorous reading (9/9 ephemeris verification, 13/13 dated events matched). No cross-chart marker is claimed; Lesson 41(b)'s control-group protocol applies if anyone later proposes one. See the V9.4 quick-scan block.**) — v9.3 base: 29 August 2026 (**v9.3 — Lesson 41 added, and it REVERSES a reported negative: (a) THE EXTRA-MARITAL CHECKLIST HAS A FALSE-NEGATIVE MODE. Lesson 1 was built from ONE chart (Raja) and describes that chart, not a shared signature — scoring three native-confirmed cases gives Raja 5/6 primary, Pavan 1/6, Jayant 0/6. A 0/6 score is NOT a negative screen; write 'the classical primary indicators are absent', never 'not indicated'. Score PROFILE B separately: Venus rules the 8th + Venus in a Saturn-owned sign + Saturn aspects Venus + D9 Moon in the 6th. Promote 'D9 Moon in the 6th' out of secondary — it is the checklist's only 3-of-3 item. (b) RUN A CONTROL GROUP BEFORE REPORTING ANY CROSS-CHART COMMONALITY — both candidate markers here appeared in a non-case control (false positive); nothing reached significance (best p~0.071) and ~25 features were searched, at which denominator chance predicts ~1 spurious 3-of-3 hit. Report false positives by name in the record, state the search denominator, compute the base rate, and note that a control carrying a marker is evidence AGAINST THE MARKER, never a statement about that person. (c) NEVER TRUST A .txt HEADER — PavanRavula.txt says DOB 1977 but its own data matches 1976 at 8/8; third occurrence after JayantPathak.txt and Raja.txt. Source: Jayant/Raja/Pavan comparative study, 29-Aug-2026.**) — v9.2 base: (**v9.2 — Lesson 40 added: (a) BENEFICS IN THE 3RD CONTRACT THE YOUNGER-SIBLING COUNT — own-sign dignity strengthens the 3rd house's other significations while suppressing the co-born count; grade COUNT and QUALITY separately, check the 3rd/11th from the Moon, check Mars's avastha, compute the D3 BEFORE stating a sibling finding, and ASK the native for the count. (b) NEVER GRADE A SPOUSE'S HEALTH FROM THE HUSBAND'S VENUS — a derived-house read can indicate a tendency but can NEVER rule a condition out; 'no Venus in Scorpio' asserted from his chart was falsified the moment the wife's own date was supplied (her Venus IS in Scorpio, the Lesson-22 indicator). With a date but no birth time, report the sign-based checks and leave the grade OPEN rather than defaulting. (c) A DATE ALONE IS WORTH COMPUTING — bracket the day and keep the time-independent findings. Also: what worked — reading the 11th-house occupant's GENDER (Moon = elder sister, confirmed in D1 and D3) and the affliction's HOUSE to find what the sibling conflict is ABOUT (Sun+Rahu in the 4th → ancestral property, confirmed). Source: 31-Jan-1972 male chart (Jayant Pathak, Libra lagna), 28-Aug-2026.**) — v9.1 base: (**v9.1 — Lesson 39 added: SCOPE BOUNDARY — STAY INSIDE THE CHART, AND ASK WHEN IN DOUBT. State what the chart shows, then STOP. No career/job-search tactics, no financial/medical/legal instruction, no ranked action lists — in chat or in saved files, asked for or not. Two mandatory tests before delivering: STRANGER (would a coach/adviser/therapist who never saw the chart write this sentence? → delete it) and PROPER-NOUN (does it name a real person or firm as something to ACT on? → delete it; real names appear only as evidence being *classified*, never as instruction). Classical upayas are the sole permitted prescription and each must name the graha it propitiates. Diagnostic link: an urge to give practical advice is a SYMPTOM of a missing chart fact — find it, and if it isn't in the chart, ask the native. The file's first BOUNDARY lesson; dangerous precisely because the surrounding analysis is rigorous. Source: 20-Sep-1973 female chart (Anita), correction requested by the user 17-Aug-2026. See the V9.1 quick-scan block.**) — v9 base: **Lesson 38 added: MANDATORY HISTORICAL ANALOGUE. Every forward-looking window must name the comparable past period(s) in the native's own life and state what actually happened in them — matched on same antardasha lord, same Saturn transit sign (29.5-yr), same Jupiter transit sign (11.9-yr), or same Sade Sati/dhaiyya phase. Mark native-confirmed precedents separately from inferred; lead with any precedent that contradicts the forecast; show precedent-vs-model disagreements rather than resolving them; where one dasha lord has two divergent precedents, determine which the current conditions match. Source: 02-12-1971 male chart (Sai), format requested by the native after a precedent pass produced five corrections to an already-completed forecast. See the V9 quick-scan block.**) — v8 base: Lessons 35–37 added, plus a CORRECTION to Lesson 33, from the 30-Apr-1972 male chart (Raja, Sagittarius lagna, Tata group CEO — the same chart that generated Lessons 1–6): Lesson 33's uniformed-service threshold is now GATED on the Sun-in-D10-10th marker (a 3/6 score with the gate shut would have ranked a private-sector CEO as police); a weak D-1 10th does not mean a weak career — compute the D-10 before grading magnitude; overlay known fixed dates (retirement age, contract ends, vesting) on the dasha calendar before interpreting any window; and circumstance redirects a finding's channel but never cancels it. v7 base: Lessons 32–33 from the 05-Jun-1968 male chart (Anand, Virgo lagna, IPS): D1 7th-house occupants can outrank the D9 7th occupant for marriage timing; uniformed-government-service signature added to career disambiguation. v6 base: geometry correction — Saturn in Virgo aspects the 8th/12th/3rd, NOT the 7th; spouse-health mechanism restated via dispositorship + transit. v5 base: 18-Mar-1981 male chart, Aries lagna; spouse breast cancer diagnosed 09-Aug-2023, confirmed by the native's cousin)
 ## Maintained by: Sairam (South Indian Jyotish Analysis Platform)
 
 ---
@@ -1534,7 +1534,7 @@ The 7th house was read only as "marriage quality," never as "wife's body." The 7
 1. The marriage relationship (the partnership)
 2. The wife's physical body and health
 
-V4 conflated these. When Saturn's 7th aspect from Virgo (6th house) onto Libra (7th house) was noted, it was framed as "Saturn provided structure during the USA separation" — a relationship reading. The same aspect, read as a **wife's-body** reading, says: **chronic Saturn pressure on the spouse's physical body**. Both readings are valid. Only the relationship reading was given.
+V4 conflated these. **NOTE (v6 correction):** the spouse-body affliction here does **not** come from a Saturn aspect on the 7th — Saturn in Virgo aspects the 8th/12th/3rd, never the 7th (see Lesson 31). It comes from **Venus (7th lord + wife-karaka) sitting in Saturn-ruled Aquarius** (a chronic, slow-build *dispositor* link) **conjunct Mercury, the 6th lord of disease**, with **transit Saturn later crossing that natal Venus–Mercury pair (2023)** as the trigger. Read as a relationship matter, this says "a dutiful, Saturnine marriage"; read as a **wife's-body** matter, it says **chronic, slow-building disease in the spouse's chest/hormonal region**. Both readings are valid. Only the relationship reading was given.
 
 ### Mandatory Rule Going Forward
 
@@ -1561,7 +1561,7 @@ V4 conflated these. When Saturn's 7th aspect from Virgo (6th house) onto Libra (
 - 6+ indicators: **State a specific organ-system risk profile based on which planets are involved**
 
 ### Application to the 18-Mar-1981 chart (retrospective)
-- Saturn's 7th aspect on Libra ✓
+- Venus (7L + wife-karaka) in **Saturn-ruled** Aquarius — chronic/slow-build *dispositor* link (NOT a Saturn aspect on the 7th — corrected in Lesson 31) ✓
 - Venus in Aquarius (Saturn-ruled) ✓
 - Aquarius corresponds to chest cavity; Venus = soft tissue/glands ✓
 - Moon as Mahadasha lord in the relevant window + Moon = breast karaka ✓
@@ -1651,7 +1651,7 @@ When the affliction-target is the 7th house/7th lord/Venus (spouse health):
 ### Application to the 18-Mar-1981 chart (retrospective)
 - Jupiter + Saturn in 6th ✓ (indicator 1)
 - 9L (Jupiter) and 10L (Saturn) both in 6th ✓ (indicator 2)
-- 7L (Venus) in Saturn-ruled sign with Saturn aspecting 7th house ✓ (indicator 4)
+- 7L (Venus) in Saturn-ruled sign (dispositor link; *not* a Saturn aspect on the 7th — see Lesson 31) ✓ (indicator 4 — caregiving target = spouse)
 - Moon in Leo receives Saturn's 3rd aspect ✓ (indicator 7)
 
 **Score: 4/7 → strong caregiver-dharma signature, specifically pointing to spouse-caregiving.**
@@ -1849,6 +1849,770 @@ This is the lesson. Catch all the readings. Let the native confirm which ones ar
 
 ---
 
+## LESSON 31 — Verify Graha Drishti (Planetary Aspects) Geometrically Before Asserting Them
+*Source: 18-Mar-1981 male chart (MadhuKrishna). Added 28 June 2026.*
+
+### What Went Wrong
+The v4/v5 write-ups (Lessons 23 & 25) asserted that **"Saturn's 7th aspect from Virgo (6th house) falls on Libra (the 7th house)"** and used it as a spouse-health indicator. **This is geometrically false.** Full/special aspects are counted from the planet's own position:
+- **Saturn** aspects the **3rd, 7th, and 10th** signs *from itself*.
+- Saturn in **Virgo** therefore aspects **Scorpio (3rd), Pisces (7th), and Gemini (10th)** — i.e., the **8th, 12th, and 3rd houses** of this Aries chart.
+- **Libra (the 7th house) is the 2nd sign from Virgo — Saturn casts NO aspect there.**
+
+No planet aspects the sign immediately adjacent to it (its own 2nd or 12th). So "a malefic *in the 6th* aspecting the 7th" is, by standard Parashari drishti, **impossible from the 6th-placed planet itself**. The "indicator" was an artifact of not actually counting the aspect on the chart.
+
+### The Correct Mechanism (same chart, right reasoning)
+The spouse-health affliction is real and HIGH — just not via that aspect:
+1. **Dispositorship:** Venus (7th lord + wife-karaka) sits in **Aquarius, owned by Saturn** → the wife-karaka is "handed to" a chronic, slow-building, Saturnine ruler. Saturn touches Venus here by **lordship, not drishti.**
+2. **Disease conjunction:** Venus is conjunct **Mercury, the 6th lord of disease**, in the 11th (= wife's 5th-from-7th, the hormonal/body-changes house).
+3. **Transit trigger:** **Transit Saturn crossed the natal Venus–Mercury pair in Aquarius in 2023**, activating the latent affliction.
+4. **Dasha trigger:** Diagnosis **09-Aug-2023** (Mars–Jupiter AD, final days); treatment **26-Aug-2023 → 09-Dec-2024**, spanning **Mars–Saturn AD** into **Mars–Mercury AD** (6th-lord-of-disease closing the chapter).
+
+### Mandatory Rule Going Forward
+1. **Before writing "planet X aspects house/planet Y," COUNT the aspect from X.** Everyone aspects the **7th** from itself; **Mars** adds the **4th & 8th**; **Jupiter** the **5th & 9th**; **Saturn** the **3rd & 10th**; Rahu/Ketu (where used) the **5th & 9th**. **Never assert an aspect onto the 2nd or 12th from a planet — it does not exist.**
+2. **When a malefic "should" afflict a house it cannot aspect, find the real pathway instead:** (a) **dispositorship** (the significator sits in the malefic's sign), (b) **conjunction**, (c) a malefic actually placed in or validly aspecting that house, or (d) **transit/dasha activation**. The affliction is usually genuine; only the *pathway* was misattributed.
+3. **Distinguish "Saturn touches X by sign-lordship" from "Saturn aspects X by drishti."** They predict differently: **dispositorship → chronic baseline condition; drishti → direct ongoing pressure; transit → timing trigger.** Name the correct one.
+
+### Scope of this correction
+Lessons 23 and 25 are annotated inline where they relied on the false claim. The spouse-health conclusion (**HIGH risk, chest/hormonal, chronic, breast cancer**) is **unchanged and correct** — only the stated mechanism is fixed. This is a *methodology* fix, not a *finding* reversal.
+
+---
+
+## LESSON 32 — Marriage Timing: D-1 7th-House Occupants Can Outrank the Navamsha 7th
+*Source: 05-Jun-1968 male chart (Anand, Virgo lagna, Hasta). Added 21 July 2026.*
+
+### What Lesson 7 Got Right, and Where It Over-Reached
+Lesson 7 correctly established that the **Navamsha 7th house must be checked FIRST**. But in
+practice it hardened into an expectation — *"the D-9 7th occupant **will** be the marriage
+Antardasha lord"* — and in this chart that expectation would have produced a miss of nearly
+three years.
+
+**The chart:**
+- D-9 Lagna Gemini → **D-9 7th house = Sagittarius, occupied by Mercury**
+- D-1 7th house = Pisces, occupied by **Saturn AND Rahu** (two planets)
+- **Actual marriage: 02 June 1992, in Rahu Mahadasha – Saturn Antardasha** (AD began 04 May 1992;
+  the marriage falls four weeks in)
+- Mercury's Antardasha within the Rahu MD ran **Mar 1995 – Sep 1997** — nearly three years *after*
+  the marriage
+
+Applying Lesson 7 Step 1 mechanically would have predicted 1995–97. **Step 2 — "is any D-1 7th
+house occupant running as Dasha/AD?" — delivered the correct answer, and delivered it twice over:
+BOTH the Mahadasha lord (Rahu) and the Antardasha lord (Saturn) physically occupy the D-1 7th
+house.** That is a stronger signature than a single D-9 7th occupant, and it should not have been
+ranked second.
+
+### Why the D-1 Occupants Won Here
+An **occupied** house is activated by its occupants' periods. When the D-1 7th holds **two or more
+planets**, the marriage house has multiple direct dasha-triggers of its own, and their combined
+weight exceeds that of a lone D-9 7th tenant. The Navamsha's authority is greatest when the **D-1
+7th house is empty** — which is precisely the situation Lesson 7's source chart (02-12-1971,
+empty 7th) presented. Lesson 7 was derived from an empty-7th chart and then over-generalised to
+occupied-7th charts.
+
+### Mandatory Rule Going Forward — Revised Marriage-Timing Protocol
+
+```
+STEP 0 — COUNT THE OCCUPANTS OF THE D-1 7TH HOUSE FIRST. This determines which
+         route carries more weight:
+   → D-1 7th EMPTY        : the Navamsha 7th occupant is the PRIMARY timing candidate
+                            (original Lesson 7 applies at full strength)
+   → D-1 7th has 1 planet : weight the D-1 occupant and the D-9 7th occupant EQUALLY
+   → D-1 7th has 2+ planets: the D-1 OCCUPANTS are the PRIMARY candidates; the D-9 7th
+                            occupant drops to secondary
+
+STEP 1 — Build a RANKED CANDIDATE LIST, never a single prediction:
+   (a) D-1 7th house occupants        (b) D-9 7th house occupants
+   (c) D-1 7th lord                   (d) Venus (male) / Jupiter (female)
+   Order (a)-(d) by the Step 0 weighting.
+
+STEP 2 — Where the MD lord AND the AD lord BOTH occupy the 7th house, treat that as a
+         near-certain marriage window. This is the strongest timing signature in the system.
+
+STEP 3 — Only after the above, apply Lesson 7 Steps 3–4 (Venus/Jupiter, Sade Sati cross-check).
+```
+
+### The Anti-Pattern to Avoid
+> Do **not** write "the marriage will occur in [D-9 7th occupant]'s Antardasha" as a single
+> assertion. Write the ranked candidate list, state which route the Step-0 test favours, and say
+> why. A confident single prediction from the D-9 alone is how a three-year error enters a reading
+> — and per Lesson 14, a wrong Antardasha corrupts the *qualitative* reading of the marriage too,
+> not merely its date.
+
+### Qualitative Note (confirms Lesson 7's stamp table)
+The AD lord here was **Saturn — also the Atmakaraka, in gandanta, in the 7th, conjunct Rahu.**
+Lesson 7's table predicts "formed under pressure/delay; tested from the outset; durable if both
+partners are disciplined." The marriage has now stood 34 years. **The stamp table is validated;
+only the timing route needed correction.**
+
+---
+
+## LESSON 33 — Career: The Uniformed-Government-Service Signature Must Rank FIRST When Present
+*Source: 05-Jun-1968 male chart (Anand, Virgo lagna). Added 21 July 2026.*
+
+### What Was Under-Ranked
+Before the profession was confirmed, the pre-reading career range offered was: *"engineering,
+technical or systems management, IT/analytics, quantitative finance, or a communication/trade-heavy
+profession."* Police and civil service appeared only inside the generic word **"defense"**, and
+were **not ranked first**.
+
+The actual career: **Indian Police Service — the youngest IPS officer in India, cleared UPSC in
+the first attempt, appointed at age 20.**
+
+This is the same failure mode as Lesson 8 (defaulting to IT for a Mercury+Rahu D-10), one rung
+further out: the reading reached for the *statistically common professional-class* fields and
+under-weighted **uniformed State authority**, even though the D-10 stated it unambiguously.
+
+### The Signature That Was Present and Should Have Led
+
+| Element | In this chart | What it says |
+|---|---|---|
+| **D-10 Lagna** | **Scorpio** | Investigation, enforcement, crisis, secrecy, penetration |
+| **D-10 10th house** | **Sun in its OWN sign Leo**, with **Saturn** and **Mercury** | Sun own-sign in the career-chart's 10th = **government command, the uniform, office of the State**; Saturn = law/order/hierarchy; Mercury = administration/investigation |
+| **Amatyakaraka** | **Mars** | Police, weapons, courage, discipline, command — *not* arts, *not* commerce |
+| **D-1 support** | Lagna lord = 10th lord **Mercury own sign in the 10th (Bhadra Yoga)**; 9th house (law/dharma/State) carries a stellium including the **Sun** | Exam-cracking intellect + the moral authority of the State |
+
+### Mandatory Rule Going Forward
+
+**When the following combination appears, rank police / defense / intelligence / investigation /
+civil service FIRST in the probable-field list — ahead of engineering, IT and finance:**
+
+```
+□ D-10 Lagna in Scorpio, Aries, or Capricorn (enforcement / command / hierarchy signs)
+□ Sun in its OWN sign or exalted IN THE D-10 10th HOUSE   ← the single strongest marker
+□ Saturn in the D-10 10th (law, order, long service, hierarchy)
+□ Amatyakaraka = Mars or Sun
+□ D-1: strong 9th house (law/dharma) and/or Sun dignified in a trikona
+□ Lagna lord strong in a kendra (exam capability — required for competitive-entry services)
+
+3+ present → uniformed/government service leads the list
+5+ present → state it as the primary indication, not one option among five
+In this chart: ALL SIX present.
+```
+
+> **⚠️ v8 CORRECTION — THE COUNT IS GATED, NOT FREE.**
+> *Source: 30-Apr-1972 male chart (Raja, Sagittarius lagna) — a near-miss caught in the reading, 03 Aug 2026.*
+>
+> The raw "3+ → leads the list" threshold is **too loose**, because the six markers are not of equal weight and this lesson says so itself two paragraphs later ("the single strongest marker", "the single most specific classical marker"). A chart can reach 3/6 on the *weak* markers alone and produce a badly wrong ranking.
+>
+> **Raja's chart scored exactly 3/6** — D-10 Lagna Capricorn ✓, strong 9th lord (exalted Sun in a trikona) ✓, Lagna lord strong in a kendra ✓ — but **the Sun sits in the D-10 9th house, in Virgo: neither own-sign nor exalted, and not in the D-10 10th.** The decisive marker was absent. He is a **private-sector CEO in the Tata group**. Applying the raw count would have ranked police/defense/civil service *first* for a career that is not remotely government.
+>
+> **The corrected rule:**
+> ```
+> □ Is the Sun own-sign or exalted IN THE D-10 10TH HOUSE?
+>     → NO  : the count is CAPPED at "genuine contender." Uniformed/government service
+>             may be listed, but it MAY NOT lead the ranked list on the other five
+>             markers alone, however many of them are present.
+>     → YES : apply the original thresholds — 3+ leads the list, 5+ is the primary indication.
+> ```
+> The other five markers are **corroborating**, not **constituting**. D-10 Lagna Capricorn, a strong 9th, and a kendra Lagna lord describe *any* large hierarchical institution — a conglomerate, a bank, a legacy corporate — every bit as well as they describe the State. **Capricorn is "old established institution," not "government."** Only the Sun in the D-10 10th specifically says *office under the State*.
+>
+> **Generalisable principle:** when a scorecard in this file names one marker as decisive, that marker is a **gate**, not a point. Never let a threshold be reached on corroborating markers while the gate is shut. Audit the other scorecards in this file for the same defect.
+
+### The Sun-in-D-10-10th Rule (new, standalone)
+> **The Sun in its own sign or exaltation, placed in the 10th house of the Dashamsha, is the
+> single most specific classical marker for holding office under the State.** It is not "a
+> government job" in the clerical sense — it is *command, rank and public authority*. Whenever it
+> appears, name government/uniformed service explicitly. Do not dilute it into a generic
+> "leadership/management" reading.
+
+### Extension to the Lesson 8 Disambiguation Table
+
+| D-10 Signature | Probable Fields (present as range, ranked) |
+|---|---|
+| **Scorpio D-10 Lagna + Sun own-sign in D-10 10th + AmK Mars** | **Police / IPS / defense / intelligence / investigation FIRST**; then customs-excise-revenue enforcement, judiciary/prosecution, security administration |
+| Capricorn/Aries D-10 Lagna + Saturn in D-10 10th + AmK Sun | Civil administration (IAS-type), public works, regulatory authority, judiciary |
+
+### Corroboration Rule
+Per Lesson 8 Step 5, once the field is confirmed, **re-read every D-10 indicator through that
+lens.** Doing so here converted a vague "analytical/technical" reading into an exact one — and
+also sharpened unrelated sections (the athletic profile resolved through **Hasta** = hand-skill,
+explaining cricket/golf/tennis rather than brute-force sport).
+
+---
+
+## V7 QUICK-SCAN ADDITIONS
+
+```text
+MARRIAGE TIMING ROUTE SELECTION (v7):
+□ COUNT the D-1 7th house occupants BEFORE choosing a timing route
+□ D-1 7th empty        → Navamsha 7th occupant is PRIMARY
+□ D-1 7th has 1 planet → weight D-1 occupant and D-9 7th occupant EQUALLY
+□ D-1 7th has 2+       → D-1 occupants PRIMARY, D-9 7th secondary
+□ MD lord AND AD lord both in the 7th → near-certain marriage window
+□ Always produce a RANKED CANDIDATE LIST, never a single assertion
+
+UNIFORMED / GOVERNMENT SERVICE FLAGS (v7):
+□ Sun own-sign or exalted in the D-10 10th house  ← strongest single marker
+□ D-10 Lagna Scorpio / Aries / Capricorn
+□ Saturn in the D-10 10th
+□ Amatyakaraka Mars or Sun
+□ Strong 9th house (law/dharma) in D-1
+□ Sun-in-D10-10th ABSENT → uniformed service is CAPPED at "contender," may NOT lead (v8)
+□ Sun-in-D10-10th PRESENT → 3+ ranks it FIRST; 5+ → state as primary indication
+□ Do NOT dilute Sun-in-D10-10th into generic "leadership/management"
+□ Capricorn D-10 Lagna = "old established institution," NOT necessarily government (v8)
+```
+
+## Summary of V7 Additions
+
+| Lesson | Title | Core Rule |
+|--------|-------|-----------|
+| 32 | D-1 7th Occupants vs Navamsha 7th for Marriage Timing | Count D-1 7th occupants FIRST to select the route. 2+ occupants → D-1 outranks D-9. MD+AD lords both in the 7th = near-certain window. Lesson 7 was derived from an empty-7th chart and over-generalised. |
+| 33 | Uniformed-Government-Service Signature | Sun own-sign/exalted in the D-10 10th = office under the State. With Scorpio D-10 lagna + AmK Mars, rank police/defense/investigation FIRST, ahead of engineering/IT/finance. |
+
+---
+
+
+## LESSON 34 — Career Antardasha ≠ Portfolio Return: Read Wealth From the Wealth Houses
+*Source: 02-12-1971 male chart (Sai, Sagittarius lagna). Added 28 July 2026. **A CONFIRMED MISS.***
+
+### The Failed Call
+The 2026-07-28 net-worth analysis graded **2024 → mid-2026 as 🟢 "strong build"** and wrote:
+> *"2025 — a genuinely good accumulation year… 2026 to date — strong, with the first warning shot."*
+
+**The native then reported he was down 15% YTD in 2026** on a portfolio holding the majority of
+his net worth. The call was wrong, and it was wrong in the *direction that flatters the native* —
+the worst kind of miss.
+
+### Root Cause — The Single Nameable Error
+
+**The reading used the CAREER antardasha to grade PORTFOLIO performance.**
+
+Saturn–Mercury (Jan 2024 – Sep 2026) puts **Mercury, the 10th lord, on the Lagna**. That is a
+genuine and correct signal for **salary, role, recognition, and earned income** — and it did
+deliver (the native's role grew). But the 10th house says *nothing* about invested capital.
+Portfolio outcomes are read from the **2nd (holdings), 5th (speculation), 8th (sudden loss,
+leverage) and 11th (realised gains)** — and every one of those was neutral-to-negative in 2026.
+
+The analyst let one strong signal in the *wrong* house carry a conclusion about a *different*
+house. Classic halo error.
+
+### What Was On The Board And Was Not Weighted
+
+All four of these were visible in the chart and each is negative for invested capital:
+
+| # | Factor | Window | Why it is negative for a portfolio |
+|---|---|---|---|
+| 1 | **Saturn–Mercury–Jupiter pratyantardasha** | ~27 Nov 2025 – ~07 Apr 2026 | Jupiter is Lagna lord/AK **but sits in the 12th house of LOSS and outflow.** A pratyantardasha of a 12th-house planet expands expenditure and leakage. The reading called this "grace." |
+| 2 | **Saturn–Mercury–Saturn pratyantardasha** | ~07 Apr – 11 Sep 2026 | Saturn is the **2nd lord of wealth**, but **retrograde**, in the **6th (dusthana)**, conjunct the **8th lord** in Visha Yoga. Running it as PD *inside its own MD* doubles a wealth-lord that is structurally compromised. **2nd lord doubled from a dusthana = contraction, not accumulation.** |
+| 3 | **Transit Jupiter → Cancer (8th house), 02 Jun 2026** | Jun 2026 → | *Ashtama Guru*, sitting on natal Ketu. Exaltation does not rescue it — exalted Jupiter in the 8th **expands 8th-house matters** (volatility, sudden change, shared/leveraged capital), it does not expand gains. |
+| 4 | **No benefic contact with the 2nd house all year** | all 2026 | Transit Rahu in Aquarius (3rd); nothing feeding the wealth house. |
+
+### The Second Error — Selecting the Flattering Frame
+
+The reading cited **"Saturn in Pisces = 11th from the Moon"** (the single best Saturn-from-Moon
+position) as evidence for a strong 2025–26. That reading is *correct but partial*: from the
+**Lagna**, the same transit is **Saturn in the 4th house** — classically uncomfortable, pressing
+on home, peace of mind and fixed assets.
+
+**When a transit reads favourably from the Moon and unfavourably from the Lagna, state BOTH.**
+Quoting only the flattering frame is how a reading launders a weak signal into a strong one.
+
+### Mandatory Rules Going Forward
+
+```
+□ NEVER grade net worth / portfolio / investment performance from the 10th lord or a
+  career antardasha. Career and capital are different houses and routinely diverge.
+
+□ For any WEALTH or PORTFOLIO question, grade the period from these four, in order:
+    → 2nd house + 2nd lord   (holdings, accumulated wealth)
+    → 11th house + 11th lord (realised gains)
+    → 5th house + 5th lord   (speculation — check if it is even ACTIVATED)
+    → 8th house + 8th lord   (sudden loss, leverage, other people's money)
+  Then, separately, grade career from the 10th. REPORT THEM AS TWO DIFFERENT LINES.
+  A 🟢 career year and a 🔴 portfolio year in the same period is normal, not a contradiction.
+
+□ Check the PRATYANTARDASHA lord's HOUSE, not just its benefic/malefic nature.
+  A benefic PD lord placed in the 12th (loss) or 6th/8th is a LOSS signature during
+  its own sub-period, however grand its lordship.
+
+□ A dasha lord that rules a wealth house but sits in a dusthana, retrograde, or
+  conjunct a dusthana lord = the wealth house is ACTIVATED IN ITS AFFLICTED MODE.
+  Activation is not the same as benefit. Say which mode.
+
+□ Read every major transit from BOTH the Lagna and the Moon and report both,
+  especially when they disagree. Never quote only the favourable frame.
+
+□ Exaltation in a dusthana expands the DUSTHANA, not the native's fortune.
+```
+
+### The Diagnostic Question That Should Have Been Asked
+Before grading any past window, **ask the native what actually happened to the money.** This
+reading graded 2022–2026 retrospectively from the chart alone and treated the native's earlier
+remark *"role grew, net worth grew decently"* (a **career-era** statement about the TX years) as
+if it validated the **portfolio** call for 2026. It did not. **One confirming data point in the
+adjacent domain is not validation — ask directly.**
+
+### Note on the Forward Calls
+The forward risk window (**Sep 2026 – Oct 2027**, Saturn–Ketu + nodal return + Ketu-in-8th) was
+built on the *wealth* houses and is **not invalidated** by this miss — if anything the drawdown
+began earlier than modelled. But the confidence attached to the forward calls must be **reduced**,
+and the framing corrected: the native is **already inside the drawdown**, not approaching it from
+a high. Advice written for "protect a peak" must be re-issued for "manage a decline" — they are
+different actions.
+
+---
+
+## LESSON 35 — A Weak D-1 10th House Does NOT Mean a Weak Career. Check the D-10 First.
+*Source: 30-Apr-1972 male chart (Raja, Sagittarius lagna, Anuradha Moon). Added 03 August 2026.*
+***A near-miss, not a confirmed miss — caught during the reading rather than after it.***
+
+### The Trap
+
+Raja's D-1 career signature, read on its own, is poor:
+- **10th house: EMPTY**
+- **10th lord Mercury: DEBILITATED** (Pisces), and parked in the 4th house
+- No planet aspects the 10th
+
+Read at face value, that is a modest career — a competent professional who never quite broke through. **He is the CEO of a Tata group company.**
+
+### Why the D-1 Understated Him
+
+Two mechanisms, both visible in the chart, both easy to skate past:
+
+1. **Neecha Bhanga was operating.** Mercury's dispositor Jupiter sits in **its own sign in the Lagna** — a textbook cancellation. The signature of a cancelled debilitation is specific and it is not "average": *understated at entry, over-delivers at maturity.*
+2. **The career promise lived in the Dashamsha, not the Rasi.** The D-10 states plainly what the D-1 conceals:
+   - **D-10 Lagna Capricorn** — hierarchy, endurance, executive office
+   - **D-10 10th house = Libra, holding Rahu + Mars + Moon — THREE planets in the career chart's own 10th**
+   - **Rahu in the D-10 10th** — the summit marker: rises far above his origin, unconventional route, high visibility
+   - **Mars in the D-10 10th, and Mars is the Atmakaraka** — the soul-significator in the career house; the career *is* the life-path
+   - **Moon in the D-10 10th** — public-facing, perpetual motion (validated: extensive work travel)
+
+### What Lesson 8 Covers, and What It Misses
+
+Lesson 8 warns that **the D-10 alone cannot pin the career FIELD** without education confirmation. That is the opposite failure to this one. **Nothing in this file previously warned against concluding a modest career MAGNITUDE from a weak D-1 10th.** The two errors are independent and both are live:
+
+| Failure | Direction | Covered by |
+|---|---|---|
+| Asserting a single field from a D-10 signature | **Field** — too specific | Lesson 8 |
+| Concluding a small career from an empty/afflicted D-1 10th | **Magnitude** — too small | **Lesson 35 (this one)** |
+
+### Mandatory Rule Going Forward
+
+```
+BEFORE writing ANY sentence that grades career MAGNITUDE (how high he rose,
+how much authority, how big the platform):
+
+□ Is the D-1 10th house empty?
+□ Is the D-1 10th lord debilitated, combust, or in a dusthana?
+    → If EITHER is true, STOP. Do not write the magnitude sentence yet.
+
+□ Compute the D-10 and count the occupants of the D-10 10th house.
+    → 2+ planets in the D-10 10th OUTRANKS a weak D-1 10th outright.
+    → Rahu in the D-10 10th = summit/self-made-ascent marker. Never read it as ordinary.
+    → Atmakaraka in the D-10 10th = the career is the life-path, not a job.
+
+□ Check Neecha Bhanga on the 10th lord BEFORE calling the career modest.
+    A cancelled debilitation is NOT a weak placement — it is a delayed strong one.
+
+□ Check the D-10 10th LORD's placement separately from the D-10 10th house.
+
+ONLY THEN write the magnitude assessment.
+```
+
+### The Phrasing Rule
+
+> Never write *"the empty 10th house suggests a career without great prominence"* — or any variant — **until the D-10 has been computed and read.** In a chart where the D-1 10th is weak, **the Dashamsha is not a corroborating chart; it is the primary one.**
+
+### Why This Matters Beyond Career
+
+The same asymmetry applies wherever a varga governs a domain more specifically than the Rasi does: **D-9 for marriage, D-7 for children, D-12 for parents.** A weak Rasi house with a strong divisional is a *deferred* promise, not an absent one. The general form of this lesson:
+
+> **A weak house in the D-1 caps the EASE of the domain. It does not cap the OUTCOME. The relevant varga caps the outcome.**
+
+---
+
+## LESSON 36 — Cross-Check Dasha Windows Against Known Contractual Dates Before Calling Anything a Rupture
+*Source: 30-Apr-1972 male chart (Raja). Added 03 August 2026.*
+
+### What Surfaced
+
+Raja's chart carries a mandated job-change flag at **Moon–Mars (~30-Oct-2031 → ~30-May-2032)** — Mars in the 6th, 12th lord of exit, Atmakaraka, firing inside a debilitated-8th-lord Mahadasha just after the Saturn Return. The draft reading called it *"the highest-probability involuntary career rupture in the window."*
+
+Then a single non-astrological fact was obtained: **his employer's mandatory retirement age.**
+
+**He turns 60 on 30-Apr-2032 — inside that antardasha, a month before it closes.** So the window had two completely different meanings, and the chart alone could not choose between them:
+
+| Retirement age | What Moon–Mars 2031–32 IS |
+|---|---|
+| **60** | A **scheduled superannuation** the dasha flagged decades early. Orderly, expected, negotiated. Not a rupture at all. |
+| **65** | A **genuine mid-tenure displacement with five years unspent.** Materially harder, and it demands entirely different advice. |
+
+The answer was **65** — so the harder reading stands, and formal retirement instead lands in **Moon–Mercury (~Oct-2036 → Mar-2038)**, spanning his 65th birthday on 30-Apr-2037. Mercury is the **10th lord + Amatyakaraka, in the 4th house**: the career's own lord, in its final period, in the house of home and rest. The 10th is the midheaven of activity; the 4th is its nadir. **An exact signature for retirement — and it was only findable because the retirement age was known.**
+
+### The Error This Prevents
+
+**A dasha flags an EVENT. It does not flag the event's MEANING.** The same Mars-in-the-6th antardasha is a triumph, a tragedy, or a formality depending entirely on facts the chart does not contain. Writing *"involuntary rupture"* when the true answer is *"he turned 60 and retired on schedule"* is not a small error of tone — it is the difference between advice that says *protect yourself* and advice that says *design your succession.*
+
+This is a close cousin of Lesson 8 (education disambiguates the career field). **The general principle: the chart supplies timing and character reliably; the native's circumstances supply meaning. Ask for the circumstances.**
+
+### Mandatory Intake Additions
+
+```
+ASK FOR ALL KNOWN FIXED FUTURE DATES before writing any forward timeline:
+
+□ Mandatory retirement / superannuation age  ← highest value for any employed native
+□ Contract end dates, tenure limits, term limits, notice periods
+□ Vesting schedules, ESOP cliffs, earn-out dates, lock-in expiries
+□ Children's expected graduation / marriage-eligible years
+□ Loan maturities, mortgage end dates, insurance maturities
+□ Lease expiries, visa/green-card/citizenship milestones
+□ Elderly parents' ages (for maraka and caregiving windows)
+
+Then OVERLAY these on the Dasha–Antardasha calendar BEFORE interpreting any window.
+```
+
+### The Interpretation Protocol
+
+```
+For every flagged event window:
+
+STEP 1 — Does a KNOWN fixed date fall inside this window?
+    → YES: the window is most likely marking THAT event. Say so, and re-read the
+           window's character as the QUALITY of a scheduled event, not as a shock.
+    → NO : the window is genuinely open. Interpret from the chart.
+
+STEP 2 — Does a known fixed date fall CONSPICUOUSLY OUTSIDE all flagged windows?
+    → This is equally informative. Here, retirement at 65 falling OUTSIDE Moon–Mars
+      is precisely what proved 2031–32 was a mid-tenure event. A negative result
+      sharpened the reading as much as a positive one would have.
+
+STEP 3 — Where the fact is unknown, PRESENT BOTH BRANCHES explicitly and ask.
+    Do not silently pick the more dramatic one. Drama is not accuracy.
+```
+
+### The Anti-Pattern
+
+> Do **not** write *"involuntary rupture," "sudden loss," "forced exit"* — or any high-drama label — for a window that might simply contain a birthday, a contract expiry, or a vesting date. **Malefic antardashas landing on scheduled transitions are extremely common, and they colour the transition rather than cause it.** The chart says *this is where the change is*. It does not say *this change is a catastrophe.* Establish which before choosing the noun.
+
+---
+
+## LESSON 37 — Institutional Context Redirects a Finding's CHANNEL. It Never Cancels the Finding.
+*Source: 30-Apr-1972 male chart (Raja). Added 03 August 2026.*
+
+### The Situation
+
+Raja's chart carries the full Lesson 2 grey-area-wealth signature: **Rahu in the 2nd, 8th lord in the 12th, Saturn + Mars in the 6th, 6th lord Venus in the 7th** — four primary indicators. Under Lesson 2's own classification that is squarely "grey-area wealth," with the Jupiter/exalted-Sun counterweights placing it short of criminal.
+
+Then a contextual fact arrived: **he is a salaried professional manager in the Tata group, with no founder stake**, inside an institution with heavy audit, board and reputational machinery.
+
+### The Two Wrong Responses — and the Right One
+
+**WRONG RESPONSE A — cancel the finding.** *"He works for the Tatas, so the grey-area-wealth indicators don't really apply."* This is exactly the Lesson 3 failure — identify-and-immediately-qualify — wearing a respectable disguise. The employer's reputation is not an astrological argument. **Institutional prestige is not a planetary counterweight.**
+
+**WRONG RESPONSE B — ignore the context.** Keep writing about personal grey-area enrichment for a man with no equity stake and a compliance department. Astrologically defensible, practically useless — a warning aimed at a channel he cannot access tells him nothing he can act on.
+
+**RIGHT RESPONSE — redirect the channel, preserve the magnitude.** The signature is real and it will express. What the institution changes is **through which aperture**:
+
+| | Founder / owner-operator | Salaried manager in a governed institution |
+|---|---|---|
+| Rahu in the 2nd | Personal undisclosed income, aggressive personal structuring | An **aggressive institutional number carried on his signature** — a stretched target, an optimistic capex case, a bold public claim (Rahu in the 2nd also rules **speech**) |
+| Exposure | Tax authority, personal legal jeopardy | **Audit committee, board review, regulator, media cycle** |
+| The risk, stated | *"He may take something"* | ***"He may sign for something"*** |
+
+The magnitude of exposure is **unchanged**. Only its address moved.
+
+### Precedent — This Is Lesson 31's Principle, Generalised
+
+Lesson 31 established: *when a malefic "should" afflict a house it cannot aspect, find the real pathway — the affliction is usually genuine, only the mechanism was misattributed.* Lesson 37 is the same move applied to life circumstance rather than geometry:
+
+> **When a native's circumstances make a finding's obvious expression impossible, the finding does not disappear. Find the expression his circumstances actually permit.** A signature blocked in one channel emerges in another; it does not evaporate because the convenient route is closed.
+
+### Mandatory Rule Going Forward
+
+```
+When a native's employment, wealth structure, legal status, family position or
+health circumstance appears to "rule out" a flagged finding:
+
+□ State the finding at FULL STRENGTH first, from the chart alone.
+□ THEN ask: which channel does this native's actual situation permit?
+□ REWRITE the expression for that channel. Do NOT reduce the severity rating.
+□ Label the move explicitly in the text:
+     "This is a recalibration of the MECHANISM, not a softening of the FINDING."
+□ If the recalibrated version reads as materially milder than the original,
+  STOP — you have almost certainly softened it. Re-examine.
+
+□ NEVER accept as a counterweight:
+     - the employer's reputation or prestige
+     - the native's seniority, respectability, or social standing
+     - "someone in that position wouldn't do that"
+  These are SOCIAL assumptions. Lesson 15 Root Cause 2 established that a social
+  assumption substituted for an astrological finding is how a reading goes wrong.
+
+□ VALID counterweights remain ONLY the chart-based ones already listed in Lesson 2:
+  Jupiter in Lagna/kendra in own sign or exaltation, exalted Sun (especially as 9L),
+  a strong unafflicted 9th house, Viparita Raja Yoga.
+```
+
+### The Self-Audit Question
+
+> **"Am I redirecting this finding, or am I relieved to be rid of it?"**
+>
+> If naming the context made the reading more *comfortable*, it is a softening. If it made the reading more *specific and more actionable* — a named committee, a named date, a named document — it is a genuine recalibration. **Comfort is the tell.**
+
+In Raja's case the recalibration produced a *sharper* and more useful warning than the generic version: **"in 2026, be the CEO whose assumptions are documented"** is actionable in a way that "grey-area wealth tendencies" never was. That is the test passing.
+
+---
+
+## V8 QUICK-SCAN ADDITIONS
+
+```text
+CAREER MAGNITUDE — DO NOT GRADE FROM THE D-1 ALONE (v8):
+□ D-1 10th empty OR 10th lord debilitated/combust/in dusthana? → STOP
+□ Compute the D-10 BEFORE writing any magnitude sentence
+□ 2+ planets in the D-10 10th OUTRANKS a weak D-1 10th outright
+□ Rahu in the D-10 10th = summit / self-made-ascent marker — never read as ordinary
+□ Atmakaraka in the D-10 10th = the career IS the life-path, not a job
+□ Neecha Bhanga on the 10th lord = a DELAYED strong placement, not a weak one
+□ General form: a weak D-1 house caps EASE, not OUTCOME. The varga caps outcome.
+
+FIXED-DATE OVERLAY — RUN BEFORE INTERPRETING ANY WINDOW (v8):
+□ Asked for retirement age? contract/tenure end? vesting/earn-out? loan maturity?
+□ Overlaid all known fixed dates on the Dasha-AD calendar?
+□ Known date INSIDE a flagged window → the window marks THAT event; re-read as
+  the QUALITY of a scheduled transition, not as a shock
+□ Known date OUTSIDE all flagged windows → equally informative; it PROVES the
+  flagged window is something else
+□ Fact unknown → present BOTH branches and ask. Never silently pick the dramatic one.
+□ Do NOT write "rupture / sudden loss / forced exit" over what may be a birthday
+
+CHANNEL REDIRECTION, NOT CANCELLATION (v8):
+□ State the finding at full strength from the chart FIRST
+□ Then redirect to the channel the native's circumstances actually permit
+□ Severity rating must NOT drop — only the address changes
+□ Label it: "recalibration of MECHANISM, not softening of FINDING"
+□ Employer prestige / seniority / respectability are NOT counterweights
+□ Self-audit: "am I redirecting this, or relieved to be rid of it?" Comfort = the tell
+□ If the rewrite reads milder, you softened it. Go back.
+
+SCORECARD GATING (v8 — applies to EVERY scorecard in this file):
+□ Where a scorecard names one marker as decisive, that marker is a GATE, not a point
+□ Never let a threshold be reached on corroborating markers while the gate is shut
+□ Lesson 33: Sun own-sign/exalted in D-10 10th is the GATE for uniformed service
+□ Capricorn D-10 Lagna = "old established institution," NOT necessarily government
+```
+
+---
+
+## LESSON 38 — Every Forward Window Must Cite Its Historical Analogue
+
+### The Rule
+
+**No forward-looking window may be presented without naming the comparable past period(s) in the
+native's own life and stating what actually happened then.** A forecast without a precedent is
+unfalsifiable, un-calibrated, and gives the native no way to judge it.
+
+Requested directly by the native of the 02-12-1971 chart on 05-Aug-2026, after a precedent pass
+run over an already-completed 2026–2040 career forecast produced **five substantive corrections
+to that forecast**. The format is now mandatory.
+
+### How to Find the Analogue
+
+Match the forward window against the native's past on any of:
+
+| Match on | Cycle | Example |
+|---|---|---|
+| **Same antardasha lord**, different mahadasha | varies | Sat–Ketu 2026-27 ← Jup–Ketu 2012 ← Rahu–Ketu 1997-98 |
+| **Same Saturn transit sign** | 29.5 yr | Saturn in the 10th 2039-41 ← Saturn in the 10th 2009-11 |
+| **Same Jupiter transit sign** | 11.9 yr | Jupiter in the 10th 2028-29 ← 2015-16 ← 2003-04 |
+| **Same Sade Sati / dhaiyya phase** | 29.5 yr | Cycle 3 rising 2027-29 ← Cycle 2 rising 1998-2000 |
+| **Same yoga/return re-activation** | varies | Saturn Return #2 2030-31 ← Return #1 ~2001 |
+
+### The Four Rules for Using Precedents
+
+1. **Mark which precedents the native has personally confirmed.** Confirmed history is evidence;
+   everything else is inference. Never blur the two — the credibility of the whole reading rests
+   on that line being visible.
+2. **When a precedent argues AGAINST the forecast, lead with it.** Burying the disconfirming
+   analogue is the Lesson 3 failure in a new costume.
+3. **When precedent and model disagree, show both and resolve neither artificially.** In the
+   source case the transit stack pointed at 2031 as the rupture year while the native's own
+   rupture-timing history pointed at 2028–30; reporting the tension and widening the window to
+   "2028–2031 as one exposure period" was more honest and more useful than picking one.
+4. **⭐ When one dasha lord has TWO past analogues that diverge, determine which one the CURRENT
+   conditions match.** This is where the method earns its keep.
+
+### The Worked Example That Proves Rule 4
+
+A Venus antardasha was forecast as "the gears flip green." Two precedents existed:
+
+| Precedent | Surrounding condition | Outcome |
+|---|---|---|
+| Jupiter–Venus 2012–15 | ran inside a **protected gap** (no hard Saturn-from-Moon phase) | purely good — the native's best work-and-money run |
+| Rahu–Venus 1998–2001 | ran inside a **Sade Sati rising phase** | **a firing, an emigration, AND the best job of his life — inside 18 months** |
+
+The forward window (Saturn–Venus 2027–30) runs inside a Sade Sati rising phase. **It matches the
+1998 case, not the 2013 case.** The forecast was corrected from "clean ascent" to **"disruption
+followed quickly by upgrade."** Without the precedent pass, the smooth reading would have stood.
+
+### Two Further Yields From the Same Pass
+
+- **Mechanism detection.** Both times Jupiter occupied that native's 10th house, the career gain
+  arrived via a **change of employer**, not a promotion in place. A forecast of "elevation"
+  became a forecast of "elevation by moving" — concrete and checkable.
+- **Life-rhythm detection.** Break and promotion arrived within a year of each other three times
+  (1999–2000, 2009–10, 2016–17). **Planning for one without the other had been the recurring
+  error.** Only the precedent pass surfaces a rhythm like this.
+
+### V9 QUICK-SCAN — RUN BEFORE DELIVERING ANY FORWARD READING
+
+```
+HISTORICAL ANALOGUE (v9) — MANDATORY:
+□ Every forward window has at least one named past analogue
+□ Analogue found via: same AD lord / same Saturn sign / same Jupiter sign / same SS phase
+□ Stated WHAT ACTUALLY HAPPENED in the analogue, not just that it existed
+□ Confirmed-by-native precedents are marked as such; inferred ones are not disguised
+□ Any precedent that CONTRADICTS the forecast is stated FIRST
+□ Where one AD lord has two divergent precedents → identified which the current
+  conditions match, and re-graded the forecast accordingly
+□ Precedent-vs-model disagreements shown, not silently resolved
+□ Checked for a repeating life-rhythm across analogues (e.g. break-and-promotion pairing)
+□ If no analogue exists (first-ever MD, first Saturn Return), SAY SO explicitly —
+  an uncalibrated window must be labelled uncalibrated
+```
+
+---
+
+## LESSON 39 — Stay Inside the Chart: No Worldly Strategy, and Ask When In Doubt
+
+### The Failure
+
+A focused sub-reading for the Anita chart (job near-miss, 10 Aug 2026) delivered a rigorous
+precedent pass — and then appended a **ranked five-item action plan**: pursue contract-to-hire,
+keep the named recruiter warm, add two or three more staffing vendors, write follow-up notes,
+de-weight federal postings. It named a **real person** and a **real company** as things to act on.
+
+None of it came from the chart. It came from the instinct to be helpful.
+
+The native's correction, 17 Aug 2026: *"ensure you don't offer personal suggestions/strategies
+like contact David P.; stick to your strength of astrology analysis and predictions, and ask
+questions when in doubt."*
+
+### Why This Failure Is Dangerous Specifically Because The Astrology Was Good
+
+This is not a softening error (Lessons 1–3) or a mechanism error (Lessons 8, 31, 34). It is a
+**boundary** error, and it is the first of its kind in this file.
+
+**The rigour of the surrounding analysis is what makes it harmful.** A carefully validated
+precedent pass confers authority; the action plan then borrows that authority for claims the
+chart never made. The native cannot easily see the seam. Astrological findings are falsifiable
+against the chart and against history — *"keep that recruiter warm"* is falsifiable against
+nothing, and the astrologer has no standing to have said it.
+
+There is a second cost, and it is the deeper one. **Every reading closes with "free will and
+dharmic action remain in the native's hands." Handing them a strategy quietly takes that back.**
+The closing line and the action plan cannot both be sincere.
+
+### Mandatory Rule Going Forward
+
+**State what the chart shows. Then stop.**
+
+| ✅ IN SCOPE | ⛔ OUT OF SCOPE |
+|---|---|
+| What the chart shows | What the native should do about it |
+| The **character** of a window ("favours formalization"; "dissolves commitments") | The **actions** to take in it |
+| Timing, strength, confidence, and mechanism (graha/house/lord/dasha/transit/yoga/varga) | Tactics, plans, checklists, ranked recommendations |
+| Life areas a period touches | Which job, which investment, which treatment |
+| Named vulnerabilities + their windows | Medical, legal, or financial instruction |
+| **Classical upayas** — mantra, gem, dana, deity, fasting, day-of-week | Self-help or productivity advice dressed as remedy |
+
+### The Two Tests — run both before delivering any reading
+
+1. **STRANGER TEST.** Would a career coach, financial adviser or therapist **who had never seen
+   this chart** produce the same sentence? → **Delete it.** It is not coming from the chart.
+2. **PROPER-NOUN TEST.** Does the sentence name a real person, employer, recruiter, firm or
+   institution **as something to act on**? → **Delete it.** Real proper nouns may appear only as
+   **evidence being classified** — *"the 10 Aug rejection is a 6th-house competition loss"* is
+   correct; *"keep that recruiter warm"* is not. The difference is classification vs. instruction.
+
+### The Upaya Exception — and its gate
+
+Upayas are the one permitted prescription, because the tradition prescribes them, not the
+astrologer. **Gate: a remedy must name the graha it propitiates.** If it cannot be traced to a
+graha it is lifestyle coaching wearing a remedy's clothes — strike it. *"Mondays, white, rest,
+for the afflicted Moon"* passes. *"Start one certification module this week"* does not, however
+neatly it was attached to Mercury.
+
+### When the native explicitly asks "what should I do?"
+
+Do not refuse, and do not improvise a plan. Three moves:
+1. The **astrological** answer — what the period supports, what it resists, when it turns.
+2. The **upaya** for the relevant graha.
+3. Say plainly that the practical decision is theirs; **the chart describes the terrain, not the route.**
+
+### The Diagnostic Link — advice is a SYMPTOM of missing chart data
+
+The same correction demanded: *ask questions when in doubt.* These are one lesson, not two.
+
+**Practical suggestions creeping into a reading are usually a reading that has run out of chart
+and kept talking.** Unable to say what the chart shows, it substitutes what a helpful person
+would say. So:
+
+> **Treat any urge to give practical advice as a signal that a chart fact is missing — then go
+> find it, and if it isn't in the chart, ASK THE NATIVE.**
+
+In the Anita case the genuinely missing datum was already identified in the same document —
+**the undocumented Saturn–Venus period, May 2014 → Jul 2017**, the sole precedent that calibrates
+the Jan–Jun 2027 Venus window (Lesson 38 Rule 4). **The action plan occupied the space where that
+question should have been the deliverable.**
+
+Ask when: a birth-time ambiguity moves the Lagna or a cusp · an event's month is unknown and two
+ADs straddle it (Lesson 14) · a forward window has no analogue (Lesson 38) · fixed real-world
+dates would colour a window (Lesson 36) · one confirmed event would settle two divergent readings.
+
+**How to ask:** state what you need, why it changes the analysis, and what each possible answer
+would imply. A good question shows its stakes. Never hedge into unfalsifiability, never silently
+assume the convenient branch, and **label an uncalibrated window uncalibrated.**
+
+### V9.1 QUICK-SCAN — RUN BEFORE DELIVERING ANY READING
+
+```
+SCOPE BOUNDARY (v9.1) — MANDATORY:
+□ STRANGER TEST run — no sentence a coach/adviser/therapist could have written blind
+□ PROPER-NOUN TEST run — no real person/employer/firm named as something to ACT on
+□ No ranked action list, no tactics, no "strategy" section anywhere in chat OR files
+□ Every statement traces to a graha / house / lord / dasha / transit / yoga / varga
+□ Every upaya names the graha it propitiates (else it is lifestyle advice — strike it)
+□ No medical, legal or financial instruction; health = vulnerability + window + "see a doctor"
+□ "What should I do?" answered as: astrological read → upaya → the decision is yours
+□ Any urge to give practical tips was traced to a MISSING CHART FACT and converted
+  into a question to the native
+□ Open questions present, priority-ordered, and carried into File 1
+□ Uncalibrated windows labelled uncalibrated
+```
+
+---
+
+## Summary of V8 Additions
+
+| Lesson | Title | Core Rule |
+|---|---|---|
+| **33 (corrected)** | Uniformed-Service Signature — threshold gated | The "3+ leads the list" count is **capped at 'contender'** unless the Sun is own-sign/exalted in the D-10 10th. Raja scored 3/6 on corroborating markers alone and is a private-sector CEO. Where a scorecard names a decisive marker, that marker is a **gate, not a point** — audit every other scorecard in this file for the same defect. |
+| 35 | Weak D-1 10th ≠ Weak Career | Never grade career **magnitude** from an empty/afflicted D-1 10th until the D-10 is computed. 2+ planets in the D-10 10th outranks it outright; Rahu there is a summit marker; Neecha Bhanga is a *delayed strong* placement, not a weak one. Lesson 8 guards the *field*; this guards the *magnitude*. General form: a weak D-1 house caps ease, the varga caps outcome. |
+| 36 | Overlay Known Fixed Dates Before Interpreting Windows | Ask for retirement age, contract ends, vesting dates, loan maturities — then overlay them on the dasha calendar. A dasha flags an **event**, never its **meaning**. A malefic AD landing on a scheduled transition *colours* it; it does not cause it. Where the fact is unknown, present both branches and ask — never silently choose the dramatic reading. |
+| 37 | Circumstance Redirects the Channel, Never Cancels the Finding | Lesson 31's principle generalised from geometry to life circumstance. State the finding at full strength, then rewrite it for the channel the native's situation permits — **without reducing severity**. Employer prestige, seniority and respectability are social assumptions, not counterweights (per Lesson 15). Self-audit: *if the rewrite feels more comfortable, it is a softening.* |
+| **39** *(v9.1)* | **Stay Inside the Chart — No Worldly Strategy; Ask When In Doubt** | **State what the chart shows, then STOP.** No career/job-search tactics, no financial, medical or legal instruction, no ranked action lists — in chat or in saved files, asked for or not. **Two tests: (i) STRANGER — would a coach/adviser/therapist who never saw the chart write this sentence? delete it. (ii) PROPER-NOUN — does it name a real person or firm as something to ACT on? delete it** (real names may appear only as evidence being *classified*, never as instruction). Classical upayas are the sole permitted prescription and **each must name its graha**. "What should I do?" → astrological read, then upaya, then *the decision is yours*. **The diagnostic link: an urge to give practical advice is a symptom of a MISSING CHART FACT — find it, and if it isn't in the chart, ask the native.** This error is dangerous *because* the surrounding analysis is rigorous: the action plan borrows authority the chart never granted, and it silently revokes the free-will close every reading ends on. |
+| **38** *(v9)* | **Every Forward Window Must Cite Its Historical Analogue** | **No forward window may be delivered without naming the comparable past period and what actually happened in it.** Match on same AD lord / same Saturn sign (29.5 yr) / same Jupiter sign (11.9 yr) / same Sade Sati phase. Mark native-confirmed precedents separately from inferred ones. **Lead with any precedent that contradicts the forecast.** Show precedent-vs-model disagreements rather than resolving them. **Where one dasha lord has two divergent precedents, identify which the current conditions match** — this is where the method earns its keep. If no analogue exists, label the window uncalibrated. |
+
+---
+
+## V8 PHILOSOPHICAL NOTE — The Chart That Wrote Lessons 1–6 Has Now Written 35–37
+
+There is a symmetry worth recording. **The 30-Apr-1972 Sagittarius-lagna chart is the chart that created this file** — the v1 change-log entry names it, because its extra-marital and grey-area-wealth findings were softened into two hedged sentences and Lessons 1 through 6 were written to stop that happening again.
+
+Reading the same chart properly, fourteen months later, produced three more lessons. That is not a coincidence, and it is not a sign that the earlier work was wasted. **It is what a chart does when you finally read it at full strength: it keeps teaching.** The first pass failed by *softening*. This pass came within one sentence of failing by *arithmetic* — the Lesson 33 scorecard would have ranked a Tata CEO as a police officer, on a threshold this file wrote itself.
+
+The through-line across all thirty-seven lessons is the same, stated three different ways:
+
+- **Lessons 1–3, 15, 17–19:** do not let *social comfort* choose the interpretation.
+- **Lessons 8, 31, 34, 37:** do not let a *convenient mechanism* stand in for the real one.
+- **Lessons 33 (corrected), 35, 36:** do not let a *rule, a count, or a single chart* substitute for the whole picture.
+
+Every one of them is the same failure wearing different clothes: **stopping early.** Stopping at the first house-meaning, at the first plausible pathway, at the first threshold crossed, at the D-1 when the D-10 was the point, at the dramatic reading when a birthday was the answer.
+
+**The discipline this file actually teaches is: keep going one step past where the reading feels finished.**
+
+---
+
 ## Change Log
 
 | Date | Version | Change | Source Chart |
@@ -1858,6 +2622,417 @@ This is the lesson. Catch all the readings. Let the native confirm which ones ar
 | 15 Mar 2026 | v3 | Lesson 16 added. Divorce/separation protocol, Rahu-Ketu axis activation, Graha Yuddha marriage impact, Jupiter 12th lord MD dissolution, Mars AD job change, rapid remarriage pattern, Saturn delay-not-prevent rule, clearing phase protocol. Updated Red Flag quick-scan and Pre-Reading Checklist. | 22-May-1972 male chart (Capricorn Lagna, Virgo Moon) |
 | 17 Mar 2026 | **v4** | **Lessons 17–23 added (renumbered from source-file Lessons 16–22). Elder sibling disability protocol, father addiction/alcoholism indicators, parental divorce 4-step scoring, cancer risk checklist with Rahu+6th lord in 12th rule, debilitated 8th lord fallacy corrected, Venus-in-Scorpio female reproductive protocol, Viparita Raja Yoga validation principle, Antardasha date calculation 5-step protocol. Red Flag quick-scan expanded. Pre-Reading Checklist expanded.** | **02-11-1979 female chart (Virgo lagna, Pisces Moon, Georgetown Guyana → USA)** |
 | May 2026 | **v5** | **Lessons 24–30 added. Spouse health protocol for male charts (9-point scorecard), Venus-sign-for-spouse-body table, caregiver-burden signature for 6th-house stelliums, intake probe for family health, post-relocation 5-7 year forecast, Moon MD spouse-health mandatory check, derived-houses-from-7th for dual-reading of every house.** | **18-Mar-1981 male chart (Aries lagna, Magha Moon, Hyderabad) — wife's breast cancer 2019-2025 was missed by V4 reading** |
+| 28 Jun 2026 | **v6** | **Lesson 31 added (verify graha drishti geometrically). Corrected the false "Saturn 7th-aspect on Libra/7th" claim in Lessons 23 & 25 — Saturn in Virgo aspects the 8th/12th/3rd, NOT the 7th. Restated the spouse-health mechanism as Venus-in-Saturn's-sign (dispositorship) + transit Saturn over natal Venus–Mercury. Pinned precise dates: diagnosis 09-Aug-2023 (Mars–Jupiter AD); treatment 26-Aug-2023 → 09-Dec-2024 (Mars–Saturn → Mars–Mercury AD).** | **18-Mar-1981 male chart (MadhuKrishna) — dates confirmed by the native's cousin** |
+| 21 Jul 2026 | **v7** | **Lessons 32–33 added. (32) Marriage-timing route selection: count D-1 7th-house occupants FIRST — 2+ occupants means the D-1 occupants outrank the Navamsha 7th occupant; MD lord AND AD lord both in the 7th = near-certain window. Lesson 7 was derived from an empty-7th chart and had over-generalised. Applying it mechanically here would have mis-timed the marriage by ~3 years (predicted Rahu–Mercury 1995–97; actual Rahu–Saturn Jun-1992). (33) Uniformed-government-service signature: Sun own-sign/exalted in the D-10 10th = office under the State; with Scorpio D-10 lagna + AmK Mars, rank police/defense/investigation FIRST, ahead of engineering/IT/finance. V7 quick-scan blocks added for both.** | **05-Jun-1968 male chart (Anand, Virgo lagna, Hasta) — IPS, youngest in India at age 20; 5/5 life events validated** |
+| 03 Aug 2026 | **v8** | **Lessons 35–37 added, plus a CORRECTION to Lesson 33. (33-corrected) The uniformed-service threshold is now GATED: the "3+ markers leads the list" count is capped at 'contender' unless the Sun is own-sign/exalted in the D-10 10th. Raja scored exactly 3/6 on corroborating markers with the gate shut, and applying the raw count would have ranked a private-sector Tata CEO as police/civil service. Generalised: where a scorecard names a decisive marker, that marker is a gate, not a point — every scorecard in this file to be audited for the same defect. (35) A weak D-1 10th does not mean a weak career — never grade career MAGNITUDE from an empty or afflicted D-1 10th until the D-10 is computed; Raja has an empty 10th and a debilitated 10th lord and runs a Tata company, with three planets in the D-10 10th. Lesson 8 guards the field; Lesson 35 guards the magnitude. (36) Overlay known fixed dates (retirement age, contract ends, vesting, maturities) on the dasha calendar BEFORE interpreting any window — a dasha flags an event, never its meaning; his retirement age of 65 was what proved Moon–Mars 2031–32 is a mid-tenure displacement rather than a scheduled superannuation, and pinned retirement instead to Moon–Mercury Apr-2037. (37) Circumstance redirects a finding's CHANNEL but never cancels it — Lesson 31's principle generalised from geometry to life circumstance; employer prestige and seniority are social assumptions, not counterweights. V8 quick-scan blocks added for all four.** | **30-Apr-1972 male chart (Raja, Sagittarius lagna, Anuradha Moon, MBA, Tata group CEO, Mumbai) — 7/7 life events validated; a near-miss caught during the reading, not a confirmed post-hoc miss. Note: this is the same chart that generated Lessons 1–6 in v1.** |
+
+| 05 Aug 2026 | **v9** | **Lesson 38 added — MANDATORY HISTORICAL ANALOGUE. No forward-looking window may be delivered without naming the comparable past period(s) in the native's own life and stating what actually happened in them. Match on same antardasha lord in an earlier mahadasha, same Saturn transit sign (29.5-yr), same Jupiter transit sign (11.9-yr), or same Sade Sati/dhaiyya phase. Four rules: (i) mark native-confirmed precedents separately from inferred ones; (ii) lead with any precedent that CONTRADICTS the forecast; (iii) show precedent-vs-model disagreements rather than resolving them artificially; (iv) where one dasha lord has two divergent precedents, determine which the CURRENT conditions match. The proving case: a Venus AD forecast as "gears flip green" had two analogues — one inside a protected gap (purely good) and one inside a Sade Sati rising phase (a firing, an emigration and the best job of his life in 18 months). The forward window matched the second, and the forecast was corrected from "clean ascent" to "disruption then upgrade." A precedent pass over an ALREADY-COMPLETED forecast produced five substantive corrections to it. Also yields mechanism detection (both times Jupiter occupied the 10th, the gain came via changing employer, not promotion in place) and life-rhythm detection (break and promotion arrived within a year of each other three times). V9 quick-scan block added.** | **02-12-1971 male chart (Sai, Sagittarius lagna, Rohini Moon, senior technologist in banking, TX) — 18/18 life events validated; format requested by the native after the precedent pass. Same chart that generated Lessons 8–15 in v2 and Lesson 34.** |
+
+| 17 Aug 2026 | **v9.1** | **Lesson 39 added — SCOPE BOUNDARY: STAY INSIDE THE CHART, AND ASK WHEN IN DOUBT. A focused sub-reading delivered a rigorous Lesson-38 precedent pass and then appended a ranked five-item career action plan naming a real recruiter and a real staffing firm as things to act on. None of it came from the chart. Rule: state what the chart shows, then stop — no career/job-search tactics, no financial/medical/legal instruction, no action lists, in chat or in files, asked for or not. Two mandatory tests: STRANGER (would a coach/adviser/therapist who never saw the chart write this sentence? → delete) and PROPER-NOUN (does it name a real person/firm as something to ACT on? → delete; real names may appear only as evidence being classified, never as instruction). Classical upayas are the sole permitted prescription, gated on naming the graha they propitiate. "What should I do?" → astrological read → upaya → the decision is yours. **Key diagnostic: practical advice creeping into a reading is a SYMPTOM of a missing chart fact — the Anita plan occupied exactly the space where the undocumented Saturn–Venus 2014–17 window (the sole calibrating precedent for the Jan–Jun 2027 forecast) should have been the deliverable question.** Distinct from Lessons 1–3 (softening) and 8/31/34 (mechanism): this is the file's first BOUNDARY lesson, and it is dangerous precisely because the surrounding analysis is sound — the plan borrows authority the chart never granted, and it silently revokes the free-will line every reading closes on. V9.1 quick-scan block added; `instructions.md` §7A/§7B and the SKILL.md header boundary added to enforce it at all three layers.** | **20-Sep-1973 female chart (Anita, Leo lagna, Ardra Moon, Patna → USA) — 8/8 life events validated. Correction requested directly by the user after the 16-Aug-2026 job-near-miss sub-reading.** |
+
+---
+
+## LESSON 40 — Benefics in the 3rd CONTRACT the Younger-Sibling Count; and Never Grade a Spouse's Health From the Husband's Venus
+*Source: 31-Jan-1972 male chart (Jayant Pathak, Libra lagna). Added 28 August 2026,
+after the native supplied sibling and family facts that produced one clean miss and
+one method error.*
+
+### Error A — "Strong 3rd house" was read as "younger siblings, thriving"
+
+**What was predicted:** *"3rd house Sagittarius with Jupiter in its own sign; 3rd lord in
+the 3rd itself. Younger sibling(s) indicated, capable, knowledge-oriented."*
+
+**What is true:** the native has **one elder sister and NO younger siblings.**
+
+**Why it was missed.** Own-sign dignity was read as "this house delivers abundantly,"
+and the house's *count* signification was collapsed into its *quality* signification.
+The classical rule runs the other way:
+
+> **A benefic occupying the 3rd house reduces or destroys younger co-borns.
+> A malefic in the 3rd increases them.**
+
+Jupiter in the 3rd is a textbook indicator of **few or no younger siblings**. Its dignity
+does not reverse this — dignity strengthens the 3rd house's *other* significations
+(courage, initiative, skill, communication, self-effort), which in this chart are genuinely
+strong, while the co-born count is suppressed.
+
+**Reinforcing markers that were present and unread:**
+- Jupiter sat in **Mula** — a Ketu-ruled *tikshna* (severing) nakshatra whose name means
+  "root," carrying the sense of a line cut off.
+- The **3rd from the Moon was empty**, and its lord was placed away in the 5th.
+- The sibling karaka **Mars was at 0 deg 03 min — balya (infant) avastha**: the karaka had
+  dignity but almost no functional strength, consistent with a *minimal* sibling set. This
+  was noted as "dignity without strength" but never connected to the count.
+
+### Mandatory Rule — Sibling COUNT protocol
+
+Before stating anything about how many siblings a native has:
+
+1. **Count and classify the 3rd-house occupants.** Benefics (Jupiter, Venus, well-placed
+   Mercury, waxing Moon) **reduce** younger co-borns. Malefics (Mars, Saturn, Sun, Rahu,
+   Ketu) **increase** them. Do the same for the 11th house and elder co-borns.
+2. **Grade quality and count separately, and say which you are grading.** A dignified
+   benefic in the 3rd routinely means *fewer siblings but a stronger 3rd house.* Never let
+   "the house is strong" stand in for "the house is populous."
+3. **Check the 3rd and 11th from the Moon as a second opinion.** If both are empty, the
+   lived sibling experience is lighter than the D1 alone suggests.
+4. **Check the sibling karaka Mars for avastha.** Infant/old degrees weaken the karaka and
+   argue for a small sibling set.
+5. **Compute the D3 (Drekkana) BEFORE stating a sibling finding, not after.** It is the
+   dedicated varga and it is cheap.
+6. **State the count as a hypothesis and ask the native to confirm it.** Sibling count is
+   a fact the native holds; it is never worth guessing at when it can simply be asked
+   (Lesson 39's diagnostic link applies).
+
+### What DID work, and should be kept
+
+The gender and the nature of the conflict were both called correctly, and the method is
+worth repeating:
+- **The Moon (a female graha) occupied the 11th in BOTH D1 and D3** — one planet, one
+  elder sibling, female. Reading the *occupant's gender* is a reliable and under-used move.
+- **The elder-sibling lord's condition located the conflict.** The 11th lord Sun was
+  conjunct **Rahu in the 4th (home, land, immovable property)**, and in the D3 the same Sun
+  sat in the **8th (inheritance, joint assets, disputes) with Rahu and Saturn**, with
+  **Ketu on the D3 2nd (family holdings)**. The call made in advance — *"an elder-sibling
+  issue would attach to the parental home or estate rather than to the person"* — was
+  confirmed: in 2020 the sister asked the native to surrender a jointly-held property into
+  her name. **Read the affliction's HOUSE to find what the sibling conflict is ABOUT.**
+- **The Moon was in Magha** — nakshatra of the Pitrs, symbol the inherited throne, meaning
+  ancestral entitlement. The elder-sibling significator sat in the nakshatra of inheritance
+  claims, and the defining sibling event was an inheritance claim. **Read the sibling
+  significator's nakshatra, not just its sign and house.**
+
+### Error B — Spouse health was graded from the HUSBAND's Venus
+
+**What the file said:** *"NOT the high cancer signature (no Venus-Rahu, no Venus in
+Scorpio/Cancer)"* — used as a stated reason for grading spouse-health risk **Medium**.
+
+**What is true:** that sentence described **the husband's** Venus (Aquarius). When the
+wife's birth date was supplied, **her own Venus computed to Scorpio 21-47** — exactly the
+placement **Lesson 22** flags as the reproductive-cancer indicator in a female chart.
+
+**The rule.** A husband's chart supports a *derived-house tendency* reading of his wife's
+health, and nothing more. It **cannot rule a condition out.**
+
+> **NEVER discharge or downgrade a spouse-health indicator using the native's own Venus.
+> The absence of a signature in the husband's chart is not evidence of its absence in the
+> wife's. Ruling OUT requires her chart. State the derived read as a tendency, then name
+> the datum needed to settle it, and ask for it.**
+
+Wording to use when the spouse's chart is unavailable:
+- Permitted: *"From his chart alone, the derived indication is a chronic, slow-build
+  tendency. This is a tendency, not a diagnosis, and her own chart is required to grade it."*
+- Forbidden: *"This is not the cancer signature"* / *"no Venus in Scorpio"* — any claim
+  about **her** planets inferred from **his**.
+
+**Corollary — grade only what the data supports.** With a date but no birth time, the
+Lesson-22 checklist splits into sign-based checks (answerable) and house-based checks
+(not). Report the split honestly and leave the grade **open** rather than defaulting to the
+previous grade. In this chart: 1 positive, 2 negative, **3 undeterminable** — so the grading
+is neither Medium nor High until a birth time arrives.
+
+### Bonus — a date alone is worth computing
+
+Even with no birth time, a date yields real, time-independent findings. Bracket the day
+(00:01 and 23:59) and keep only what does not change:
+- **All planets except the Moon** hold their sign across a full day.
+- **The Moon's sign is often stable too** — here the wife's Moon was in Aquarius at every
+  hour, fixing her Janma Rashi outright, and both children's Moons were in Cancer at every
+  hour.
+- Cross-chart checks then become available: the wife's Janma Rashi (Aquarius) proved to be
+  **the exact sign of the husband's wife-karaka Venus**, independently corroborating his
+  lagna, and revealing that any Aquarius transit strikes both charts simultaneously — which
+  is what happened when Saturn crossed it in late-2024 and the family separated.
+
+**Rule: when only a date is available, compute it anyway, bracket the day, and report the
+time-independent findings separately from the time-dependent gaps.** Do not wait for
+perfect data to extract the findings that are already certain.
+
+### Tooling note
+`compute_chart.py` did not implement **D3** and **silently fell back to D1** — an unsupported
+varga returned the Rasi chart under the D3 label. Both silent paths (the `varga_sign`
+fallback and the `div_map` lookup) have been patched: D3 is implemented, and an unrecognised
+varga now raises instead of returning a wrong chart. **Check that a varga is actually
+implemented before quoting it.**
+
+
+---
+
+## LESSON 41 — The Extra-Marital Checklist Has a FALSE-NEGATIVE Mode; and Run a Control Group Before Reporting Any Cross-Chart "Commonality"
+*Source: 31-Jan-1972 male chart (Jayant Pathak, Libra lagna), compared against the
+30-Apr-1972 male chart (Raja, Sagittarius lagna — the chart Lesson 1 was built from) and the
+18-Feb-1976 male chart (Pavan Ravula, Pisces lagna). Added 29 August 2026, after a reported
+NEGATIVE screen was contradicted by the native.*
+
+### What went wrong
+
+On 28-Aug-2026 the Lesson-1 checklist was run on Jayant's chart and returned
+**0 of 6 primary indicators**. The reported conclusion was *"extra-marital activity is not
+indicated."* The native subsequently confirmed an extra-marital fling.
+
+**The checklist was executed correctly. The checklist itself is the defect.**
+
+### Root cause — the checklist is a single-chart artefact
+
+Lesson 1 was written from **one chart** (Raja). Scoring all three confirmed cases:
+
+| | Raja | Pavan | Jayant |
+|---|---|---|---|
+| Lagna | Sagittarius | Pisces | Libra |
+| **PRIMARY** | **5 of 6** | 1 of 6 | **0 of 6** |
+| Secondary | 6 of 9 | 2 of 9 | 3 of 9 |
+
+The checklist does not describe a shared signature. **It describes Raja.** Its primary
+indicators — Moon in the 12th, 8th lord in the 12th, Venus-as-6th-lord in the 7th, Rahu in
+the 2nd, Moon in Scorpio — are, with one exception, present in Raja alone.
+
+### The two profiles
+
+**PROFILE A — "florid classical" (Raja).** Debilitated Moon in Scorpio in the 12th under
+Saturn's exact 7th aspect; 8th lord in the 12th; Venus as 6th lord in the 7th; Rahu in the
+2nd; Moon in Anuradha; Mars as 12th lord in the 6th; Venus in a dual sign; AK in the D9 5th.
+The existing checklist catches this perfectly.
+
+**PROFILE B — "Venus under Saturn" (Jayant + Pavan).** Zero-to-one primary indicators.
+Instead, all of:
+- **Venus rules the 8th house** (desire karaka owns the hidden house)
+- **Venus occupies a Saturn-owned sign** (Capricorn or Aquarius)
+- **Venus receives Saturn's aspect**
+- D9 Moon in the 6th
+
+**The existing checklist encodes none of this combination.** A chart can be Profile B and
+score zero.
+
+### Mandatory rule going forward
+
+1. **A 0/6 primary score is NOT a negative screen.** Never write "not indicated" on the
+   strength of the primary list alone. The correct wording is: *"the classical primary
+   indicators are absent; this chart does not carry the florid signature."* That is a
+   statement about the checklist's coverage, not about the native.
+2. **Always score Profile B separately**, as its own block:
+   - Does Venus rule the 6th or 8th? (True for lagnas **Taurus, Libra, Sagittarius, Pisces**
+     — 4 of 12, so this alone is weak.)
+   - Is Venus in a Saturn-owned sign (Capricorn/Aquarius)?
+   - Does Saturn aspect Venus (3rd/7th/10th from Saturn — verify geometrically, Lesson 31)?
+   - Is the **D9 Moon in the 6th**?
+3. **Promote D9 Moon in the 6th out of "secondary."** It was positive in all three confirmed
+   cases and is the checklist's ONLY 3-of-3 item — yet it is classified as a mere modifier
+   that "strengthens primaries." In two of three cases there were no primaries to strengthen.
+   The primary/secondary architecture inverts the signal for Profile B charts.
+4. **A charts screening negative is a statement about propensity markers, not conduct.**
+   Say so explicitly. Charts indicate signature and timing; they never establish absence.
+
+### THE SECOND LESSON — run a control group before reporting any "commonality"
+
+When asked to find what several charts share, the pattern-hunt will always succeed. It must
+be tested against charts that do NOT share the outcome, drawn from the same folder.
+
+**What the control did here.** Two markers looked like clean 3-of-3 commonalities:
+Venus ruling a dusthana, and D9 Moon in the 6th. Running them across the other adult male
+charts on disk:
+
+| Chart | Venus rules 6/8 | D9 Moon house | |
+|---|---|---|---|
+| Jayant / Raja / Pavan (cases) | 8th / 6th / 8th | **6 / 6 / 6** | |
+| Sai | 6th | 12 | partial |
+| MadhuKrishna | -- | 7 | |
+| Anand | -- | 9 | |
+| **Sudeep** | **8th** | **6** | **BOTH markers — FALSE POSITIVE** |
+| Kavyansh | -- | 5 | |
+
+**One control carried both markers.** Neither marker, nor the pair, is sufficient.
+
+**Statistics (n=8, Fisher exact one-tailed):** D9 Moon in 6th p≈0.071; Venus rules 6/8
+p≈0.179; refined Profile-B marker p≈0.107. **Nothing significant** — and roughly **25
+features were searched** to surface those two, at which denominator chance alone predicts
+about 0.5–1 spurious 3-of-3 hits. **The correct verdict was: no defensible commonality; the
+D9-Moon result is a hypothesis.**
+
+**Mandatory protocol for any multi-chart claim:**
+1. Score the cases.
+2. **Score every available non-case chart on the same markers, before reporting.**
+3. Report the false positives by name in the record — otherwise the next reader
+   "rediscovers" the pattern without the disconfirming case.
+4. State the **search denominator** — how many features were examined to find the hit.
+5. Compute a base rate. A marker true for 4 of 12 lagnas is 33% per chart; 3-of-3 on such a
+   marker is a 1-in-27 coincidence, i.e. unremarkable.
+6. A control carrying the marker is **evidence against the marker**. It is never a statement
+   about that person, and must be written so it cannot be read as one.
+
+### Data-integrity note (third occurrence of this failure)
+`PavanRavula.txt` states **DOB 2/18/1977**; its own planetary data matches **18-Feb-1976**
+on 8 of 8 bodies (1977 matches 1 of 8) and reproduces its stated Pisces 11-26 ascendant only
+for 1976. **The header was wrong, the chart data was right** — exactly as with
+`JayantPathak.txt`'s Sagittarius/Libra ascendant error and `Raja.txt`'s node values.
+**Rule: never trust a .txt header. Recompute from the planetary data and confirm the stated
+ascendant reproduces before using any chart.**
+
+
+---
+
+## LESSON 42 — Marital HARMONY Is Not Read From the 7th Lord's Dignity; an Empty Navamsa 7th Is Not a Finished Analysis; and Mangal Dosha Must Be Graded Against Harmony, Not Survival
+*Source: 01-May-1977 male chart (Venkat Narain, Aries lagna). Added 06 September 2026.*
+
+### The failure
+
+The reading stated the marriage was **"fundamentally sound"** and graded Kuja Dosha **"mild."**
+
+The native's family then confirmed: the marriage has been **strained for its entire duration,
+incompatible in every aspect including intimacy** — while remaining intact for twenty years and
+producing two children.
+
+Every component of the correct answer was already **printed in the reading** as an individual
+observation. Not one of them was missing. They were each noted and then individually
+outweighed by a single exalted planet.
+
+### The chart, and what should have been concluded
+
+| Factor | Present in the first draft? | Weight given |
+|---|---|---|
+| Rahu **in** the 7th | yes | "restlessness, periodic pressure" |
+| Mars **aspecting** the 7th (8th aspect, Pisces→Libra) | yes | "the genuine friction point" |
+| 7th lord Venus **exiled to the 12th**, conjunct that Mars | yes | **explained away** as "geography rather than estrangement" |
+| 7th house SAV only **24** (3rd weakest of 12) | yes | "thin terrain… responds to attention" |
+| Kuja Dosha **doubled** (Mars 12th from lagna, 7th from Moon) | yes | **"validated as MILD"** |
+| **D9 7th lord Saturn in the D9 6th** | **NO — never computed** | — |
+| Venus **falls from Pisces exaltation to Scorpio in the D9** | **NO — D9 was printed but Venus was not read in it** | — |
+
+**Five affliction indicators were reported and discounted; two decisive ones were never
+looked at.** The verdict should have been: *a capable spouse, an enduring bond, and no
+compatibility* — three separate findings, not one blended one.
+
+### The three named errors
+
+**ERROR 1 — DIGNITY WAS READ AS HARMONY.**
+Venus, the 7th lord, is **exalted**. That single fact was allowed to overrule five afflictions.
+But an exalted 7th lord answers only two questions:
+
+- **the SPOUSE'S quality and capability** — high
+- **the BOND'S durability** — high
+
+It answers **nothing** about whether the two people fit. **Dignity, durability and compatibility
+are three separate questions and a chart can answer them differently.** This one does.
+
+**ERROR 2 — AN EMPTY NAVAMSA 7TH WAS TREATED AS THE END OF THE NAVAMSA ANALYSIS.**
+The D9 7th (Capricorn) is empty. That emptiness was *used* — correctly, under Lesson 32 — to
+hand marriage **timing** to the D1 7th-house occupant, and it settled a node-convention
+question. Having extracted that, the analysis stopped.
+
+**The obvious next question was never asked: empty — but where did its LORD go?**
+
+D9 7th = Capricorn → lord **Saturn** → sitting in the **D9 6th** (Sagittarius): the navamsa
+house of conflict, discord, and obligation without warmth. **The lord of the marriage house,
+inside the chart that judges marriages, placed in the house of discord.** That is the single
+cleanest statement of an incompatible marriage this system produces, and it was one lookup away.
+
+**ERROR 3 — MANGAL DOSHA WAS GRADED AGAINST MARITAL SURVIVAL INSTEAD OF MARITAL HARMONY.**
+The reasoning written down was: *"Twenty years of marriage and two daughters are the empirical
+verdict, and it is mild."*
+
+**That is the wrong outcome variable.** Kuja Dosha's classical effect is **discord, not
+dissolution.** A marriage can carry a doubled Mangal Dosha for fifty years, never separate, and
+be unhappy every day of it — which is precisely this case. Marital *longevity* is close to
+uninformative about whether the dosha fired.
+
+### Mandatory protocol going forward — MARRIAGE QUALITY (distinct from marriage timing)
+
+Lesson 7 and Lesson 32 govern **timing**. Neither addresses **quality**. This is that protocol,
+and it is a separate pass.
+
+```text
+MARRIAGE QUALITY — run as its own pass, never folded into the timing pass:
+
+STEP 1 — Count the afflictions to the 7th BEFORE looking at the 7th lord's dignity.
+  □ Malefics IN the 7th (Rahu/Ketu/Mars/Saturn/Sun)
+  □ Malefics ASPECTING the 7th (verify geometrically, Lesson 31)
+  □ 7th lord in a dusthana (6/8/12)
+  □ 7th lord conjunct a malefic
+  □ 7th house SAV below 28
+  Three or more = an afflicted 7th. Write that number down before proceeding.
+
+STEP 2 — Trace the D9 7th LORD. Mandatory, whether or not the D9 7th is occupied.
+  □ Which sign is the D9 7th?  □ Who rules it?  □ WHERE IS THAT RULER IN THE D9?
+  → in the D9 6th, 8th or 12th = discord / estrangement / obligation without warmth.
+  An EMPTY D9 7th is a reason to trace the lord, never a reason to stop.
+
+STEP 3 — Compare the 7th lord's D1 dignity against its D9 dignity.
+  A rasi exaltation that DROPS in the navamsa = a promise that does not deliver
+  inside the marriage. Venus exalted in D1 → Scorpio in D9 is the source case.
+  Never quote a rasi dignity for marital quality without checking the navamsa sign.
+
+STEP 4 — Grade Kuja Dosha against HARMONY, never against survival.
+  □ Ask the native about marital harmony explicitly. Do NOT infer it from duration,
+    from the number of children, or from the absence of divorce.
+  □ "Still married with children" is NOT evidence the dosha was mild.
+
+STEP 5 — Report the three findings SEPARATELY. Never blend them:
+  spouse's quality  |  bond's durability  |  compatibility between them
+```
+
+### The phrasing rule
+
+An exalted, own-sign or otherwise dignified 7th lord is written as:
+
+> "The spouse is indicated as capable and of high quality, and the bond as durable. **Dignity of
+> the 7th lord does not speak to compatibility, which is read separately below.**"
+
+**Never** as "fundamentally sound," "a good marriage," "harmonious," or any phrase that
+smuggles compatibility in on the back of dignity.
+
+### Why this failure is dangerous — it is Lesson 3 in a new costume
+
+Lesson 3 forbids **identify-and-immediately-qualify**. This reading did exactly that, five
+times, and the qualifier each time was the same exalted planet. The most explicit instance:
+
+> *"The seventh lord in the twelfth is often read as separation; here it has expressed as
+> **geography rather than estrangement**, which is the ordinary way that placement resolves when
+> the lord is exalted."*
+
+The 7th lord in the 12th was carrying **both** meanings simultaneously — the marriage was lived
+abroad **and** the marriage significator sat in the house of loss. Choosing the benign reading
+because a dignity was available is the Lesson 3 pattern precisely.
+
+**And note the asymmetry that made it invisible:** every other section of this reading was
+rigorous — the birth data was verified 9/9 against the ephemeris, thirteen dated life events
+matched, the node convention was settled on evidence, and two forward windows were labelled
+uncalibrated. **The marriage error borrowed credibility from the rigour surrounding it.** This
+is the same mechanism named in Lesson 39, applied to a chart conclusion rather than to worldly
+advice.
+
+### Do not over-correct in the other direction
+
+Lesson 15 exists because a reading predicted marital stability that did not hold. **This lesson
+must not be read as licence to predict rupture whenever the 7th is afflicted.** In the source
+chart, divorce remains **not indicated** — Ketu is on the Lagna, not in the 7th, and the correct
+finding is **an enduring bond under permanent strain**, which is a *stable* state, not a
+transitional one.
+
+> **An afflicted 7th with a dignified 7th lord = the marriage lasts AND is unhappy.**
+> Both halves must be stated. Dropping either one is a failed reading.
+
+### Scope note (per Lesson 41b)
+
+**No cross-chart claim is made here.** This is a reasoning protocol drawn from classical rules
+already in the corpus, corrected on one chart. It is not a newly discovered marker, no control
+group was run, and none is required — the failure was in the weighting and in a step omitted,
+not in a marker's validity. **Should anyone later propose "D9 7th lord in the D9 6th" as a
+predictive marker across charts, Lesson 41's control-group protocol applies in full.**
+
+### V9.4 QUICK-SCAN — RUN BEFORE DELIVERING ANY MARRIAGE SECTION
+
+```text
+MARRIAGE QUALITY (v9.4) — MANDATORY:
+□ 7th-house afflictions COUNTED before the 7th lord's dignity was considered
+□ D9 7th LORD traced — even when (especially when) the D9 7th is empty
+□ 7th lord's D1 dignity compared against its D9 dignity; any drop stated
+□ Kuja Dosha graded against HARMONY, not against duration/children/no-divorce
+□ Native asked directly about marital harmony — never inferred from longevity
+□ Spouse quality / bond durability / compatibility reported as THREE findings
+□ No dignity used as a qualifier that softens an affliction (Lesson 3)
+□ If the 7th is afflicted AND the 7th lord dignified: BOTH halves stated —
+  the marriage lasts, and it is unhappy
+□ Divorce not predicted merely because the 7th is afflicted (Lesson 15 guard)
+```
 
 ---
 

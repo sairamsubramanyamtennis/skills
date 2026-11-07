@@ -1,0 +1,26 @@
+{
+  "skill_name": "pg-skill",
+  "evals": [
+    {
+      "id": 0,
+      "name": "ticker-identity-trap",
+      "prompt": "From my postgres trading database, pull the full daily close history for ticker ABX and tell me its total price return from the earliest bar to the latest. Give me the number and how you got it.",
+      "expected_output": "Recognises that ABX denotes two different companies over time (Barrick Gold until 2025, Abacus Global after) and resolves ticker->security_id per date via ref.resolve / ref.ticker_span rather than joining on the ticker string. A naive ticker join splices two unrelated price series and produces a nonsense total return.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "database-rundown",
+      "prompt": "Give me a rundown of what's actually in my trading postgres database - the tables, roughly how much data each holds, what date ranges they cover, and what the data actually represents at a high level.",
+      "expected_output": "A complete inventory across all six schemas (ref, mkt, evt, res, etl, stg) with row counts, sizes and date spans, plus a high-level explanation that the dataset is S&P 500 point-in-time membership + daily prices, with QM screen/backtest results computed on top.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "survivorship-coverage",
+      "prompt": "For 2008, how many S&P 500 members do I actually have price data for in the trading database, and what percentage coverage is that? I need to know how much survivorship bias is in a backtest starting that year.",
+      "expected_output": "Uses point-in-time membership (ref.index_membership / index_member_daily) intersected with prices, ideally via mkt.sp500_panel which is already membership-filtered, rather than counting today's members or unfiltered price rows. Reports a member count, a covered count and a percentage.",
+      "files": []
+    }
+  ]
+}

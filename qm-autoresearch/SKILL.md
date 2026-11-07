@@ -35,13 +35,46 @@ Applies Andrej Karpathy's **autoresearch** pattern to Quantitative Momentum opti
    directly (new quality metrics, regime awareness, volatility-adjusted momentum),
    then runs the harness to measure
 
-## Architecture (three files — mirrors Karpathy)
+## Architecture (four files — mirrors Karpathy)
 
 | File | Karpathy Equivalent | Role |
 |------|---------------------|------|
 | `scripts/qm_strategy.py` | `train.py` | The strategy being optimized — agent modifies this |
 | `scripts/qm_autoresearch.py` | `autoresearch.py` | The experiment harness — never modified |
 | `scripts/program.md` | `program.md` | Human-editable constraints and search directives |
+| `scripts/qm_pg_data.py` | — | Postgres data layer — the universe, prices and benchmark |
+| `scripts/qm_placebo.py` | — | Random-portfolio null distribution — judge results against it |
+
+## Data (migrated to Postgres 2026-08-06 — read this before trusting a number)
+
+Backtests run off the Postgres `trading` DB (localhost:5433), **not** the old Yahoo
+parquet. `qm_pg_data.py` supplies:
+
+- `mkt.price_daily` — delisted-inclusive daily bars, **2003-09-10 onward**, keyed on
+  `security_id`. That start is Polygon/Massive's own history floor, not a gap in the
+  ingest; probing the API for 2001 returns zero rows. With ~8 months of warmup for the
+  6-1 momentum and 126-day FIP windows, **the earliest honest backtest year is 2004**.
+- `ref.index_membership` — point-in-time S&P 500 membership, applied at every rebalance.
+- SPY from the same table, so benchmark and portfolio share one basis.
+
+**Three rules that keep results honest:**
+
+1. **Never key on a ticker string.** 173 tickers denote more than one company across
+   time (ABX = Barrick until 2025, then Abacus). The panel is `security_id`-keyed.
+2. **Prices are split-adjusted PRICE RETURN, no dividends.** The benchmark comes from
+   the same table on the same basis. Mixing in a Yahoo adjusted-close series (total
+   return) overstates the benchmark ~2pp/yr — larger than any edge this strategy has
+   ever shown.
+3. **`--source local` is survivorship-biased.** It is kept only for comparison. That
+   Yahoo panel holds 49% of the real point-in-time members in 2000 and 55% in 2003,
+   and the missing half is precisely the names later acquired or delisted.
+
+**Known coverage hole:** priced members run 91.5% (2004) → 94% (2010) → 100% (2020).
+The unpriced early names are ~15 bankruptcies Polygon never carried (Lehman, WaMu, GM,
+Fannie, Freddie, Delphi, Kodak) plus ~31 companies whose membership row carries their
+modern ticker while prices sit under the historical one (EA was ERTS until 2011, Schwab
+was SCH until 2005, NextEra was FPL until 2010). Quantify with
+`python scripts/qm_pg_data.py`, which prints the coverage table.
 
 ## How to run
 
@@ -82,16 +115,17 @@ Arguments:
   - `fip_focus` — Focus on FIP-specific params. Best for "does quality help?"
   - `smart_random` — Mutate 1-3 params. Good for finding multi-param combos.
   - `grid_sample` — Random from full grid. Most exploratory.
-- `--start-year`: Backtest start (default 2015). Use 2006 for 20 years.
-- `--time-budget`: Max seconds per experiment (default 300).
+- `--start-year`: Backtest start (default **2004**, the earliest the data supports).
+- `--time-budget`: Max seconds per experiment (default 300). The full 2004-2026 window
+  is ~267 months; raise this if experiments start timing out.
 
 **Recommended first runs**:
 ```bash
 # Sensitivity analysis: which individual params matter most?
-python <skill_dir>/scripts/qm_autoresearch.py --n 25 --strategy neighborhood --start-year 2015 --output-dir <output_dir>
+python <skill_dir>/scripts/qm_autoresearch.py --n 25 --strategy neighborhood --start-year 2004 --output-dir <output_dir>
 
 # FIP deep dive: does quality actually predict outperformance?
-python <skill_dir>/scripts/qm_autoresearch.py --n 20 --strategy fip_focus --start-year 2015 --output-dir <output_dir>
+python <skill_dir>/scripts/qm_autoresearch.py --n 20 --strategy fip_focus --start-year 2004 --output-dir <output_dir>
 ```
 
 ### Step 3b: Hybrid mode (agent modifies strategy)
@@ -107,13 +141,32 @@ python <skill_dir>/scripts/qm_autoresearch.py --n 20 --strategy fip_focus --star
 
 After autoresearch completes:
 
-1. **Top 10 strategies** — ranked by composite metric, showing Sharpe, quality premium, returns
-2. **Quality filter analysis** — what fraction of experiments had positive quality premium?
-   Does FIP weight correlate with better composites?
-3. **Baseline comparison** — Gray's default QM (6-1, 50% FIP) vs best found
-4. **FIP weight analysis** — how does the composite metric vary with FIP weight?
-5. **Overfitting warning** — always include, especially if best >> baseline
-6. **Hybrid mode suggestions** — what code modifications to try next
+1. **Placebo percentile FIRST** — before any CAGR. Load `placebo_bands.json` (build it
+   with `python scripts/qm_placebo.py`) and report where each top config sits in the
+   random-portfolio distribution for its `n_holdings`/`rebalance_freq`. Compare net
+   against net. A config inside the band did not beat chance, whatever its CAGR.
+2. **Top 10 strategies** — by composite metric, showing Sharpe, `benchmark_sharpe`,
+   `excess_vs_ew` with its t-stat, turnover and cost drag
+3. **Split-sample check on the winners** — re-run the top few on 2004-2015 and 2016-2026
+   separately. QM flips sign across that boundary (−2.6pp then +2.2pp vs equal-weight),
+   so a full-sample average conceals a regime trade
+4. **Quality filter analysis** — fraction of experiments with a quality premium whose
+   t-stat clears ±1. At baseline it is 0.71 with a 50% hit rate, i.e. nothing
+5. **Baseline comparison** — Gray's default QM (6-1, 50% FIP) vs best found
+6. **Overfitting warning** — always include. The search space is 3.4M configurations
+   against 267 months; the best of 30 draws is optimistic by construction
+7. **Hybrid mode suggestions** — what code modifications to try next
+
+### The benchmark to quote
+
+The strategy is **equal-weighted**, so the primary comparator is `excess_vs_ew` — an
+equal-weight portfolio of the same point-in-time universe. Measuring 50 equal-weighted
+names against cap-weighted SPY smuggles in a size tilt that has nothing to do with
+momentum. Quote SPY second, as the thing the money would otherwise sit in.
+
+Baseline, 2004-2026, net of 10bps/leg: QM **8.21%**, equal-weight universe **8.78%**,
+SPY **8.90%**. Excess vs equal-weight **−0.57pp, t = −0.20**. Strategy Sharpe **0.243**
+against SPY's **0.332** — the benchmark Sharpe-dominates.
 
 ### Step 5: Offer follow-ups
 
@@ -155,3 +208,27 @@ Same as quantitative-momentum skill:
 - **All -999 composites**: Backtest failing — check stderr for errors
 - **Negative quality premium everywhere**: FIP may not help for this lookback/market regime
   — report this finding, it's valuable information
+
+---
+
+## Telemetry (standing requirement — all skills)
+
+Log this run **once, at the very end**, whether it went well or not (Bash tool; forward slashes):
+
+```bash
+python C:/Users/ssair/.claude/telemetry/telemetry.py log --skill qm-autoresearch \
+  --outcome delivered|partial|blocked|corrected|routed \
+  --asked    "what he actually wanted, one line" \
+  --produced "what he got, one line" \
+  [--friction "what slowed it down or went wrong"] [--routed-to <skill>] [--tags a,b]
+```
+
+* `corrected` = Sai had to push back before it was right. **Log it.** A telemetry file that is all
+  `delivered` is worthless for skill health — the corrections and blocks are the whole point.
+* One record per run, not per step. Silent side effect: never announce it, never ask permission for
+  it, never let it delay or clutter the answer.
+* Paraphrase in `--asked`; never log credentials, birth data, account numbers or verbatim personal
+  detail. If the call fails, drop it and move on.
+
+Full contract: `C:/Users/ssair/.claude/telemetry/TELEMETRY.md` · read it back in the Recap app's
+Telemetry page or via `telemetry.py stats --days 30`.

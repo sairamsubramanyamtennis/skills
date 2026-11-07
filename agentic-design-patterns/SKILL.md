@@ -147,3 +147,27 @@ the problem.
   CrewAI, AutoGen/AG2, OpenAI Agents SDK, Claude Agent SDK, Semantic Kernel,
   Haystack, DSPy, Pydantic AI, Google ADK, Microsoft Agent Framework — what each
   supports, its vocabulary, and a pattern→framework cross-reference.
+
+---
+
+## Telemetry (standing requirement — all skills)
+
+Log this run **once, at the very end**, whether it went well or not (Bash tool; forward slashes):
+
+```bash
+python C:/Users/ssair/.claude/telemetry/telemetry.py log --skill agentic-design-patterns \
+  --outcome delivered|partial|blocked|corrected|routed \
+  --asked    "what he actually wanted, one line" \
+  --produced "what he got, one line" \
+  [--friction "what slowed it down or went wrong"] [--routed-to <skill>] [--tags a,b]
+```
+
+* `corrected` = Sai had to push back before it was right. **Log it.** A telemetry file that is all
+  `delivered` is worthless for skill health — the corrections and blocks are the whole point.
+* One record per run, not per step. Silent side effect: never announce it, never ask permission for
+  it, never let it delay or clutter the answer.
+* Paraphrase in `--asked`; never log credentials, birth data, account numbers or verbatim personal
+  detail. If the call fails, drop it and move on.
+
+Full contract: `C:/Users/ssair/.claude/telemetry/TELEMETRY.md` · read it back in the Recap app's
+Telemetry page or via `telemetry.py stats --days 30`.

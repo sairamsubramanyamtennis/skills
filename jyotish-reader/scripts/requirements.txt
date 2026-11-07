@@ -10,3 +10,7 @@
 #   database — without it ZoneInfo("Asia/Kolkata") raises ZoneInfoNotFoundError.
 pyswisseph==2.10.3.2
 tzdata==2026.2
+# psycopg2-binary: Postgres driver so the astro-market ephemeris build (run from
+#   this venv) writes `trading` through C:\Users\ssair\trading-db\pgdb.py.
+#   Pinned to the version the house Python 3.12 uses. Added 2026-10-09.
+psycopg2-binary==2.9.10

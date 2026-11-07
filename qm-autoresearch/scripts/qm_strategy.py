@@ -200,6 +200,12 @@ PARAMS = {
 
     # Risk management
     "stop_loss_pct": 0.0,        # 0.0 = disabled; e.g. 0.20 = sell if down 20%
+
+    # Costs. Charged per leg on the actual weight delta at each rebalance.
+    # Do NOT set this to 0 to make a result look better: measured turnover is
+    # ~279%/yr one-way, so zero costs overstate the annual return by ~0.56pp —
+    # several times larger than any edge this strategy has demonstrated.
+    "cost_bps_per_leg": 10,
 }
 
 
@@ -405,8 +411,14 @@ def select_portfolio(momentum, fip, ret_1m, sectors, params, allowed=None):
         sec_counts = {}
         max_sec = max(1, int(n_hold * cap))
         for t in candidates.index:
-            s = sectors.get(t, "Unknown")
-            if sec_counts.get(s, 0) < max_sec:
+            s = sectors.get(t)
+            # Only ~60% of historical members carry a sector; the gaps are mostly
+            # long-delisted names. Bucketing them all as "Unknown" would make the
+            # cap bind on a data artefact and silently drop real candidates, so an
+            # unknown sector is exempt from the cap rather than sharing a bucket.
+            if s is None:
+                selected.append(t)
+            elif sec_counts.get(s, 0) < max_sec:
                 selected.append(t)
                 sec_counts[s] = sec_counts.get(s, 0) + 1
             if len(selected) >= n_hold:
@@ -492,7 +504,7 @@ def measure_quality_premium(monthly_ret, monthly_prices, daily_returns,
 # ============================================================================
 
 def backtest(prices, sectors, params, start_year=2015, membership=None,
-             return_series=False, regime_filter=False):
+             return_series=False, regime_filter=False, benchmark=None):
     """
     Walk-forward backtest of the QM strategy.
 
@@ -502,9 +514,22 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
       - composite_metric: sharpe - penalty if quality doesn't work
       - standard performance metrics
     """
-    daily_returns = prices.pct_change()
+    # fill_method=None is REQUIRED. pandas defaults to 'pad', which forward-fills
+    # a delisted name's last print forever, so its return becomes exactly 0.0
+    # rather than NaN — and the NaN guard further down silently never fires. That
+    # turns "this holding was delisted" into "this holding returned zero, costlessly",
+    # which is the classic way a backtest launders a bankruptcy into a flat month.
+    daily_returns = prices.pct_change(fill_method=None)
     monthly = prices.resample("ME").last()
-    monthly_ret = monthly.pct_change()
+    monthly_ret = monthly.pct_change(fill_method=None)
+
+    # The panel's last month is usually a stub (a few trading days), and resample
+    # counts it as a full month in n_years. Drop it unless it is genuinely complete.
+    if len(monthly) > 1:
+        last_bar = prices.index.max()
+        if last_bar < monthly.index[-1] - pd.Timedelta(days=5):
+            monthly = monthly.iloc[:-1]
+            monthly_ret = monthly_ret.iloc[:-1]
 
     lookback = params["lookback_months"]
     skip = params["skip_months"]
@@ -516,13 +541,19 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
     else:
         rebal_months = list(range(1, 13))
 
-    # SPY benchmark — Polygon primary, yfinance fallback
+    # SPY benchmark. A caller-supplied series is authoritative: the Postgres
+    # panel is SPLIT-adjusted (price return), and Yahoo's adjusted close is
+    # TOTAL return. Silently mixing the two overstates the benchmark by roughly
+    # 2pp a year, which is larger than any edge this strategy has ever shown.
     spy_start = f"{start_year-2}-01-01"
     spy_end = datetime.now().strftime("%Y-%m-%d")
     spy_close = None
-    s = _yahoo_v8_closes("SPY", spy_start, spy_end, requests.Session())
-    if s is not None and len(s):
-        spy_close = s
+    if benchmark is not None and len(benchmark):
+        spy_close = benchmark
+    if spy_close is None:
+        s = _yahoo_v8_closes("SPY", spy_start, spy_end, requests.Session())
+        if s is not None and len(s):
+            spy_close = s
     if spy_close is None:
         key = _poly_key()
         if key:
@@ -566,6 +597,12 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
     port_dates = []
     bench_returns = []
     quality_premiums = []
+    ew_returns = []
+    turnover_log = []
+    cost_drag_log = []
+    delisted_months = []
+    pending_cost = 0.0
+    cost_rate = params.get("cost_bps_per_leg", 10) / 10000.0
     current_weights = pd.Series(dtype=float)
 
     for i in range(warmup, len(monthly)):
@@ -589,9 +626,22 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
                     fip = calculate_fip(hist_d, params["fip_lookback_days"],
                                         params["fip_pct_positive_weight"])
                     allowed = members_on(membership, date) if membership else None
-                    current_weights, _ = select_portfolio(
+                    new_weights, _ = select_portfolio(
                         mom, fip, ret_1m, sectors, params, allowed=allowed
                     )
+
+                    # Transaction cost, charged on the ACTUAL weight delta rather
+                    # than as a flat annual haircut. Measured one-way turnover for
+                    # this strategy is ~70%/quarter, so this is not a rounding
+                    # error: at 10bps/leg it costs ~0.56pp a year, which is several
+                    # times the entire measured edge.
+                    if len(new_weights) > 0:
+                        idx = current_weights.index.union(new_weights.index)
+                        delta = (new_weights.reindex(idx).fillna(0.0)
+                                 - current_weights.reindex(idx).fillna(0.0)).abs().sum()
+                        turnover_log.append(delta / 2.0)
+                        pending_cost = (delta / 2.0) * 2 * cost_rate
+                        current_weights = new_weights
 
                     # Measure quality premium at this rebalance point
                     qp = measure_quality_premium(
@@ -608,6 +658,7 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
         if len(current_weights) > 0 and i < len(monthly_ret):
             mr = monthly_ret.iloc[i]
             pr = 0.0
+            live_weight = 0.0
             for t in current_weights.index:
                 try:
                     tr = mr[t] if t in mr.index else np.nan
@@ -615,12 +666,28 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
                         tr = tr.iloc[0]
                     if not np.isnan(tr):
                         pr += current_weights[t] * tr
+                        live_weight += current_weights[t]
                 except Exception:
                     pass
+
+            # A holding whose price series ended (delisting, acquisition, failure)
+            # contributes NaN. Dropping the term silently treats it as 0% held in
+            # cash at no cost. Instead, renormalize onto the names that actually
+            # traded, so the surviving positions carry the full portfolio weight
+            # and the month is not diluted toward zero by a phantom cash sleeve.
+            if 0.0 < live_weight < 0.999:
+                pr = pr / live_weight
+                delisted_months.append(str(date.date()))
 
             # Stop loss
             if params["stop_loss_pct"] > 0 and pr < -params["stop_loss_pct"]:
                 pr = -params["stop_loss_pct"]
+
+            # Charge the rebalance cost against the month the trade happened in.
+            if pending_cost:
+                pr -= pending_cost
+                cost_drag_log.append(pending_cost)
+                pending_cost = 0.0
 
             # Regime filter: if SPY was below its 200DMA at the prior month-end, hold cash.
             if regime_filter and i >= 1 and not regime_on_at(monthly.index[i - 1]):
@@ -641,6 +708,21 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
             except Exception:
                 pass
 
+            # Equal-weight point-in-time universe. THIS is the honest comparator:
+            # the strategy holds 50 names equal-weighted, so measuring it against
+            # cap-weighted SPY smuggles in a size tilt that has nothing to do with
+            # momentum. SPY stays as a secondary reference because it is what the
+            # money would otherwise sit in.
+            try:
+                if membership:
+                    univ = members_on(membership, date)
+                    row = mr.reindex(list(univ)).dropna() if univ else mr.dropna()
+                else:
+                    row = mr.dropna()
+                ew_returns.append(float(row.mean()) if len(row) else np.nan)
+            except Exception:
+                ew_returns.append(np.nan)
+
     if not port_returns:
         return {"sharpe_ratio": -999, "quality_premium": 0, "composite_metric": -999,
                 "error": "No returns generated"}
@@ -658,22 +740,54 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
     cum_rets = (1 + rets).cumprod()
     max_dd = ((cum_rets - cum_rets.cummax()) / cum_rets.cummax()).min()
 
-    # Benchmark
+    # Benchmark (SPY, cap-weighted — secondary)
+    bench_sharpe = None
     if bench_returns:
         br = pd.Series(bench_returns)
         ba = (1 + br).prod() ** (1 / max(len(br) / 12, 0.01)) - 1
         excess = annual_return - ba
+        bvol = br.std() * np.sqrt(12)
+        bench_sharpe = (ba - 0.04) / max(bvol, 0.001)
     else:
         ba = 0
         excess = annual_return
 
-    # Quality premium: average high-FIP minus low-FIP forward returns
-    avg_qp = np.mean(quality_premiums) if quality_premiums else 0.0
+    # Equal-weight PIT universe (primary comparator — same weighting scheme)
+    ew_series = pd.Series(ew_returns).dropna()
+    if len(ew_series) > 12:
+        ew_annual = (1 + ew_series).prod() ** (1 / max(len(ew_series) / 12, 0.01)) - 1
+        excess_ew = annual_return - ew_annual
+        # t-stat on the monthly excess series, the only honest significance test here
+        n = min(len(rets), len(ew_series))
+        diff = rets.iloc[:n].reset_index(drop=True) - ew_series.iloc[:n].reset_index(drop=True)
+        t_excess_ew = (diff.mean() / (diff.std() / np.sqrt(len(diff)))) if diff.std() > 0 else 0.0
+    else:
+        ew_annual, excess_ew, t_excess_ew = None, None, None
 
-    # COMPOSITE METRIC: Sharpe with quality penalty
-    # If quality premium is negative (FIP doesn't help), penalize the Sharpe
-    # Penalty = 0.5 * abs(quality_premium) when negative, 0 when positive
-    quality_penalty = 0.5 * abs(avg_qp) if avg_qp < 0 else 0.0
+    # Quality premium. measure_quality_premium returns a 3-MONTH CUMULATIVE in
+    # percentage points, so it must be annualized before it is called a premium.
+    qp_arr = np.array(quality_premiums, dtype=float) if quality_premiums else np.array([])
+    n_fwd = params.get("quality_forward_months", 3)
+    avg_qp = float(qp_arr.mean()) if qp_arr.size else 0.0
+    qp_annual = avg_qp * (12.0 / n_fwd)
+    if qp_arr.size > 1 and qp_arr.std(ddof=1) > 0:
+        qp_t = float(qp_arr.mean() / (qp_arr.std(ddof=1) / np.sqrt(qp_arr.size)))
+    else:
+        qp_t = 0.0
+    qp_hit = float((qp_arr > 0).mean()) if qp_arr.size else 0.0
+
+    # COMPOSITE METRIC — the harness's objective function.
+    #
+    # The old form was `sharpe - 0.5*|quality_premium|`, which is dimensionally
+    # incoherent: Sharpe here is ~0.28 while the raw quality premium has a standard
+    # deviation of ~6.2, so a single noisy draw could swamp every real difference
+    # in risk-adjusted return. Searching millions of configurations against that
+    # objective optimizes the sign of noise, not performance.
+    #
+    # The penalty now (a) uses the t-statistic, which is unit-free, and (b) only
+    # bites when the quality premium is both negative AND statistically meaningful.
+    # A premium that is merely noisy costs nothing, because noise is not evidence.
+    quality_penalty = 0.25 * min(abs(qp_t), 2.0) if (qp_t < -1.0) else 0.0
     composite_metric = sharpe - quality_penalty
 
     result = {
@@ -686,7 +800,29 @@ def backtest(prices, sectors, params, start_year=2015, membership=None,
         "benchmark_annual": round(ba * 100, 2),
         "n_months": len(rets),
         "n_years": round(n_years, 1),
+
+        # Primary comparator: equal-weight PIT universe, same weighting scheme
+        "ew_universe_annual": round(ew_annual * 100, 2) if ew_annual is not None else None,
+        "excess_vs_ew": round(excess_ew * 100, 2) if excess_ew is not None else None,
+        "t_excess_vs_ew": round(t_excess_ew, 2) if t_excess_ew is not None else None,
+        "benchmark_sharpe": round(bench_sharpe, 4) if bench_sharpe is not None else None,
+
+        # Costs actually charged
+        "cost_bps_per_leg": params.get("cost_bps_per_leg", 10),
+        "turnover_annual_pct": (round(float(np.mean(turnover_log)) * 100 *
+                                      (12 / (3 if params["rebalance_freq"] == "quarterly" else 1)), 1)
+                                if turnover_log else 0.0),
+        "cost_drag_annual_pct": (round(float(np.sum(cost_drag_log)) * 100 / max(n_years, 0.01), 3)
+                                 if cost_drag_log else 0.0),
+        "delisting_months": len(delisted_months),
+
+        # Quality premium, annualized and with its significance attached. The raw
+        # mean alone is meaningless — it has historically been ~0.48 with a
+        # standard deviation of 6.2, i.e. indistinguishable from zero.
         "quality_premium": round(avg_qp, 4),
+        "quality_premium_annual_pct": round(qp_annual, 2),
+        "quality_premium_t": round(qp_t, 2),
+        "quality_premium_hit_rate": round(qp_hit, 3),
         "quality_penalty": round(quality_penalty, 4),
         "composite_metric": round(composite_metric, 4),
         "n_quality_observations": len(quality_premiums),
@@ -710,7 +846,11 @@ if __name__ == "__main__":
     parser.add_argument("--live", action="store_true")
     parser.add_argument("--out", type=str, default=None)
     parser.add_argument("--params-json", type=str, default=None)
-    parser.add_argument("--start-year", type=int, default=2015)
+    parser.add_argument("--start-year", type=int, default=2004)
+    parser.add_argument("--source", choices=["pg", "local"], default="pg",
+                        help="pg = Postgres trading DB (survivorship-free, "
+                             "security_id-keyed). local = legacy Yahoo parquet, "
+                             "which is ~50%% short of the real universe before 2010.")
     args = parser.parse_args()
 
     params = PARAMS.copy()
@@ -718,35 +858,60 @@ if __name__ == "__main__":
         params.update(json.loads(args.params_json))
 
     if args.backtest:
-        # Sectors (best-effort, current GICS) for the optional sector cap.
-        try:
-            _, sectors = get_sp500_tickers()
-        except Exception:
-            sectors = {}
+        bench = None
 
-        # LOCAL-FIRST: use the cached daily panel + point-in-time membership if present.
-        prices = load_local_prices()
-        membership = load_pit_membership()
-        if prices is not None:
-            print(f"Using LOCAL panel: {prices.shape[1]} tickers, "
+        if args.source == "pg":
+            # Postgres: delisted-inclusive daily bars keyed on security_id, with
+            # point-in-time membership from the same database. Prices and the SPY
+            # benchmark are both split-adjusted price return, so the comparison
+            # is on one basis.
+            import qm_pg_data as pgd
+            prices = pgd.load_panel()
+            membership = pgd.load_membership()
+            sectors = pgd.load_sectors()
+            bench = pgd.load_benchmark()
+            if prices is None:
+                sys.exit("PG panel came back empty — check the trading DB on :5433")
+            print(f"Using PG panel: {prices.shape[1]} securities (security_id-keyed), "
                   f"{prices.index.min().date()}..{prices.index.max().date()}", file=sys.stderr)
+            print(f"Benchmark: SPY from mkt.price_daily, {len(bench)} closes "
+                  f"(split-adjusted price return)", file=sys.stderr)
+            print(f"Sectors: {len(sectors)} of {prices.shape[1]} securities carry one; "
+                  f"the rest are exempt from the sector cap", file=sys.stderr)
         else:
-            tickers, sectors = get_sp500_tickers()
-            start_dt = f"{args.start_year - 2}-01-01"
-            end_dt = datetime.now().strftime("%Y-%m-%d")
-            print(f"No local panel; downloading ({start_dt} to {end_dt})...", file=sys.stderr)
-            prices = download_prices(tickers, start_dt, end_dt)
+            # Legacy path. Kept runnable for comparison only — this panel holds
+            # just 49% of the point-in-time members in 2000 and 55% in 2003, and
+            # the missing names are the ones that were later acquired or delisted.
+            print("WARNING: --source local uses the survivorship-biased Yahoo panel.",
+                  file=sys.stderr)
+            try:
+                _, sectors = get_sp500_tickers()
+            except Exception:
+                sectors = {}
+            prices = load_local_prices()
+            membership = load_pit_membership()
+            if prices is not None:
+                print(f"Using LOCAL panel: {prices.shape[1]} tickers, "
+                      f"{prices.index.min().date()}..{prices.index.max().date()}",
+                      file=sys.stderr)
+            else:
+                tickers, sectors = get_sp500_tickers()
+                start_dt = f"{args.start_year - 2}-01-01"
+                end_dt = datetime.now().strftime("%Y-%m-%d")
+                print(f"No local panel; downloading ({start_dt} to {end_dt})...",
+                      file=sys.stderr)
+                prices = download_prices(tickers, start_dt, end_dt)
 
         if membership:
             print(f"PIT membership: {len(membership)} change-dates "
                   f"({membership[0][0].date()}..{membership[-1][0].date()}) "
                   f"-> per-rebalance universe filter ON", file=sys.stderr)
         else:
-            print("No PIT membership file -> using full panel as universe", file=sys.stderr)
+            print("No PIT membership -> using full panel as universe", file=sys.stderr)
 
         print(f"Running QM backtest (start={args.start_year})...", file=sys.stderr)
         result = backtest(prices, sectors, params, start_year=args.start_year,
-                          membership=membership)
+                          membership=membership, benchmark=bench)
 
         # Metric lines for autoresearch harness
         print(f"METRIC:sharpe_ratio={result['sharpe_ratio']}")

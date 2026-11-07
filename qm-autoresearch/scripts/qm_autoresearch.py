@@ -166,7 +166,7 @@ def generate_experiments(n_experiments=30, strategy="neighborhood"):
 # EXPERIMENT RUNNER
 # ============================================================================
 
-def run_experiment(params, experiment_id, script_path, start_year=2015, time_budget=300):
+def run_experiment(params, experiment_id, script_path, start_year=2004, time_budget=300):
     """
     Run a single backtest experiment.
 
@@ -256,7 +256,7 @@ def run_experiment(params, experiment_id, script_path, start_year=2015, time_bud
 # ============================================================================
 
 def run_autoresearch(n_experiments=30, strategy="neighborhood",
-                     output_dir=".", start_year=2015, time_budget=300):
+                     output_dir=".", start_year=2004, time_budget=300):
     """
     The Karpathy autoresearch loop for Quantitative Momentum:
       1. Generate experiments (parameter variants)
@@ -468,7 +468,7 @@ if __name__ == "__main__":
                         default="neighborhood",
                         help="Search strategy")
     parser.add_argument("--output-dir", type=str, default=".")
-    parser.add_argument("--start-year", type=int, default=2015)
+    parser.add_argument("--start-year", type=int, default=2004)
     parser.add_argument("--time-budget", type=int, default=300,
                         help="Max seconds per experiment (default: 300)")
 

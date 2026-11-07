@@ -26,7 +26,7 @@ Usage:
     python3 compute_chart.py \\
       --name "Native" --date 1990-08-15 --time "09:42 AM" \\
       --lat 13.0827 --lon 80.2707 --tz Asia/Kolkata \\
-      --varga D1,D9,D7,D10,D12
+      --varga D1,D3,D9,D7,D10,D12
 
 Notes:
   - --date accepts YYYY-MM-DD or DD-MM-YYYY.
@@ -38,10 +38,11 @@ Notes:
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime
-from zoneinfo import ZoneInfo
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 try:
     import swisseph as swe
 except ImportError:
@@ -52,31 +53,13 @@ except ImportError:
     )
     sys.exit(1)
 
-SIGNS = [
-    "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
-    "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces",
-]
-
-NAKSHATRAS = [
-    "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra",
-    "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni",
-    "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha",
-    "Jyeshtha", "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana",
-    "Dhanishta", "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada",
-    "Revati",
-]
-
-# (display name, swe constant). Rahu = mean node; Ketu derived as +180.
-PLANETS = [
-    ("Sun", swe.SUN),
-    ("Moon", swe.MOON),
-    ("Mars", swe.MARS),
-    ("Mercury", swe.MERCURY),
-    ("Jupiter", swe.JUPITER),
-    ("Venus", swe.VENUS),
-    ("Saturn", swe.SATURN),
-    ("Rahu", swe.MEAN_NODE),
-]
+# Pure astronomy (constants, parsing, sign/nakshatra helpers, instant->UT,
+# positions) lives in jyotish_core.py, shared with the astro-market build.
+import jyotish_core as core
+from jyotish_core import (  # noqa: F401  (re-exported for existing importers)
+    SIGNS, NAKSHATRAS, PLANETS, SID_FLAGS, parse_date, parse_time, sign_index,
+    deg_in_sign, fmt_dms, nakshatra_pada, planet_lon, jd_to_date,
+)
 
 # Vimshottari dasha: 9 lords in fixed order with their period lengths (years).
 # Total cycle = 120 years. The lord of the Moon's birth nakshatra starts the
@@ -87,53 +70,6 @@ DASHA_SEQ = [
     ("Rahu", 18), ("Jupiter", 16), ("Saturn", 19), ("Mercury", 17),
 ]
 
-# Sidereal flags reused by the time-scan helpers (set_sid_mode must be set first).
-SID_FLAGS = swe.FLG_SWIEPH | swe.FLG_SIDEREAL | swe.FLG_MOSEPH
-
-
-def parse_date(s):
-    for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%Y/%m/%d"):
-        try:
-            return datetime.strptime(s, fmt)
-        except ValueError:
-            continue
-    raise ValueError(f"Unrecognized date format: {s!r} (use YYYY-MM-DD or DD-MM-YYYY)")
-
-
-def parse_time(s):
-    s = s.strip()
-    for fmt in ("%I:%M %p", "%I:%M%p", "%H:%M", "%I.%M %p"):
-        try:
-            t = datetime.strptime(s, fmt)
-            return t.hour, t.minute
-        except ValueError:
-            continue
-    raise ValueError(f"Unrecognized time format: {s!r} (use 'HH:MM AM/PM' or 'HH:MM')")
-
-
-def sign_index(lon):
-    return int(lon // 30) % 12
-
-
-def deg_in_sign(lon):
-    return lon % 30
-
-
-def fmt_dms(deg):
-    d = int(deg)
-    m_full = (deg - d) * 60
-    m = int(m_full)
-    s = int((m_full - m) * 60)
-    return f"{d:02d}°{m:02d}'{s:02d}\""
-
-
-def nakshatra_pada(lon):
-    # Each nakshatra spans 13°20' = 13.3333°; each pada = 3°20' = 3.3333°.
-    span = 360.0 / 27.0
-    idx = int(lon // span) % 27
-    within = lon - idx * span
-    pada = int(within // (span / 4.0)) + 1
-    return NAKSHATRAS[idx], pada
 
 
 def varga_sign(lon, division):
@@ -146,6 +82,11 @@ def varga_sign(lon, division):
 
     if division == 1:  # D1 Rasi
         result_sign = sidx
+
+    elif division == 3:  # D3 Drekkana (siblings/co-borns)
+        # 1st third -> same sign; 2nd third -> 5th from it; 3rd third -> 9th from it.
+        part = int(d // 10.0)  # 0..2
+        result_sign = (sidx + [0, 4, 8][part]) % 12
 
     elif division == 9:  # D9 Navamsha
         part = int(d // (30.0 / 9))  # 0..8
@@ -187,7 +128,11 @@ def varga_sign(lon, division):
         result_sign = (start + part) % 12
 
     else:
-        result_sign = sidx  # fallback to D1
+        raise ValueError(
+            f"Divisional chart D{division} is not implemented. "
+            "Supported: D1, D3, D4, D7, D9, D10, D12, D16. "
+            "(Previously this silently returned the D1 chart.)"
+        )
 
     # Return a representative longitude in the middle of the resulting sign.
     return result_sign * 30 + 15.0
@@ -197,17 +142,6 @@ def varga_sign(lon, division):
 # Time-domain helpers (Vimshottari dasha, Sade Sati). These assume
 # swe.set_sid_mode(SIDM_LAHIRI) and swe.set_ephe_path(None) have already run.
 # --------------------------------------------------------------------------- #
-
-def planet_lon(jd, code):
-    """Sidereal longitude (deg) of a body at a given Julian day."""
-    return swe.calc_ut(jd, code, SID_FLAGS)[0][0]
-
-
-def jd_to_date(jd):
-    """Julian day -> 'YYYY-MM-DD' (UTC, day precision)."""
-    y, m, d, _ = swe.revjul(jd, swe.GREG_CAL)
-    return f"{y:04d}-{m:02d}-{d:02d}"
-
 
 def vimshottari_dasha(birth_jd, moon_lon, dasha_years, asof_jd):
     """Return the Vimshottari mahadasha/antardasha sequence from birth.
@@ -419,28 +353,31 @@ def transits_asof(asof_jd, lagna_sign, moon_sign):
     return rows
 
 
+def _tz_kwargs(args):
+    """Exactly one of --tz / --utc-offset / --lmt (LMT uses --lon)."""
+    if getattr(args, "lmt", False):
+        return {"lmt_lon": args.lon}
+    if getattr(args, "utc_offset", None):
+        return {"utc_offset": args.utc_offset}
+    return {"tz": args.tz}
+
+
 def compute(args):
-    swe.set_ephe_path(None)  # use built-in Moshier ephemeris
-    swe.set_sid_mode(swe.SIDM_LAHIRI, 0, 0)
-    flags = swe.FLG_SWIEPH | swe.FLG_SIDEREAL | swe.FLG_SPEED | swe.FLG_MOSEPH
+    core.init()  # built-in Moshier ephemeris + Lahiri sidereal mode
+    flags = core.SID_SPEED_FLAGS
 
     dt = parse_date(args.date)
     hh, mm = parse_time(args.time)
-    local = datetime(dt.year, dt.month, dt.day, hh, mm, tzinfo=ZoneInfo(args.tz))
-    utc = local.astimezone(ZoneInfo("UTC"))
-    ut_hours = utc.hour + utc.minute / 60.0 + utc.second / 3600.0
-    jd = swe.julday(utc.year, utc.month, utc.day, ut_hours, swe.GREG_CAL)
+    utc, _, _ = core.to_utc(dt.year, dt.month, dt.day, hh, mm, **_tz_kwargs(args))
+    jd = core.jd_from_utc(utc)
 
     # Ascendant (sidereal) via houses_ex; whole-sign => Lagna = sign of ascendant.
-    cusps, ascmc = swe.houses_ex(jd, args.lat, args.lon, b'W', flags)
-    asc_lon = ascmc[0]
+    asc_lon, _mc = core.ascendant_mc(jd, args.lat, args.lon, flags)
     lagna_sign = sign_index(asc_lon)
 
     bodies = []
     for name, code in PLANETS:
-        res = swe.calc_ut(jd, code, flags)
-        lon = res[0][0]
-        speed = res[0][3]
+        lon, _lat, speed = core.body_raw(jd, code, flags)
         retro = speed < 0
         if name == "Rahu":
             bodies.append(("Rahu", lon, True))   # nodes always retrograde
@@ -476,13 +413,17 @@ def compute(args):
 
     vargas = {}
     requested = [v.strip().upper() for v in args.varga.split(",")] if args.varga else ["D1"]
-    div_map = {"D1": 1, "D4": 4, "D9": 9, "D7": 7, "D10": 10, "D12": 12, "D16": 16}
+    div_map = {"D1": 1, "D3": 3, "D4": 4, "D9": 9, "D7": 7,
+               "D10": 10, "D12": 12, "D16": 16}
     for v in requested:
         if v == "D1":
             continue
         n = div_map.get(v)
         if not n:
-            continue
+            raise SystemExit(
+                f"ERROR: unknown divisional chart '{v}'. "
+                f"Supported: {', '.join(sorted(div_map))}."
+            )
         # Compute varga lagna and varga sign for each body.
         vlagna_sign = sign_index(varga_sign(asc_lon, n))
         plist = []
@@ -617,14 +558,164 @@ def parse_asof(s):
     return parse_date(s)
 
 
+# --------------------------------------------------------------------------- #
+# mundane subcommand: event finders + instant snapshot (jyotish_core).
+#   compute_chart.py mundane --start 2024-01-01 --end 2026-12-31 \
+#       [--events eclipse,station,sankranti,lunation,ingress,jupsat] \
+#       [--lat 40.7069 --lon -74.0113]          # cast lagna at each event there
+#   compute_chart.py mundane --at "2026-10-08 09:30" --tz America/New_York \
+#       --lat 40.7069 --lon -74.0113 [--node true]
+# --------------------------------------------------------------------------- #
+
+MUNDANE_KINDS = {
+    "eclipse": ["solar_eclipse", "lunar_eclipse"],
+    "station": ["station"],
+    "sankranti": ["sankranti"],
+    "lunation": ["lunation"],
+    "ingress": ["ingress"],
+    "jupsat": ["jupiter_saturn"],
+}
+
+
+def _date_jd(s):
+    d = parse_date(s)
+    return swe.julday(d.year, d.month, d.day, 0.0, swe.GREG_CAL)
+
+
+def mundane(args):
+    core.init()
+    out = {"ayanamsa": "Lahiri (sidereal)", "ephemeris": core.EPHE_LABEL,
+           "core_version": core.CORE_VERSION}
+    if args.start and args.end:
+        start, end = _date_jd(args.start), _date_jd(args.end)
+        kinds = []
+        for k in (args.events.split(",") if args.events else list(MUNDANE_KINDS)):
+            k = k.strip().lower()
+            if k not in MUNDANE_KINDS:
+                raise SystemExit(f"ERROR: unknown event kind {k!r}; "
+                                 f"choose from {', '.join(MUNDANE_KINDS)}")
+            kinds += MUNDANE_KINDS[k]
+        geo = (args.lon, args.lat, 0.0) if args.lat is not None and args.lon is not None else None
+        events = core.find_events(start, end, kinds, geopos=geo)
+        for e in events:
+            if geo is not None:  # mundane chart cast for the given place
+                asc, _ = core.ascendant_mc(e["jd"], args.lat, args.lon)
+                e["lagna_sign"] = SIGNS[sign_index(asc)]
+            e["jd"] = round(e["jd"], 6)
+        out["range_ut"] = [args.start, args.end]
+        out["events"] = events
+    if args.at:
+        parts = args.at.split()
+        dt = parse_date(parts[0])
+        hh, mm = parse_time(" ".join(parts[1:]) or "00:00")
+        utc, off, method = core.to_utc(dt.year, dt.month, dt.day, hh, mm, **_tz_kwargs(args))
+        jd = core.jd_from_utc(utc)
+        snap = core.snapshot(jd, args.lat, args.lon, node=args.node, conj_orb=args.orb)
+        snap["local"] = args.at
+        snap["utc_offset"] = core.fmt_offset(off)
+        snap["time_basis"] = method
+        out["snapshot"] = snap
+    return out
+
+
+def _r(x, n=4):
+    if isinstance(x, float):
+        return round(x, n)
+    if isinstance(x, dict):
+        return {k: _r(v, n) for k, v in x.items()}
+    if isinstance(x, list):
+        return [_r(v, n) for v in x]
+    return x
+
+
+def print_mundane(out):
+    if "events" in out:
+        print(f"\n=== Mundane events {out['range_ut'][0]} -> {out['range_ut'][1]} (UT, "
+              f"Lahiri, {out['ephemeris']}) ===")
+        for e in out["events"]:
+            extra = {k: v for k, v in e.items() if k not in ("type", "body", "jd", "ut")}
+            bits = ", ".join(f"{k}={v:.4f}" if isinstance(v, float) else f"{k}={v}"
+                             for k, v in extra.items())
+            print(f"  {e['ut']}  {e['type']:<18} {e['body']:<16} {bits}")
+        print(f"  ({len(out['events'])} events)")
+    if "snapshot" in out:
+        s = out["snapshot"]
+        p = s["panchanga"]
+        print(f"\n=== Mundane chart {s['local']} ({s['time_basis']}, UTC{s['utc_offset']}) "
+              f"= {s['ut']} ===")
+        if "ascendant" in s:
+            a = s["ascendant"]
+            print(f"Lagna: {a['sign']} {fmt_dms(a['deg_in_sign'])} [{a['nakshatra']} {a['pada']}]"
+                  f" | MC: {s['mc']['sign']} {fmt_dms(s['mc']['deg_in_sign'])}")
+        print(f"Panchanga: tithi {p['tithi']} {p['tithi_name']} ({p['paksha']}, "
+              f"{p['tithi_pct_elapsed']:.1f}% elapsed), Sun-Moon {p['sun_moon_angle']:.2f} deg, "
+              f"yoga {p['yoga_name']}, karana {p['karana_name']}, vara {p['vara']} "
+              f"({p['vara_lord']}, {p['vara_basis']}), Moon in {p['moon_nakshatra']} {p['moon_pada']}")
+        print(f"  {'Body':<10} {'Sign':<12} {'Degree':<12} {'Nakshatra':<18} {'Pada':<5} "
+              f"{'Speed':>8}  R  C")
+        for n, b in s["positions"].items():
+            print(f"  {n:<10} {b['sign']:<12} {fmt_dms(b['deg_in_sign']):<12} "
+                  f"{b['nakshatra']:<18} {b['pada']:<5} {b['speed']:>8.4f}  "
+                  f"{'R' if b['retrograde'] else '-'}  {'C' if b['combust'] else '-'}")
+        r = s["relationships"]
+        print(f"Relationships (node={r['node']}):")
+        print("  sign conjunctions: " + ("; ".join(
+            f"{c['sign']}: {'+'.join(c['bodies'])}" for c in r["sign_conjunctions"]) or "none"))
+        print("  degree conjunctions: " + ("; ".join(
+            f"{c['a']}-{c['b']} {c['sep']:.2f}" for c in r["degree_conjunctions"]) or "none"))
+        print("  graha-yuddha: " + ("; ".join(
+            f"{c['a']}-{c['b']} {c['sep']:.3f} (winner {c['winner_by_latitude']})"
+            for c in r["graha_yuddha"]) or "none"))
+        print("  aspects: " + "; ".join(f"{a['from']}->{a['to']}({a['nth']})" for a in r["aspects"]))
+        print("  houses from Moon: " + ", ".join(f"{k} {v}" for k, v in r["houses_from_moon"].items()))
+    print()
+
+
+def mundane_main(argv):
+    ap = argparse.ArgumentParser(prog="compute_chart.py mundane",
+                                 description="Mundane events and instant charts.")
+    ap.add_argument("--start", help="UT date, YYYY-MM-DD")
+    ap.add_argument("--end", help="UT date, YYYY-MM-DD (exclusive)")
+    ap.add_argument("--events", help="comma list: " + ",".join(MUNDANE_KINDS) + " (default all)")
+    ap.add_argument("--at", help="local instant 'YYYY-MM-DD HH:MM' for a snapshot chart")
+    tzg = ap.add_mutually_exclusive_group()
+    tzg.add_argument("--tz", help="IANA tz for --at")
+    tzg.add_argument("--utc-offset", help="fixed offset for --at, e.g. -05:00")
+    tzg.add_argument("--lmt", action="store_true", help="Local Mean Time from --lon")
+    ap.add_argument("--lat", type=float)
+    ap.add_argument("--lon", type=float)
+    ap.add_argument("--node", choices=["mean", "true"], default="mean",
+                    help="node used for relationships (both are always listed)")
+    ap.add_argument("--orb", type=float, default=10.0, help="degree-conjunction orb")
+    ap.add_argument("--json", action="store_true")
+    args = ap.parse_args(argv)
+    if not (args.at or (args.start and args.end)):
+        ap.error("give --start and --end, and/or --at")
+    if args.at and not (args.tz or args.utc_offset or args.lmt):
+        ap.error("--at needs one of --tz / --utc-offset / --lmt")
+    if args.lmt and args.lon is None:
+        ap.error("--lmt needs --lon")
+    out = mundane(args)
+    if args.json:
+        print(json.dumps(_r(out, 6), indent=2))
+    else:
+        print_mundane(out)
+
+
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "mundane":
+        return mundane_main(sys.argv[2:])
     ap = argparse.ArgumentParser(description="Compute a sidereal Vedic chart.")
     ap.add_argument("--name", default="Native")
     ap.add_argument("--date", required=True, help="YYYY-MM-DD or DD-MM-YYYY")
     ap.add_argument("--time", required=True, help="'HH:MM AM/PM' or 'HH:MM'")
     ap.add_argument("--lat", type=float, required=True)
     ap.add_argument("--lon", type=float, required=True)
-    ap.add_argument("--tz", required=True, help="IANA tz, e.g. Asia/Kolkata")
+    tzg = ap.add_mutually_exclusive_group(required=True)
+    tzg.add_argument("--tz", help="IANA tz, e.g. Asia/Kolkata")
+    tzg.add_argument("--utc-offset", help="fixed offset, e.g. -05:00 or +5:30")
+    tzg.add_argument("--lmt", action="store_true",
+                     help="Local Mean Time from --lon (pre-standard-time charts)")
     ap.add_argument("--varga", default="D1,D9,D7,D10,D12")
     ap.add_argument("--asof", default=None,
                     help="Reference date for 'current' dasha/transits "

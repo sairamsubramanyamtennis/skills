@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "variant": "Example - Principal Architect",
+    "note": "Reference input for build_resume.py. Fictional person. Shows every section type, prior_titles for promotions, inline **bold**, and a functional_title clarifier."
+  },
+  "style": {
+    "preset": "principal",
+    "margin_in": 0.7
+  },
+  "header": {
+    "name": "Alex Morgan",
+    "headline": "Principal Architect | Distributed Systems, AWS, Enterprise AI",
+    "contact": [
+      "Plano, TX",
+      "(555) 555-0142",
+      "alex.morgan@example.com",
+      "linkedin.com/in/alexmorgan"
+    ]
+  },
+  "sections": [
+    {
+      "type": "summary",
+      "title": "Professional Summary",
+      "paragraphs": [
+        "Principal architect with 18 years building and modernizing transaction platforms in banking. Work spans hands-on backend engineering, AWS migration, event-driven architecture on Kafka, and more recently the first production LLM applications in the payments organization. Comfortable owning an architecture end to end - the design review, the proof of concept, and the standard the other teams then build against."
+      ]
+    },
+    {
+      "type": "skills",
+      "title": "Technical Skills",
+      "groups": [
+        {
+          "label": "Languages",
+          "items": ["Java", "Python", "TypeScript", "SQL"]
+        },
+        {
+          "label": "Cloud & Platform",
+          "items": ["AWS (EKS, Lambda, S3, RDS, MSK)", "Kubernetes", "Terraform", "Docker", "GitHub Actions"]
+        },
+        {
+          "label": "Data & Events",
+          "items": ["Apache Kafka", "Kinesis", "PostgreSQL", "DynamoDB", "Snowflake", "dbt"]
+        },
+        {
+          "label": "AI / GenAI",
+          "items": ["LLM application architecture", "RAG", "vector search (pgvector, OpenSearch)", "Bedrock", "evaluation harnesses"]
+        },
+        {
+          "label": "Practices",
+          "items": ["Distributed system design", "API and integration architecture", "observability (OpenTelemetry, Grafana)", "SRE and incident review", "architecture governance"]
+        }
+      ]
+    },
+    {
+      "type": "experience",
+      "title": "Professional Experience",
+      "roles": [
+        {
+          "company": "Meridian Financial",
+          "location": "Plano, TX",
+          "title": "Principal Engineer",
+          "functional_title": "Payments Platform Architect",
+          "dates": "2019 - Present",
+          "context": "Architecture ownership for the payments platform: 40 services, ~9M transactions/day, 60 engineers across six teams.",
+          "bullets": [
+            "Designed the **Kafka** event backbone that replaced 30-odd point-to-point integrations between the deposits, ledger and fraud systems. Downstream teams now subscribe to account events instead of negotiating a new interface each time, which cut the typical integration from a quarter of work to about two weeks.",
+            "Led the migration of the settlement engine from a shared Oracle instance to **AWS** EKS with per-service Postgres. Ran the dual-write and reconciliation plan personally for the first three services, then handed the pattern to the platform team as a documented runbook.",
+            "Built the first production **RAG** application in the payments organization - an operations assistant over 12 years of incident write-ups and runbooks. Wrote the retrieval and evaluation layer; a two-engineer team now owns it.",
+            "Chair the payments architecture review. Wrote the standards for service boundaries, idempotency and event schema evolution that all six teams now build against.",
+            "Reduced Sev-1 incidents in the settlement path from 14 in 2021 to 3 in 2024 by instrumenting the whole flow with **OpenTelemetry** and rebuilding the retry semantics around idempotency keys."
+          ],
+          "prior_titles": [
+            {
+              "title": "Senior Software Engineer",
+              "dates": "2015 - 2019",
+              "bullets": [
+                "Owned the real-time fraud scoring service - Java, 4k TPS at peak, sub-40ms p99. Rewrote the feature pipeline when the model team moved from batch to streaming features."
+              ]
+            }
+          ]
+        },
+        {
+          "company": "Northgate Systems",
+          "location": "Dallas, TX",
+          "title": "Software Engineer",
+          "dates": "2008 - 2015",
+          "bullets": [
+            "Built and maintained the core order-management services for a retail client processing about 200k orders a day.",
+            "Introduced the team's first automated integration test suite and CI pipeline, which took release preparation from two days to under an hour."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "education",
+      "title": "Education",
+      "entries": [
+        {
+          "primary": "B.S., Computer Science",
+          "secondary": "University of Texas at Austin",
+          "dates": "2008"
+        }
+      ]
+    },
+    {
+      "type": "certifications",
+      "title": "Certifications",
+      "entries": [
+        {
+          "primary": "AWS Certified Solutions Architect - Professional",
+          "dates": "2022"
+        }
+      ]
+    }
+  ]
+}

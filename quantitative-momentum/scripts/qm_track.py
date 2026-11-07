@@ -38,9 +38,14 @@ def _scorecard_path(out_dir):
     return os.path.join(out_dir, "picks_scorecard.csv")
 
 
-def record_picks(ranking_csv, out_dir, top_n=10, regime=None):
-    """Append the Top-N composite-rank picks for today to picks_history.csv (idempotent per day)."""
-    df = pd.read_csv(ranking_csv)
+def record_picks(ranking, out_dir, top_n=10, regime=None):
+    """Append the Top-N composite-rank picks for today to picks_history.csv (idempotent per day).
+
+    `ranking` is a DataFrame (the published screen, read back from Postgres) or a
+    path to the screener CSV. The pipeline passes the frame; the path form stays
+    for replaying an old CSV by hand.
+    """
+    df = ranking if isinstance(ranking, pd.DataFrame) else pd.read_csv(ranking)
     df = df.sort_values("Composite QM Rank").head(top_n)
     run_date = datetime.now().strftime("%Y-%m-%d")
 
@@ -160,7 +165,13 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     rp = sub.add_parser("record")
-    rp.add_argument("--ranking", required=True)
+    rp.add_argument("--ranking", default=None,
+                    help="screener CSV to record from (omit with --from-pg)")
+    rp.add_argument("--from-pg", action="store_true",
+                    help="record from the published screen in Postgres instead "
+                         "of a CSV (what run_qm.py uses)")
+    rp.add_argument("--screen-date", default=None,
+                    help="--from-pg: which published screen (default newest)")
     rp.add_argument("--out", required=True)
     rp.add_argument("--top-n", type=int, default=10)
 
@@ -169,7 +180,14 @@ def main():
 
     args = ap.parse_args()
     if args.cmd == "record":
-        record_picks(args.ranking, args.out, top_n=args.top_n)
+        if args.from_pg:
+            import qm_screen_source
+            src = qm_screen_source.fetch_screen(args.screen_date)
+        elif args.ranking:
+            src = args.ranking
+        else:
+            sys.exit("record needs --ranking <csv> or --from-pg")
+        record_picks(src, args.out, top_n=args.top_n)
     elif args.cmd == "score":
         score(args.out)
 
