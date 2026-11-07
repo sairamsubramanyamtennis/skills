@@ -29,3 +29,6 @@ earnings-drift/data/
 # Backup copies made before edits
 *.bak
 *.bak-*
+
+# Persona memory folders hold personal data; backed up to D:\ nightly, never pushed (repo is public)
+*/memory/
